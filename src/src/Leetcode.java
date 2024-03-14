@@ -1256,27 +1256,56 @@ public class Leetcode {
 
     public ListNode reverseBetween(ListNode head, int left, int right) {
         if (left == right) return head;
-        if (left > 1) {
-            head.next = reverseBetween(head.next, left--, right);
+        if (left == 1) {
+            if (right == 1) return head;
+            ListNode current = head;
+            ListNode next = current.next;
+            while (right != 1) {
+                current = next;
+                next = current.next;
+                right -=1;
+            }
+            current.next = null;
+            ListNode output = reverseListNode(head);
+            ListNode current2 = output;
+            ListNode next2 = current2.next;
+            while (next2 != null) {
+                current2 = next2;
+                next2 = current2.next;
+            }
+            current2.next = next;
             return head;
         } else {
             ListNode current = head;
-            while (right > 1) {
-                current = current.next;
-                right--;
+            ListNode next = current.next;
+            while (left != 2) {
+                current = next;
+                next = current.next;
+                left -= 1;
+                right -= 1;
             }
-            ListNode tail = current.next;
             current.next = null;
-            ListNode reversed = reverseListNode(head);
-            ListNode output = reversed;
-            ListNode middleEnd = reversed;
-            while (middleEnd.next != null) {
-                middleEnd = middleEnd.next;
+            //ListNode next is the head of the list to be reversed
+            ListNode currentt = next;
+            ListNode nextt = currentt.next;
+            right -= 1;
+            while (right != 1) {
+                currentt = nextt;
+                nextt = currentt.next;
+                right -=1;
             }
-            middleEnd.next = tail;
-            return output;
+            currentt.next = null;
+            ListNode output = reverseListNode(next);
+            current.next = output;
+            ListNode current2 = output;
+            ListNode next2 = current2.next;
+            while (next2 != null) {
+                current2 = next2;
+                next2 = current2.next;
+            }
+            current2.next = nextt;
+            return head;
         }
-
     }
 
     public ListNode reverseListNode(ListNode head) {
@@ -3243,6 +3272,43 @@ public class Leetcode {
         }
         return output;
     }
+
+    public int kthSmallest(TreeNode root, int k) {
+        if (root == null) return 0;
+        List<TreeNode> rootList = new ArrayList<>();
+        rootList.add(root);
+        List<Integer> valueList = rootToList(rootList);
+        Collections.sort(valueList);
+        if (k >= valueList.size()) return 0;
+        else return valueList.get(k-1);
+    }
+    public List<Integer> rootToList(List<TreeNode> root) {
+        List<Integer> out = new ArrayList<>();
+        List<TreeNode> nextRootList = new ArrayList<>();
+        if (root == null || root.size() == 0) return out;
+        for (TreeNode tn : root) {
+            out.add(tn.val);
+            if (tn.left != null) nextRootList.add(tn.left);
+            if (tn.right != null) nextRootList.add(tn.right);
+        }
+        out.addAll(rootToList(nextRootList));
+        return out;
+    }
+
+
+    public void sortColors(int[] nums) {
+        for (int i = 1; i < nums.length; i++) {
+            int first = nums[i-1];
+            int second = nums[i];
+            if (first > second) {
+                nums[i-1] = second;
+                nums[i] = first;
+                sortColors(nums);
+                break;
+            }
+        }
+    }
+
 
     public static void main(String[] args) {
         int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {1, 4}, {2, 5}, {5, 6}, {5, 7}};
