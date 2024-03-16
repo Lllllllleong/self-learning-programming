@@ -732,24 +732,6 @@ public class Leetcode {
         return triangularSum(output);
     }
 
-    public int minSteps(String s, String t) {
-        Map<Character, Integer> map = new HashMap<>();
-        for (Character c : s.toCharArray()) {
-            map.merge(c, 1, Integer::sum);
-        }
-        for (Character c : t.toCharArray()) {
-            if (map.containsKey(c)) {
-                map.put(c, map.get(c) - 1);
-            } else {
-                map.put(c, -1);
-            }
-        }
-        int output = 0;
-        for (Integer i : map.values()) {
-            output = output + Math.abs(i);
-        }
-        return output;
-    }
 
     public String largestWordCount(String[] messages, String[] senders) {
         TreeMap<String, Integer> map = new TreeMap<>();
@@ -3922,7 +3904,108 @@ public class Leetcode {
         mls(root.left, level + 1);
     }
 
+    public boolean isPossibleDivide(int[] nums, int k) {
+        int n = nums.length;
+        if (n % k != 0) return false;
+        if (k == 1) return true;
+        try {
+            Arrays.sort(nums);
+            Deque<Integer> deque = new ArrayDeque<>();
+            for (int value : nums) {
+                deque.addLast(value);
+            }
+            while (!deque.isEmpty()) {
+                Integer first = deque.pop();
+                for (int i = 1; i < k; i++) {
+                    if (!deque.remove(first + i)) return false;
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
+    public int numOfSubarrays(int[] arr, int k, int threshold) {
+        if (k > arr.length) return 0;
+        int sumMin = k * threshold;
+        int output = 0;
+        int currentSum = 0;
+        for (int i = 0; i < k; i++) {
+            currentSum += arr[i];
+        }
+        if (currentSum >= sumMin) output++;
+        int endIndex = k;
+        int startIndex = 0;
+        while (endIndex < arr.length) {
+            currentSum -= arr[startIndex];
+            currentSum += arr[endIndex];
+            if (currentSum >= sumMin) output++;
+            startIndex++;
+            endIndex++;
+        }
+        return output;
+    }
+
+
+    public int minSteps(String s, String t) {
+        int output = 0;
+        int[] charMap = new int[26];
+        for (char c : s.toCharArray()) {
+            int index = c - 'a';
+            charMap[index]++;
+        }
+        for (char c : t.toCharArray()) {
+            int index = c - 'a';
+            charMap[index]--;
+        }
+        for (int i : charMap) {
+            output += Math.abs(i);
+        }
+        return output;
+    }
+
+    class Restaurant implements Comparable<Restaurant> {
+        int id;
+        int rating;
+        int vegan;
+        int price;
+        int distance;
+        public Restaurant(int id, int rating, int vegan, int price, int distance) {
+            this.id = id;
+            this.rating = rating;
+            this.vegan = vegan;
+            this.price = price;
+            this.distance = distance;
+        }
+        @Override public int compareTo(Restaurant a)
+        {
+            if (this.rating != a.rating) {
+                return a.rating - this.rating;
+            } else {
+                return a.id - this.id;
+            }
+        }
+
+    }
+    public List<Integer> filterRestaurants(int[][] restaurants, int veganFriendly, int maxPrice, int maxDistance) {
+        List<Restaurant> rList = new ArrayList<>();
+        for (int[] res : restaurants) {
+            Restaurant r = new Restaurant(res[0],res[1],res[2],res[3],res[4]);
+            if (r.price <= maxPrice && r.distance <= maxDistance) {
+                if (veganFriendly == 1 && r.vegan == 0) continue;
+                else {
+                    rList.add(r);
+                }
+            }
+        }
+        Collections.sort(rList);
+        List<Integer> output = new ArrayList<>();
+        for (var r : rList) {
+            output.add(r.id);
+        }
+        return output;
+    }
 
     public static void main(String[] args) {
         int[][] edges = {{0, 1}, {0, 2}, {1, 3}, {1, 4}, {2, 5}, {5, 6}, {5, 7}};
