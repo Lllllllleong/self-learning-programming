@@ -4136,7 +4136,7 @@ public class Leetcode {
                 double currentGradient = (o2Y - o1Y) / (o2X - o1X);
                 boolean infGradient = (o2X == o1X);
                 //System.out.println("current grdient is " + currentGradient);
-                for (int[] p : points) {
+                for (int[] p : remainingPoints) {
                     if (p.equals(currentPoint)) continue;
                     double o3X = p[0];
                     double o3Y = p[1];
@@ -4160,6 +4160,27 @@ public class Leetcode {
             }
         }
         return output;
+    }
+
+    public ListNode mergeKLists(ListNode[] lists) {
+        List<Integer> all = new ArrayList<>();
+        for (ListNode ln : lists) {
+            while (ln != null) {
+                all.add(ln.val);
+                ln = ln.next;
+            }
+        }
+        Collections.sort(all);
+        Deque<Integer> q = new ArrayDeque<>(all);
+        ListNode out = new ListNode();
+        ListNode current = out;
+        while (!q.isEmpty()) {
+            Integer I = q.pop();
+            ListNode next = new ListNode(I);
+            current.next = next;
+            current = current.next;
+        }
+        return out.next;
     }
 
     public static void main(String[] args) {
