@@ -154,6 +154,22 @@ public class Leetcode2 {
         return maxPair;
     }
 
+    public int maxUncrossedLines(int[] nums1, int[] nums2) {
+        int xBound = nums1.length;
+        int yBound = nums2.length;
+        int[][] dpArray = new int[yBound + 1][xBound + 1];
+        for (int y = yBound-1; y >=0; y--) {
+            for (int x = xBound-1; x >= 0; x--) {
+                if (nums1[x] == nums2[y]) {
+                    dpArray[y][x] = 1 + dpArray[y+1][x+1];
+                } else {
+                    dpArray[y][x] = Math.max(dpArray[y+1][x], dpArray[y][x+1]);
+                }
+            }
+        }
+        return dpArray[0][0];
+    }
+
 
 }
 
