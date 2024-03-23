@@ -377,6 +377,56 @@ public class Leetcode2 {
         return output;
     }
 
+    public int maxProfit(int[] prices) {
+        int n = prices.length;
+        if (n == 1) return 0;
+        if (n == 2) {
+            int p = prices[1] - prices[0];
+            return (p > 0) ? p : 0;
+        } else {
+            int[][] dpArray = new int[n+1][n+1];
+            for (int i = n-1; i >= 0; i--) {
+                int currentPeak = prices[i];
+                for (int j = i; j >= 0; j--) {
+                    int currentPrice = prices[j];
+                    dpArray[i][j] = Math.max(dpArray[i][j+1], currentPeak - currentPrice);
+                    currentPeak = Math.max(currentPeak, currentPrice);
+                }
+            }
+            for (int[] a : dpArray) {
+                System.out.println(Arrays.toString(a));
+            }
+            int output = dpArray[n-1][0];
+            for (int i = 1; i < n; i++) {
+                int c = dpArray[n-1][i] + dpArray[i-1][0];
+                output = Math.max(output, c);
+            }
+            return output;
+        }
+    }
+
+
+
+    public boolean isSubsequence(String s, String t) {
+        int y = s.length();
+        int x = t.length();
+        if (y == 0 || y == 0 && x == 0) return true;
+        if (x == 0) return false;
+        boolean[][] dpArray = new boolean[y+1][x+1];
+        //Corner solution initialise
+        Arrays.fill(dpArray[y], true);
+        for (int i = y-1; i >= 0; i--) {
+            for (int j = x-1; j >= 0; j--) {
+                if (s.charAt(i) == t.charAt(j)) {
+                    dpArray[i][j] = dpArray[i+1][j+1];
+                } else {
+                    dpArray[i][j] = dpArray[i][j+1];
+                }
+            }
+        }
+        return dpArray[0][0];
+    }
+
 
 }
 
