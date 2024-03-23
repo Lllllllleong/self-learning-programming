@@ -449,6 +449,25 @@ public class Leetcode2 {
     }
 
 
+
+    public int findLengthOfLCIS(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return 1;
+        int output = 1;
+        int counter = 1;
+        for (int i = 1; i < n; i++) {
+            if (nums[i] > nums[i-1]) {
+                counter++;
+                output = Math.max(output, counter);
+            } else {
+                output = Math.max(output, counter);
+                counter = 1;
+            }
+        }
+        return output;
+    }
+
+
 }
 
 
