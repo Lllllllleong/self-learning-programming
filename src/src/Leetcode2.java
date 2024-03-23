@@ -267,6 +267,61 @@ public class Leetcode2 {
         return Math.max(dp[0][0], dp[1][0]);
     }
 
+
+    public int[] reverseArray(int[] in) {
+        int n = in.length;
+        int[] reverse = new int[n];
+        n = n-1;
+        for (int i : in) {
+            reverse[n] = i;
+            n--;
+        }
+        return reverse;
+    }
+    public int maxSizeSlices(int[] slices) {
+        int n = slices.length;
+        int[] sliceReverse = reverseArray(slices);
+        int[][] dpArray = new int[n+2][n+2];
+        int j = 0;
+        for (int x = n-1; x >= 0 ; x--) {
+            for (int y = j; y >= 0; y--) {
+                int one = slices[x] + dpArray[y+1][x+2];
+                int two = slices[y] + dpArray[y+2][x+1];
+                int three = dpArray[y+1][x+1];
+                dpArray[y][x] = Math.max(one, Math.max(two, three));
+            }
+            j++;
+        }
+        for (int[] a : dpArray) {
+            System.out.println(Arrays.toString(a));
+        }
+        return Math.max(dpArray[1][0], Math.max(dpArray[0][1], dpArray[0][0]));
+    }
+
+
+    public int longestZigZag(TreeNode root) {
+        if (root == null) return 0;
+        int a = zagLeft(root.right);
+        int b = zagRight(root.left);
+        int c = longestZigZag(root.left);
+        int d = longestZigZag(root.right);
+        int output = Math.max(a, Math.max(b, Math.max(c,d)));
+        return output;
+    }
+    public int zagLeft(TreeNode root) {
+        if (root == null) return 0;
+        return (1 + zagRight(root.left));
+    }
+    public int zagRight(TreeNode root) {
+        if (root == null) return 0;
+        return (1 + zagLeft(root.right));
+    }
+
+
+    public List<String> printVertically(String s) {
+
+    }
+
 }
 
 
