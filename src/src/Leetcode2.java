@@ -171,6 +171,102 @@ public class Leetcode2 {
     }
 
 
+    public int maxResult(int[] nums, int k) {
+        int output = 0;
+        Deque<Integer> dQueue = new ArrayDeque<>();
+        for (int i = nums.length-1; i >= 0 ; i--) {
+            if (nums[i] < 0) {
+                dQueue.addFirst(nums[i]);
+            } else {
+                if (!dQueue.isEmpty() && dQueue.size() >= k) {
+                    output += queueSum(dQueue, k);
+                }
+                dQueue.clear();
+                output += nums[i];
+            }
+        }
+        return output;
+    }
+    public int queueSum(Deque<Integer> dQ, int k) {
+        Deque<Integer> sumQueue = new ArrayDeque<>();
+        while (sumQueue.size() != k) {
+            sumQueue.addFirst(dQ.pollLast());
+        }
+        int output = 0;
+        while (!dQ.isEmpty()) {
+            int current = dQ.pollLast();
+            current = queueMax(sumQueue) + current;
+            sumQueue.pollLast();
+            sumQueue.addFirst(current);
+        }
+        return queueMax(sumQueue);
+    }
+
+    public int queueMax(Deque<Integer> q) {
+        if (q.isEmpty()) return -1;
+        int output = Integer.MIN_VALUE;
+        while (!q.isEmpty()) {
+            output = Math.max(output, q.pop());
+        }
+        return output;
+    }
+
+
+
+    public int minSideJumps(int[] obstacles) {
+        int[][] dpArray = new int[3][obstacles.length];
+        int counter = 0;
+        for (int i : obstacles) {
+            if (i != 0) {
+                i = i - 1;
+                dpArray[i][counter] = 1000;
+            }
+            counter++;
+        }
+        Deque<Integer> orderQueue = new ArrayDeque<>(Arrays.asList(0,1,2));
+        for (int i = obstacles.length-2; i >= 0 ; i--) {
+            for (int j = 0; j < 3; j++) {
+                if (dpArray[j][i] == 1000) continue;
+                dpArray[j][i] = dpArray[j][i+1];
+            }
+            for (int j = 0; j < 3; j++) {
+                dpArray[j][i] = Math.min(dpArray[j][i], dpArray[0][i] + 1);
+                dpArray[j][i] = Math.min(dpArray[j][i], dpArray[1][i] + 1);
+                dpArray[j][i] = Math.min(dpArray[j][i], dpArray[2][i] + 1);
+            }
+            System.out.println("currentRoad is " + i);
+            System.out.println(dpArray[0][i]);
+            System.out.println(dpArray[1][i]);
+            System.out.println(dpArray[2][i]);
+        }
+        return dpArray[1][0];
+    }
+
+
+    public int rob(int[] nums) {
+        //nums is a circular array
+        //You can never rob the first and last at the same time
+        int n = nums.length;
+        if (n == 1) return nums[0];
+        if (n == 2) return Math.max(nums[0], nums[1]);
+        int first = rob2(Arrays.copyOfRange(nums, 1, n));
+        int second = rob2(Arrays.copyOfRange(nums, 0, n-1));
+        return Math.max(first,second);
+    }
+    public int rob2(int[] nums) {
+        //Let
+        //dp[0][n] be the max value if you choose to rob the nth house
+        //dp[1][n] is the max value if you don't rob the nth house
+        int n = nums.length;
+        int[][] dp = new int[2][n+1];
+        for (int i = n-1; i >= 0 ; i--) {
+            int currentRob = nums[i];
+            dp[0][i] = currentRob + dp[1][i+1];
+            dp[1][i] = Math.max(dp[0][i+1], dp[1][i+1]);
+        }
+        return Math.max(dp[0][0], dp[1][0]);
+    }
+
 }
 
 
