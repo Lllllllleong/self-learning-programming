@@ -595,6 +595,20 @@ public class Leetcode2 {
         return output;
     }
 
+    public int maxProduct(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return nums[0];
+        int output = 0;
+        for (int i = n-1; i >= 0; i--) {
+            int current = nums[i];
+            output = Math.max(output, current);
+            for (int j = i + 1; j < n; j++) {
+                nums[j] = nums[j] * current;
+                output = Math.max(output, nums[j]);
+            }
+        }
+        return output;
+    }
 
 
 }
