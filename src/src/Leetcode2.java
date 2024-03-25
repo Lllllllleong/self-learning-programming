@@ -532,6 +532,37 @@ public class Leetcode2 {
         return output;
     }
 
+
+    public int maxIncreaseKeepingSkyline(int[][] grid) {
+        int xLength = grid[0].length;
+        int yLength = grid.length;
+        int[] xMax = new int[xLength];
+        int[] yMax = new int[yLength];
+        for (int y = 0; y < yLength; y++) {
+            int[] currentGrid = grid[y];
+            yMax[y] = arrMaxValue(currentGrid);
+            for (int x = 0; x < xLength; x++) {
+                xMax[x] = Math.max(xMax[x], currentGrid[x]);
+            }
+        }
+        int output = 0;
+        for (int y = 0; y < yLength; y++) {
+            for (int x = 0; x < xLength; x++) {
+                int currentHeight = grid[y][x];
+                int currentMax = Math.min(xMax[x], yMax[y]);
+                output += (currentMax - currentHeight);
+            }
+        }
+        return output;
+    }
+    public int arrMaxValue(int[] in) {
+        int output = Integer.MIN_VALUE;
+        for (int i : in) {
+            output = Math.max(output, i);
+        }
+        return output;
+    }
+
 }
 
 
