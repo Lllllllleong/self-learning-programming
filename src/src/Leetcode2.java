@@ -777,30 +777,6 @@ public class Leetcode2 {
     }
 
 
-    public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
-        int n = nums.length;
-        if (firstLen + secondLen == n) return intArraySum(nums);
-        int one = maxSumTwoNoOverlap2(nums, firstLen, secondLen);
-
-        return -1;
-    }
-    public int maxSumTwoNoOverlap2(int[] nums, int firstLen, int secondLen) {
-        int n = nums.length;
-        int window = firstLen + secondLen;
-        int[] dpArrayFirst = new int[n - window + 1];
-
-
-
-    }
-
-    public int intArraySum(int[] in) {
-        int output = 0;
-        for (int i : in) {
-            output += i;
-        }
-        return output;
-    }
-
 
     public int longestSquareStreak(int[] nums) {
         Set<Integer> s = new HashSet<>();
@@ -823,6 +799,23 @@ public class Leetcode2 {
         }
         return output;
 
+    }
+
+    public long maxScore(int[] nums, int x) {
+        int n = nums.length;
+        long oddMax = 0, evenMax = 0;
+        for (int i = n-1; i >= 0; i--) {
+            long l = nums[i];
+            if (l % 2 == 0) {
+                evenMax += l;
+                evenMax = Math.max(evenMax, oddMax + l - x);
+            } else {
+                oddMax += l;
+                oddMax = Math.max(oddMax, evenMax + l - x);
+            }
+        }
+        if (nums[0] % 2 == 0) return evenMax;
+        else return oddMax;
     }
 
 
