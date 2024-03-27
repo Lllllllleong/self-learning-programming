@@ -1,3 +1,4 @@
+import java.security.spec.RSAOtherPrimeInfo;
 import java.util.*;
 
 public class Leetcode2 {
@@ -971,6 +972,71 @@ public class Leetcode2 {
         return (int) (output % (Math.pow(10,9) + 7));
     }
 
+
+
+    public int numOfSubarrays(int[] arr) {
+        int n = arr.length;
+        long output = 0;
+        if (n == 1) return (arr[0] % 2 == 0) ? 0 : 1;
+        for (int i = n-1; i >= 0; i--) {
+            int a = arr[i];
+            if (a % 2 != 0) output++;
+            for (int j = i+1; j < n; j++) {
+                arr[j] += a;
+                if (arr[j] % 2 != 0) output++;
+            }
+        }
+        return (int) (output % (Math.pow(10,9) + 7));
+    }
+
+    public String kthSmallestPath(int[] destination, int k) {
+        int y = destination[0];
+        int x = destination[1];
+        String s = "";
+        //Base cases
+        if (x == 0 && y == 0) return s;
+        if (x > 0 && y == 0) {
+            s = "H";
+            return s.repeat(x);
+        }
+        if (x == 0 && y > 0) {
+            s = "V";
+            return s.repeat(y);
+        }
+        if (x == 1 && y == 1) {
+            if (k == 1) return "HV";
+            else return "VH";
+        }
+        //Non-Base case
+        //Find the number of ways to dest, if we move right
+        long right = nCr((y + x - 1), y);
+        //If k is less than no. ways, we move right. Otherwise, move down
+        if (k <= right) {
+            int[] newDest = {y, x-1};
+            s = "H" + kthSmallestPath(newDest, k);
+        } else {
+            int kk = (int) (k - right);
+            int[] newDest = {y-1, x};
+            s = "V" + kthSmallestPath(newDest, kk);
+        }
+        return s;
+    }
+    public long nCr(int n, int r) {
+        if (r > n) {
+            return 0;
+        }
+        if (r == 0 || r == n) {
+            return 1;
+        }
+        r = Math.min(r, n - r); // Use symmetry property nCr = nC(n-r)
+        long result = 1;
+        // Calculate the result of nCr using a loop to avoid integer overflow
+        for (int i = 1; i <= r; i++) {
+            result *= n - r + i;
+            result /= i;
+        }
+        return result;
+    }
 
 }
 
