@@ -1514,15 +1514,13 @@ public class Leetcode2 {
         }
     }
 
-    public int singleNonDuplicate(int[] nums) {
-        int n = nums.length;
-        if (n == 1) return nums[0];
-        else {
-            for (int i = 0; i < n; i = i + 2) {
-                if (nums[i] != nums[i+1]) return nums[i];
+    public int[][] sortTheStudents(int[][] score, int k) {
+        Arrays.sort(score, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                return (b[k] - a[k]);
             }
-            return -1;
-        }
+        });
+        return score;
     }
 
 }
