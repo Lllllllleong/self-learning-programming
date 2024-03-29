@@ -1410,7 +1410,40 @@ public class Leetcode2 {
         return out;
     }
 
-
+    public int minimumRefill(int[] plants, int capacityA, int capacityB) {
+        int n = plants.length;
+        if (n == 1) {
+            if (capacityA >= plants[0] || capacityB >= plants[0]) return 0;
+            else return 1;
+        } else {
+            Deque<Integer> dq = new ArrayDeque<>();
+            for (int i : plants) {
+                dq.addLast(i);
+            }
+            int out = 0;
+            int a = capacityA;
+            int b = capacityB;
+            while (!dq.isEmpty()) {
+                if (dq.size() == 1) {
+                    int i = dq.pop();
+                    if (a < i && b < i) out++;
+                }
+                int plantA = dq.pollFirst();
+                int plantB = dq.pollLast();
+                if (a < plantA) {
+                    out++;
+                    a = capacityA;
+                }
+                if (b < plantB) {
+                    out++;
+                    b = capacityB;
+                }
+                a -= plantA;
+                b -= plantB;
+            }
+            return out;
+        }
+    }
 
 
 }
