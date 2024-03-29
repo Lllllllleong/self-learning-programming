@@ -1356,6 +1356,60 @@ public class Leetcode2 {
     }
 
 
+    public int minimumDeletions(int[] nums) {
+        int n = nums.length;
+        if (n <= 2) return n;
+        int a = Integer.MAX_VALUE;
+        int aa = 0;
+        int b = Integer.MIN_VALUE;
+        int bb = 0;
+        for (int i = 0; i < n; i++) {
+            int current = nums[i];
+            if (current > b) {
+                b = current;
+                bb = i;
+            }
+            if (current < a) {
+                a = current;
+                aa = i;
+            }
+        }
+        int one = n - Math.min(aa,bb);
+        int two = Math.min(aa,bb) + (n - Math.max(aa,bb));
+        int three = n - Math.max(aa,bb) + 1;
+        return Math.min(one, Math.min(two, three));
+    }
+
+
+    public List<Integer> findLonely(int[] nums) {
+        int n = nums.length;
+        List<Integer> out = new ArrayList<>();
+        if (n == 1) {
+            out.add(nums[0]);
+            return out;
+        } else if (n == 2) {
+            if (Math.abs(nums[1] - nums[0]) > 1) {
+                out.add(nums[0]);
+                out.add(nums[1]);
+                return out;
+            } else return out;
+        } else {
+            Arrays.sort(nums);
+            if (Math.abs(nums[1] - nums[0]) > 1) {
+                out.add(nums[0]);
+            }
+            if (Math.abs(nums[n-1] - nums[n-2]) > 1) {
+                out.add(nums[n-1]);
+            }
+            for (int i = 1; i < n-1; i++) {
+                if (nums[i] - nums[i-1] > 1 && nums[i+1] - nums[i] > 1) {
+                    out.add(nums[i]);
+                }
+            }
+        }
+        return out;
+    }
+
 
 
 
