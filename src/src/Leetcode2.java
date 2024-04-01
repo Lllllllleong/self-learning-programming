@@ -1567,6 +1567,62 @@ public class Leetcode2 {
         return matrix;
     }
 
+
+    public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
+        int out = 0;
+        int n = nums.length;
+        if (n == 1) return n;
+        int[] dpAFirst = maxSumDPFromLeftToRight(nums, firstLen);
+        int[] dpBFirst = maxSumDPFromRightToLeft(nums, secondLen);
+        for (int i = firstLen-1; i < n-secondLen; i++) {
+            out = Math.max(out, dpAFirst[i] + dpBFirst[i + 1]);
+        }
+        int[] dpASecond = maxSumDPFromLeftToRight(nums, secondLen);
+        int[] dpBSecond = maxSumDPFromRightToLeft(nums, firstLen);
+        for (int i = secondLen-1; i < n-firstLen; i++) {
+            out = Math.max(out, dpASecond[i] + dpBSecond[i+1]);
+        }
+        return out;
+    }
+    public int[] maxSumDPFromRightToLeft(int[] nums, int length) {
+        int n = nums.length;
+
+        int[] out = new int[n];
+        int max = 0;
+        int prev = 0;
+        for(int i = n-1; i >= 0; i--) {
+            int current = prev + nums[i];
+            int minus = (i + length >= n) ? 0 : nums[i+length];
+            current -= minus;
+            max = Math.max(max, current);
+            out[i] = max;
+            prev = current;
+        }
+        return out;
+    }
+    public int[] maxSumDPFromLeftToRight(int[] nums, int length) {
+        int n = nums.length;
+
+        int[] out = new int[n];
+        int max = 0;
+        int prev = 0;
+        for(int i = 0; i < n; i++) {
+            int current = prev + nums[i];
+            int minus = (i - length < 0) ? 0 : nums[i-length];
+            current -= minus;
+            max = Math.max(max, current);
+            out[i] = max;
+            prev = current;
+        }
+        return out;
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println("hi");
+    }
+
+
 }
 
 
