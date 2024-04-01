@@ -25,7 +25,14 @@ public class References {
     //SHORTCUTS
 
     //itar
+    //ritar
     //itco
+    //Max and min
+    //mx
+    //mn
+
+    //Last element
+    //lst
 
     public static void main(String[] args) {
 

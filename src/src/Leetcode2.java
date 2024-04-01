@@ -1764,6 +1764,31 @@ public class Leetcode2 {
 
 
 
+    public int tupleSameProduct(int[] nums) {
+        int n = nums.length;
+        if (n < 4) {
+            return 0;
+        }
+        HashMap<Integer, Integer> productMap = new HashMap<>();
+        for (int i = 0; i < nums.length-1; i++) {
+            int a = nums[i];
+            for (int j = i+1; j < nums.length; j++) {
+                int b = nums[j];
+                int prod = a * b;
+                productMap.merge(prod, 1, Integer::sum);
+            }
+        }
+        int output = 0;
+        for (Integer I : productMap.values()) {
+            if (I == 1) continue;
+            else {
+                output += (I * (I-1) * 4);
+            }
+        }
+        return output;
+    }
+
+
 }
 
 
