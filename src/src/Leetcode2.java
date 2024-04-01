@@ -1618,6 +1618,30 @@ public class Leetcode2 {
     }
 
 
+    public boolean increasingTriplet(int[] nums) {
+        int n = nums.length;
+        if (n < 3) return false;
+        int a = Integer.MAX_VALUE;
+        int b = Integer.MAX_VALUE;
+        for (int i : nums) {
+            System.out.println("a, b and i");
+            System.out.println(a);
+            System.out.println(b);
+            System.out.println(i);
+            if (i > b) return true;
+            if (i < b) {
+                if (i < a) {
+                    a = i;
+                } else if (i > a) {
+                    b = i;
+                }
+            }
+        }
+        return false;
+    }
+
+
+
     public static void main(String[] args) {
         System.out.println("hi");
     }
