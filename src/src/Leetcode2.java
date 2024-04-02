@@ -745,26 +745,6 @@ public class Leetcode2 {
     }
 
 
-    public int minSumOfLengths(int[] arr, int target) {
-        List<Integer> l = new ArrayList<>();
-        int n = arr.length;
-        if (n == 1) return 0;
-        for (int i = n - 1; i >= 0; i--) {
-            if (arr[i] == target) l.add(1);
-            if (arr[i] > target) continue;
-            for (int j = i + 1; j < n; j++) {
-                arr[j] += arr[i];
-                if (arr[j] == target) l.add(j - i + 1);
-            }
-        }
-        Collections.sort(l);
-        if (l.size() < 2) return -1;
-        else {
-            return (l.get(0) + l.get(1));
-        }
-    }
-
-
     public int longestSquareStreak(int[] nums) {
         Set<Integer> s = new HashSet<>();
         for (int i : nums) {
@@ -1132,18 +1112,18 @@ public class Leetcode2 {
     }
 
 
-
     public void reverseString(char[] s) {
         char c;
         int n = s.length;
-        int j = n-1;
-        for (int i = 0; i < n/2; i++, j--) {
+        int j = n - 1;
+        for (int i = 0; i < n / 2; i++, j--) {
             c = s[i];
             s[i] = s[j];
             s[j] = c;
         }
 
     }
+
     public ListNode doubleIt(ListNode head) {
         if (head == null) return null;
         if (head.next == null) {
@@ -1180,7 +1160,7 @@ public class Leetcode2 {
         int prev = 0;
         for (int i = 0; i < n; i++) {
             int a = rungs[i];
-            out += Math.max(0,(prev - a - 1) / dist);
+            out += Math.max(0, (prev - a - 1) / dist);
             prev = a;
         }
         return out;
@@ -1201,7 +1181,6 @@ public class Leetcode2 {
         }
         return (a == x && b == y && c == z);
     }
-
 
 
     public int[] platesBetweenCandles(String s, int[][] queries) {
@@ -1259,7 +1238,6 @@ public class Leetcode2 {
     }
 
 
-
     public int[] maximumBeauty(int[][] items, int[] queries) {
         int n = items.length;
         Arrays.sort(items, new Comparator<int[]>() {
@@ -1269,7 +1247,7 @@ public class Leetcode2 {
             }
         });
         TreeMap<Integer, Integer> tm = new TreeMap<>();
-        tm.put(0,0);
+        tm.put(0, 0);
         int maxBeauty = 0;
         for (int[] item : items) {
             int price = item[0];
@@ -1286,7 +1264,6 @@ public class Leetcode2 {
         }
         return out;
     }
-
 
 
     public int networkBecomesIdle(int[][] edges, int[] patience) {
@@ -1311,7 +1288,7 @@ public class Leetcode2 {
                 dQ.addLast(edge);
             }
         }
-        for (Map.Entry<Integer,Integer> e : distanceMap.entrySet()) {
+        for (Map.Entry<Integer, Integer> e : distanceMap.entrySet()) {
             System.out.println(e.toString());
         }
         int out = -1;
@@ -1319,15 +1296,15 @@ public class Leetcode2 {
             int d = distanceMap.get(server);
             int p = patience[server];
             System.out.println(d + " d is and p is " + p);
-            if (p >= 2*d) {
-                out = Math.max(out, 2*d);
+            if (p >= 2 * d) {
+                out = Math.max(out, 2 * d);
             } else {
                 if (p == 1) {
-                    out = Math.max(out, 4*d - 1);
-                } else if ((2*d) % p == 0) {
-                    out = Math.max(out, 4*d - p);
+                    out = Math.max(out, 4 * d - 1);
+                } else if ((2 * d) % p == 0) {
+                    out = Math.max(out, 4 * d - p);
                 } else {
-                    out = Math.max(out, 4*d - ((2*d) % p));
+                    out = Math.max(out, 4 * d - ((2 * d) % p));
                 }
             }
             System.out.println("out is " + out);
@@ -1374,9 +1351,9 @@ public class Leetcode2 {
                 aa = i;
             }
         }
-        int one = n - Math.min(aa,bb);
-        int two = Math.min(aa,bb) + (n - Math.max(aa,bb));
-        int three = n - Math.max(aa,bb) + 1;
+        int one = n - Math.min(aa, bb);
+        int two = Math.min(aa, bb) + (n - Math.max(aa, bb));
+        int three = n - Math.max(aa, bb) + 1;
         return Math.min(one, Math.min(two, three));
     }
 
@@ -1398,11 +1375,11 @@ public class Leetcode2 {
             if (Math.abs(nums[1] - nums[0]) > 1) {
                 out.add(nums[0]);
             }
-            if (Math.abs(nums[n-1] - nums[n-2]) > 1) {
-                out.add(nums[n-1]);
+            if (Math.abs(nums[n - 1] - nums[n - 2]) > 1) {
+                out.add(nums[n - 1]);
             }
-            for (int i = 1; i < n-1; i++) {
-                if (nums[i] - nums[i-1] > 1 && nums[i+1] - nums[i] > 1) {
+            for (int i = 1; i < n - 1; i++) {
+                if (nums[i] - nums[i - 1] > 1 && nums[i + 1] - nums[i] > 1) {
                     out.add(nums[i]);
                 }
             }
@@ -1470,13 +1447,12 @@ public class Leetcode2 {
     }
 
 
-
     public ListNode sortList(ListNode head) {
         if (head == null) return null;
         if (head.next == null) return head;
         PriorityQueue<Integer> pq = new PriorityQueue<>();
         ListNode ln = head;
-        while(ln != null) {
+        while (ln != null) {
             pq.add(ln.val);
             ln = ln.next;
         }
@@ -1545,7 +1521,7 @@ public class Leetcode2 {
         Arrays.sort(c);
         String out = String.valueOf(s.charAt(0));
         for (char cc : c) {
-            if (cc != out.charAt(out.length()-1)) out += cc;
+            if (cc != out.charAt(out.length() - 1)) out += cc;
         }
         return out;
     }
@@ -1553,7 +1529,7 @@ public class Leetcode2 {
 
     public int[][] rangeAddQueries(int n, int[][] queries) {
         int[][] matrix = new int[n][n];
-        for (int [] query : queries) {
+        for (int[] query : queries) {
             int y = query[0];
             int x = query[1];
             int yy = query[2];
@@ -1574,25 +1550,26 @@ public class Leetcode2 {
         if (n == 1) return n;
         int[] dpAFirst = maxSumDPFromLeftToRight(nums, firstLen);
         int[] dpBFirst = maxSumDPFromRightToLeft(nums, secondLen);
-        for (int i = firstLen-1; i < n-secondLen; i++) {
+        for (int i = firstLen - 1; i < n - secondLen; i++) {
             out = Math.max(out, dpAFirst[i] + dpBFirst[i + 1]);
         }
         int[] dpASecond = maxSumDPFromLeftToRight(nums, secondLen);
         int[] dpBSecond = maxSumDPFromRightToLeft(nums, firstLen);
-        for (int i = secondLen-1; i < n-firstLen; i++) {
-            out = Math.max(out, dpASecond[i] + dpBSecond[i+1]);
+        for (int i = secondLen - 1; i < n - firstLen; i++) {
+            out = Math.max(out, dpASecond[i] + dpBSecond[i + 1]);
         }
         return out;
     }
+
     public int[] maxSumDPFromRightToLeft(int[] nums, int length) {
         int n = nums.length;
 
         int[] out = new int[n];
         int max = 0;
         int prev = 0;
-        for(int i = n-1; i >= 0; i--) {
+        for (int i = n - 1; i >= 0; i--) {
             int current = prev + nums[i];
-            int minus = (i + length >= n) ? 0 : nums[i+length];
+            int minus = (i + length >= n) ? 0 : nums[i + length];
             current -= minus;
             max = Math.max(max, current);
             out[i] = max;
@@ -1600,15 +1577,16 @@ public class Leetcode2 {
         }
         return out;
     }
+
     public int[] maxSumDPFromLeftToRight(int[] nums, int length) {
         int n = nums.length;
 
         int[] out = new int[n];
         int max = 0;
         int prev = 0;
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             int current = prev + nums[i];
-            int minus = (i - length < 0) ? 0 : nums[i-length];
+            int minus = (i - length < 0) ? 0 : nums[i - length];
             current -= minus;
             max = Math.max(max, current);
             out[i] = max;
@@ -1663,8 +1641,6 @@ public class Leetcode2 {
     }
 
 
-
-
     public boolean possibleToStamp(int[][] grid, int stampHeight, int stampWidth) {
         int yMax = grid.length;
         int xMax = grid[0].length;
@@ -1675,6 +1651,7 @@ public class Leetcode2 {
         if (maxHeight == 0 && maxWidth == 0) return true;
         return (stampHeight <= maxHeight && stampWidth <= maxWidth);
     }
+
     public int maxMatrixWidth(int[][] matrix) {
         int xMax = matrix[0].length;
         int maxWidth = xMax;
@@ -1685,8 +1662,7 @@ public class Leetcode2 {
                 if (y[x] == 0) {
                     currentWidth++;
                     flag = true;
-                }
-                else if (y[x] == 1 && currentWidth != 0) {
+                } else if (y[x] == 1 && currentWidth != 0) {
                     maxWidth = Math.min(maxWidth, currentWidth);
                     currentWidth = 0;
                 }
@@ -1696,6 +1672,7 @@ public class Leetcode2 {
         if (!flag) return 0;
         else return maxWidth;
     }
+
     public int[][] transposeMatrix(int[][] matrix) {
         int rows = matrix.length; // Number of rows of original matrix
         int cols = matrix[0].length; // Number of columns of original matrix
@@ -1709,9 +1686,6 @@ public class Leetcode2 {
         }
         return transposed;
     }
-
-
-
 
 
     public int maxProfitAssignment(int[] difficulty, int[] profit, int[] worker) {
@@ -1737,10 +1711,6 @@ public class Leetcode2 {
     }
 
 
-
-
-
-
     public int maximumProduct(int[] nums, int k) {
         int n = nums.length;
         if (n == 1) return (nums[0] + k);
@@ -1763,16 +1733,15 @@ public class Leetcode2 {
     }
 
 
-
     public int tupleSameProduct(int[] nums) {
         int n = nums.length;
         if (n < 4) {
             return 0;
         }
         HashMap<Integer, Integer> productMap = new HashMap<>();
-        for (int i = 0; i < nums.length-1; i++) {
+        for (int i = 0; i < nums.length - 1; i++) {
             int a = nums[i];
-            for (int j = i+1; j < nums.length; j++) {
+            for (int j = i + 1; j < nums.length; j++) {
                 int b = nums[j];
                 int prod = a * b;
                 productMap.merge(prod, 1, Integer::sum);
@@ -1782,7 +1751,7 @@ public class Leetcode2 {
         for (Integer I : productMap.values()) {
             if (I == 1) continue;
             else {
-                output += (I * (I-1) * 4);
+                output += (I * (I - 1) * 4);
             }
         }
         return output;
@@ -1792,22 +1761,22 @@ public class Leetcode2 {
     public String shiftingLetters(String s, int[][] shifts) {
         int n = s.length();
         //Prefix array
-        int[] prefix = new int[n+1];
+        int[] prefix = new int[n + 1];
         for (int[] shift : shifts) {
             int a = shift[0];
             int b = shift[1];
             int c = shift[2];
             if (c == 1) {
                 prefix[a]++;
-                prefix[b+1]--;
+                prefix[b + 1]--;
             } else {
                 prefix[a]--;
-                prefix[b+1]++;
+                prefix[b + 1]++;
             }
         }
         //Prefix sum
-        for (int i = 1; i < n+1; i++) {
-            prefix[i] = prefix[i] + prefix[i-1];
+        for (int i = 1; i < n + 1; i++) {
+            prefix[i] = prefix[i] + prefix[i - 1];
         }
         char[] charArray = s.toCharArray();
         //Shift the characters
@@ -1822,9 +1791,6 @@ public class Leetcode2 {
     }
 
 
-
-
-
     public List<List<Long>> splitPainting(int[][] segments) {
         List<List<Long>> out = new ArrayList<>();
         HashMap<Long, Long> prefixHM = new HashMap<>();
@@ -1832,8 +1798,8 @@ public class Leetcode2 {
             long a = segment[0];
             long b = segment[1];
             long c = segment[2];
-            prefixHM.merge(a, c, (existing, current) -> existing+current);
-            prefixHM.merge(b, -c, (existing, current) -> existing-current);
+            prefixHM.merge(a, c, (existing, current) -> existing + current);
+            prefixHM.merge(b, -c, (existing, current) -> existing - current);
         }
         System.out.println(prefixHM);
         Set<Long> keySet = prefixHM.keySet();
@@ -1861,6 +1827,7 @@ public class Leetcode2 {
 
 
     HashMap<Integer, Long> treeHM;
+
     public long kthLargestLevelSum(TreeNode root, int k) {
         long l = -1;
         if (root == null) {
@@ -1872,14 +1839,15 @@ public class Leetcode2 {
         Collections.sort(list, Collections.reverseOrder());
         int s = list.size();
         if (k > s) return -1;
-        else return (list.get(k-1));
+        else return (list.get(k - 1));
     }
+
     public void rootToMap(TreeNode root, int level) {
         if (root == null) {
             return;
         }
         Long l = Long.valueOf(root.val);
-        treeHM.merge(level, l, (a,b) -> a+b);
+        treeHM.merge(level, l, (a, b) -> a + b);
         int nextLevel = level + 1;
         rootToMap(root.left, nextLevel);
         rootToMap(root.right, nextLevel);
@@ -1929,7 +1897,7 @@ public class Leetcode2 {
         float priorGradient = Integer.MAX_VALUE;
         for (int i = 0; i < stockPrices.length - 1; i++) {
             int[] stockPrice1 = stockPrices[i];
-            int[] stockPrice2 = stockPrices[i+1];
+            int[] stockPrice2 = stockPrices[i + 1];
             float x = stockPrice1[0];
             float y = stockPrice1[1];
             float xx = stockPrice2[0];
@@ -1948,30 +1916,29 @@ public class Leetcode2 {
     public int findLength(int[] nums1, int[] nums2) {
         int yMax = nums1.length;
         int xMax = nums2.length;
-        int[][] dpArray = new int[yMax+1][xMax+1];
+        int[][] dpArray = new int[yMax + 1][xMax + 1];
         for (int y = 0; y < yMax; y++) {
-            dpArray[y][xMax-1] = (nums1[y] == nums2[xMax-1]) ? 1 : 0;
+            dpArray[y][xMax - 1] = (nums1[y] == nums2[xMax - 1]) ? 1 : 0;
         }
         for (int x = 0; x < xMax; x++) {
-            dpArray[yMax-1][x] = (nums1[yMax-1] == nums2[x]) ? 1 : 0;
+            dpArray[yMax - 1][x] = (nums1[yMax - 1] == nums2[x]) ? 1 : 0;
         }
-        for (int y = yMax -2; y >= 0 ; y--) {
+        for (int y = yMax - 2; y >= 0; y--) {
             int currentY = nums1[y];
             for (int x = xMax - 2; x >= 0; x--) {
-                 int currentX = nums2[x];
-                 if (currentY == currentX) {
-                     dpArray[y][x] = dpArray[y+1][x+1] + 1;
-                 } else {
-                     dpArray[y][x] = Math.max(dpArray[y+1][x], dpArray[y][x+1]);
-                 }
+                int currentX = nums2[x];
+                if (currentY == currentX) {
+                    dpArray[y][x] = dpArray[y + 1][x + 1] + 1;
+                } else {
+                    dpArray[y][x] = Math.max(dpArray[y + 1][x], dpArray[y][x + 1]);
+                }
             }
         }
-        for(int[] dp : dpArray) {
+        for (int[] dp : dpArray) {
             System.out.println(Arrays.toString(dp));
         }
         return dpArray[0][0];
     }
-
 
 
     public int wiggleMaxLength(int[] nums) {
@@ -1981,10 +1948,10 @@ public class Leetcode2 {
             return out;
         }
         int priorDifference = 0;
-        for (int i = 0; i < nums.length -2; i++) {
+        for (int i = 0; i < nums.length - 1; i++) {
             int a = nums[i];
-            int b = nums[i+1];
-            int currentDifference = b-a;
+            int b = nums[i + 1];
+            int currentDifference = b - a;
             if (currentDifference > 0 && priorDifference <= 0 || currentDifference < 0 && priorDifference >= 0) {
                 out++;
                 priorDifference = currentDifference;
@@ -1992,9 +1959,6 @@ public class Leetcode2 {
         }
         return out;
     }
-
-
-
 
 
     public int maxProfit(int[] prices, int fee) {
@@ -2016,6 +1980,7 @@ public class Leetcode2 {
 
 
     int[][] pathMatrix;
+
     public int minFallingPathSum(int[][] matrix) {
         int out = 0;
         pathMatrix = matrix;
@@ -2033,6 +1998,7 @@ public class Leetcode2 {
         }
         return out;
     }
+
     public int getMinLower(int y, int x) {
         int yMax = pathMatrix.length;
         int xMax = pathMatrix[0].length;
@@ -2054,6 +2020,142 @@ public class Leetcode2 {
     }
 
 
+    public int maxTurbulenceSize(int[] arr) {
+        int n = arr.length;
+        int out = 1;
+        if (n == 1) {
+            return out;
+        }
+        int priorDifference = 0;
+        int counter = 1;
+        for (int i = 0; i < arr.length - 1; i++) {
+            System.out.println(i);
+            System.out.println(counter);
+            int a = arr[i];
+            int b = arr[i + 1];
+            int currentDifference = b - a;
+            if (currentDifference > 0 && priorDifference <= 0 || currentDifference < 0 && priorDifference >= 0) {
+                counter++;
+            } else {
+                out = Math.max(out, counter);
+                counter = 1;
+            }
+            priorDifference = currentDifference;
+        }
+        out = Math.max(out, counter);
+        return out;
+    }
+
+
+    public int minSumOfLengths(int[] arr, int target) {
+        List<Integer> l = new ArrayList<>();
+        int n = arr.length;
+        if (n == 1) return 0;
+        int currentSum = 0;
+        int leftP = 0;
+        int rightP = 0;
+        while (rightP < n) {
+            currentSum += arr[rightP];
+            if (currentSum == target) {
+                l.add(rightP - leftP + 1);
+                currentSum = 0;
+                leftP = rightP + 1;
+            } else if (currentSum > target) {
+                currentSum -= arr[leftP];
+                leftP++;
+                currentSum -= arr[rightP];
+                rightP--;
+            }
+            rightP++;
+        }
+        Collections.sort(l);
+        System.out.println(l);
+        if (l.size() < 2) return -1;
+        else {
+            return (l.get(0) + l.get(1));
+        }
+    }
+
+
+    public int minimumTimeRequired(int[] jobs, int k) {
+        Deque<Integer> jobQueue = new ArrayDeque<>(Arrays.stream(jobs).boxed().toList());
+        int[] bins = new int[k];
+        return binPack(jobQueue, bins);
+    }
+
+    public int binPack(Deque<Integer> jobs, int[] bins) {
+        // If no jobs left, find and return the max fill level among all bins.
+        if (jobs.isEmpty()) {
+            int maxFill = 0;
+            for (int fill : bins) {
+                maxFill = Math.max(maxFill, fill);
+            }
+            return maxFill;
+        }
+        // Take the next job from the deque.
+        int currentJob = jobs.pop();
+        int minMaxFill = Integer.MAX_VALUE;
+        for (int i = 0; i < bins.length; i++) {
+            // Place the current job in bin[i] if it fits (this example doesn't have a capacity limit per bin).
+            bins[i] += currentJob;
+            // Recurse with the remaining jobs.
+            int currentFill = binPack(jobs, bins);
+            minMaxFill = Math.min(minMaxFill, currentFill);
+            // Backtrack: remove the current job from bin[i].
+            bins[i] -= currentJob;
+        }
+        // Return the job to the deque for the next iteration.
+        jobs.addFirst(currentJob);
+        return minMaxFill;
+    }
+
+
+
+    public int numRollsToTarget(int n, int k, int target) {
+        int[][] dpArray = new int[n+2][target + 2];
+        dpArray[0][0] = 1;
+        for (int y = 1; y < n+1; y++) {
+            int xLim = Math.min(y*k, target);
+            for (int x = y; x <= xLim; x++) {
+                //With y dices, how many ways to reach a target sum of x?
+                long currentDP = 0;
+                for (int i = 1; i <= Math.min(k, x); i++) {
+                    currentDP += dpArray[y-1][x-i];
+                }
+                dpArray[y][x] = (int) (currentDP % (Math.pow(10,9) + 7));
+            }
+        }
+        return dpArray[n][target];
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static void main(String[] args) {
+        Deque<Integer> dQ = new ArrayDeque<>();
+        dQ.add(5);
+        dQ.add(3);
+        dQ.add(2);
+        dQ.add(6);
+        dQ.add(1);
+        dQ.add(1);
+        dQ.add(1);
+        dQ.add(1);
+        dQ.add(8);
+        dQ.add(2);
+        dQ.add(6);
+        dQ.add(4);
+        int[] intArray = new int[4];
+    }
 
 }
 
