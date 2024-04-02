@@ -1822,6 +1822,73 @@ public class Leetcode2 {
     }
 
 
+
+
+
+    public List<List<Long>> splitPainting(int[][] segments) {
+        List<List<Long>> out = new ArrayList<>();
+        HashMap<Long, Long> prefixHM = new HashMap<>();
+        for (int[] segment : segments) {
+            long a = segment[0];
+            long b = segment[1];
+            long c = segment[2];
+            prefixHM.merge(a, c, (existing, current) -> existing+current);
+            prefixHM.merge(b, -c, (existing, current) -> existing-current);
+        }
+        System.out.println(prefixHM);
+        Set<Long> keySet = prefixHM.keySet();
+        Long prev = Long.valueOf(0);
+        for (Long key : keySet) {
+            prev = prev + prefixHM.get(key);
+            prefixHM.put(key, prev);
+        }
+        List<Long> keyList = new ArrayList<>(keySet);
+        //Get the first entry ready
+        Long prevIndex = keyList.get(0);
+        Long prevColour = prefixHM.get(prevIndex);
+        for (int i = 1; i < keyList.size(); i++) {
+            Long nextKey = keyList.get(i);
+            List<Long> currentL = new ArrayList<>();
+            currentL.add(prevIndex);
+            currentL.add(nextKey);
+            currentL.add(prevColour);
+            out.add(currentL);
+            prevIndex = nextKey;
+            prevColour = prefixHM.get(prevIndex);
+        }
+        return out;
+    }
+
+
+    HashMap<Integer, Long> treeHM;
+    public long kthLargestLevelSum(TreeNode root, int k) {
+        long l = -1;
+        if (root == null) {
+            return l;
+        }
+        treeHM = new HashMap<>();
+        rootToMap(root, 1);
+        List<Long> list = new ArrayList<>(treeHM.values());
+        Collections.sort(list, Collections.reverseOrder());
+        int s = list.size();
+        if (k > s) return -1;
+        else return (list.get(k-1));
+    }
+    public void rootToMap(TreeNode root, int level) {
+        if (root == null) {
+            return;
+        }
+        Long l = Long.valueOf(root.val);
+        treeHM.merge(level, l, (a,b) -> a+b);
+        int nextLevel = level + 1;
+        rootToMap(root.left, nextLevel);
+        rootToMap(root.right, nextLevel);
+    }
+
+
+
+
+
 }
 
 
