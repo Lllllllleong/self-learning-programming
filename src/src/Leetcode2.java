@@ -2166,18 +2166,18 @@ public class Leetcode2 {
 
 
 
-    public int change(int amount, int[] coins) {
-        Arrays.sort(coins);
-        int n = amount;
+    public int combinationSum4(int[] nums, int target) {
+        Arrays.sort(nums);
+        int n = target;
         if (n == 0) return 0;
-        if (coins.length == 1) {
-            if (amount % coins[0] == 0) return 1;
+        if (nums.length == 1) {
+            if (target % nums[0] == 0) return 1;
             else return 0;
         }
         long[] dpArray = new long[n+1];
         dpArray[0] = 1;
-        for (int i = 1; i <= amount; i++) {
-            for (int coin : coins) {
+        for (int i = 1; i <= target; i++) {
+            for (int coin : nums) {
                 int change = i - coin;
                 if (change < 0) break;
                 else {
@@ -2185,7 +2185,7 @@ public class Leetcode2 {
                 }
             }
         }
-        return (int) dpArray[amount];
+        return (int) dpArray[target];
     }
 
     public int integerReplacement(int n) {
@@ -2230,6 +2230,10 @@ public class Leetcode2 {
         }
         return dpArray[0][0];
     }
+
+
+
+
 
 
 
