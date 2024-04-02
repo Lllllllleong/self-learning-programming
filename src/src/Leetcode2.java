@@ -2232,8 +2232,36 @@ public class Leetcode2 {
     }
 
 
+    public boolean isInterleave(String s1, String s2, String s3) {
+        if (s1.length() + s2.length() != s3.length()) return false;
 
+        int yMax = s1.length();
+        int xMax = s2.length();
+        boolean[][] dp = new boolean[yMax + 1][xMax + 1];
 
+        // Initialize the DP table
+        dp[0][0] = true;
+        for (int i = 1; i <= yMax; i++) {
+            dp[i][0] = dp[i-1][0] && s1.charAt(i-1) == s3.charAt(i-1);
+        }
+        for (int j = 1; j <= xMax; j++) {
+            dp[0][j] = dp[0][j-1] && s2.charAt(j-1) == s3.charAt(j-1);
+        }
+
+        // Fill in the DP table
+        for (int i = 1; i <= yMax; i++) {
+            for (int j = 1; j <= xMax; j++) {
+                int k = i + j - 1; // Index in s3
+                dp[i][j] = (dp[i-1][j] && s1.charAt(i-1) == s3.charAt(k)) ||
+                        (dp[i][j-1] && s2.charAt(j-1) == s3.charAt(k));
+            }
+        }
+
+        // Uncomment to print the DP table for debugging
+        // for (boolean[] row : dp) System.out.println(Arrays.toString(row));
+
+        return dp[yMax][xMax];
+    }
 
 
 
