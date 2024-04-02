@@ -1912,6 +1912,87 @@ public class Leetcode2 {
     }
 
 
+    public int minimumLines(int[][] stockPrices) {
+        int out = 0;
+        int n = stockPrices.length;
+        if (n == 1) {
+            return out;
+        }
+        Arrays.sort(stockPrices, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                return (a[0] - b[0]);
+            }
+        });
+        for (int[] sp : stockPrices) {
+            System.out.println(Arrays.toString(sp));
+        }
+        float priorGradient = Integer.MAX_VALUE;
+        for (int i = 0; i < stockPrices.length - 1; i++) {
+            int[] stockPrice1 = stockPrices[i];
+            int[] stockPrice2 = stockPrices[i+1];
+            float x = stockPrice1[0];
+            float y = stockPrice1[1];
+            float xx = stockPrice2[0];
+            float yy = stockPrice2[1];
+            float currentGradient = (yy - y) / (xx - x);
+            System.out.println(Math.abs(priorGradient - currentGradient));
+            if (Math.abs(priorGradient - currentGradient) > 0.0001) {
+                out++;
+                priorGradient = currentGradient;
+            }
+        }
+        return out;
+    }
+
+
+    public int findLength(int[] nums1, int[] nums2) {
+        int yMax = nums1.length;
+        int xMax = nums2.length;
+        int[][] dpArray = new int[yMax+1][xMax+1];
+        for (int y = 0; y < yMax; y++) {
+            dpArray[y][xMax-1] = (nums1[y] == nums2[xMax-1]) ? 1 : 0;
+        }
+        for (int x = 0; x < xMax; x++) {
+            dpArray[yMax-1][x] = (nums1[yMax-1] == nums2[x]) ? 1 : 0;
+        }
+        for (int y = yMax -2; y >= 0 ; y--) {
+            int currentY = nums1[y];
+            for (int x = xMax - 2; x >= 0; x--) {
+                 int currentX = nums2[x];
+                 if (currentY == currentX) {
+                     dpArray[y][x] = dpArray[y+1][x+1] + 1;
+                 } else {
+                     dpArray[y][x] = Math.max(dpArray[y+1][x], dpArray[y][x+1]);
+                 }
+            }
+        }
+        for(int[] dp : dpArray) {
+            System.out.println(Arrays.toString(dp));
+        }
+        return dpArray[0][0];
+    }
+
+
+
+    public int wiggleMaxLength(int[] nums) {
+        int n = nums.length;
+        int out = 1;
+        if (n == 1) {
+            return out;
+        }
+        int priorDifference = 0;
+        for (int i = 0; i < nums.length -2; i++) {
+            int a = nums[i];
+            int b = nums[i+1];
+            int currentDifference = b-a;
+            if (currentDifference > 0 && priorDifference <= 0 || currentDifference < 0 && priorDifference >= 0) {
+                out++;
+                priorDifference = currentDifference;
+            }
+        }
+        return out;
+    }
+
 
 
 
