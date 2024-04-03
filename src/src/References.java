@@ -50,6 +50,9 @@ public class References {
             System.out.println(Arrays.toString(intArr));
         }
 
+        //Int array sum
+//        int sum = Arrays.stream(nums).boxed().reduce(0, (a, b) -> a + b);
+
 
 
         //TreeMap

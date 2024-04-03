@@ -2110,19 +2110,18 @@ public class Leetcode2 {
     }
 
 
-
     public int numRollsToTarget(int n, int k, int target) {
-        int[][] dpArray = new int[n+2][target + 2];
+        int[][] dpArray = new int[n + 2][target + 2];
         dpArray[0][0] = 1;
-        for (int y = 1; y < n+1; y++) {
-            int xLim = Math.min(y*k, target);
+        for (int y = 1; y < n + 1; y++) {
+            int xLim = Math.min(y * k, target);
             for (int x = y; x <= xLim; x++) {
                 //With y dices, how many ways to reach a target sum of x?
                 long currentDP = 0;
                 for (int i = 1; i <= Math.min(k, x); i++) {
-                    currentDP += dpArray[y-1][x-i];
+                    currentDP += dpArray[y - 1][x - i];
                 }
-                dpArray[y][x] = (int) (currentDP % (Math.pow(10,9) + 7));
+                dpArray[y][x] = (int) (currentDP % (Math.pow(10, 9) + 7));
             }
         }
         return dpArray[n][target];
@@ -2164,8 +2163,6 @@ public class Leetcode2 {
     }
 
 
-
-
     public int combinationSum4(int[] nums, int target) {
         Arrays.sort(nums);
         int n = target;
@@ -2174,7 +2171,7 @@ public class Leetcode2 {
             if (target % nums[0] == 0) return 1;
             else return 0;
         }
-        long[] dpArray = new long[n+1];
+        long[] dpArray = new long[n + 1];
         dpArray[0] = 1;
         for (int i = 1; i <= target; i++) {
             for (int coin : nums) {
@@ -2190,17 +2187,17 @@ public class Leetcode2 {
 
     public int integerReplacement(int n) {
         if (n == 1) return 0;
-        int[] dpArray = new int[n+1];
+        int[] dpArray = new int[n + 1];
         dpArray[1] = 0;
         dpArray[2] = 1;
         dpArray[3] = 2;
         dpArray[4] = 2;
         for (int i = 5; i <= n; i++) {
-            if (i%2==0) {
-                dpArray[i] = dpArray[i/2] + 1;
+            if (i % 2 == 0) {
+                dpArray[i] = dpArray[i / 2] + 1;
             } else {
-                dpArray[i+1] = dpArray[(i+1)/2] + 1;
-                dpArray[i] = Math.min(dpArray[i-1], dpArray[i+1]) + 1;
+                dpArray[i + 1] = dpArray[(i + 1) / 2] + 1;
+                dpArray[i] = Math.min(dpArray[i - 1], dpArray[i + 1]) + 1;
                 i++;
             }
         }
@@ -2222,9 +2219,9 @@ public class Leetcode2 {
         for (int y = yMax - 1; y >= 0; y--) {
             for (int x = xMax - 1; x >= 0; x--) {
                 if (word1.charAt(y) == word2.charAt(x)) {
-                    dpArray[y][x] = dpArray[y+1][x+1];
+                    dpArray[y][x] = dpArray[y + 1][x + 1];
                 } else {
-                    dpArray[y][x] = Math.min(dpArray[y+1][x],  Math.min(dpArray[y][x+1], dpArray[y+1][x+1])) + 1;
+                    dpArray[y][x] = Math.min(dpArray[y + 1][x], Math.min(dpArray[y][x + 1], dpArray[y + 1][x + 1])) + 1;
                 }
             }
         }
@@ -2242,18 +2239,18 @@ public class Leetcode2 {
         // Initialize the DP table
         dp[0][0] = true;
         for (int i = 1; i <= yMax; i++) {
-            dp[i][0] = dp[i-1][0] && s1.charAt(i-1) == s3.charAt(i-1);
+            dp[i][0] = dp[i - 1][0] && s1.charAt(i - 1) == s3.charAt(i - 1);
         }
         for (int j = 1; j <= xMax; j++) {
-            dp[0][j] = dp[0][j-1] && s2.charAt(j-1) == s3.charAt(j-1);
+            dp[0][j] = dp[0][j - 1] && s2.charAt(j - 1) == s3.charAt(j - 1);
         }
 
         // Fill in the DP table
         for (int i = 1; i <= yMax; i++) {
             for (int j = 1; j <= xMax; j++) {
                 int k = i + j - 1; // Index in s3
-                dp[i][j] = (dp[i-1][j] && s1.charAt(i-1) == s3.charAt(k)) ||
-                        (dp[i][j-1] && s2.charAt(j-1) == s3.charAt(k));
+                dp[i][j] = (dp[i - 1][j] && s1.charAt(i - 1) == s3.charAt(k)) ||
+                        (dp[i][j - 1] && s2.charAt(j - 1) == s3.charAt(k));
             }
         }
 
@@ -2264,7 +2261,6 @@ public class Leetcode2 {
     }
 
 
-
     public int minCostClimbingStairs(int[] cost) {
         int n = cost.length;
         if (n == 2) {
@@ -2272,20 +2268,67 @@ public class Leetcode2 {
         } else {
             for (int i = cost.length - 3; i >= 0; i--) {
                 int a = cost[i];
-                int b = cost[i+1];
-                int c = cost[i+2];
-                cost[i] = a + Math.min(b,c);
+                int b = cost[i + 1];
+                int c = cost[i + 2];
+                cost[i] = a + Math.min(b, c);
             }
             return Math.min(cost[0], cost[1]);
         }
     }
 
+    public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+        if (maxChoosableInteger >= desiredTotal) return true;
+        int checkSum = sumSeries(maxChoosableInteger);
+        if (checkSum < desiredTotal) return false;
+        if ((maxChoosableInteger + 1) < desiredTotal) return true;
+        return false;
+    }
+
+    public int sumSeries(int x) {
+        return x * (x + 1) / 2;
+    }
 
 
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Map<Integer, List<List<Integer>>> hmList = new HashMap<>();
 
+        // Base case: add an empty list for target 0
+        List<List<Integer>> baseCaseList = new ArrayList<>();
+        baseCaseList.add(new ArrayList<>());
+        hmList.put(0, baseCaseList);
 
+        Arrays.sort(candidates); // Sort candidates to optimize the loop
 
+        for (int i = 1; i <= target; i++) {
+            List<List<Integer>> currentList = new ArrayList<>();
 
+            for (int candidate : candidates) {
+                int current = i - candidate;
+                if (current < 0) break; // If current is negative, no need to proceed further
+                else {
+                    List<List<Integer>> previousLists = hmList.getOrDefault(current, new ArrayList<>());
+
+                    for (List<Integer> list : previousLists) {
+                        List<Integer> newList = new ArrayList<>(list); // Create a new list to avoid modifying the original
+                        newList.add(candidate);
+                        currentList.add(newList);
+                    }
+                }
+            }
+
+            if (!currentList.isEmpty()) {
+                hmList.put(i, currentList);
+            }
+        }
+        List<List<Integer>> out = hmList.getOrDefault(target, new ArrayList<>());
+        Set<List<Integer>> outSet = new HashSet<>();
+        for (var v : out) {
+            Collections.sort(v);
+            outSet.add(v);
+        }
+
+        return (new ArrayList<>(outSet));
+    }
 
 
     public static void main(String[] args) {
@@ -2303,6 +2346,17 @@ public class Leetcode2 {
         dQ.add(6);
         dQ.add(4);
         int[] intArray = new int[4];
+        List<List<Integer>> doubleList = new ArrayList<>();
+        List<List<Integer>> emptyDoubleList = new ArrayList<>();
+        List<Integer> emptyList = new ArrayList<>();
+        emptyDoubleList.add(emptyList);
+        for (var v : emptyDoubleList) {
+            v.add(10);
+            doubleList.add(v);
+        }
+        System.out.println(doubleList);
+
+
     }
 
 }
