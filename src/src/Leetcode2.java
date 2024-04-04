@@ -2331,6 +2331,47 @@ public class Leetcode2 {
     }
 
 
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        return combSum3(n, 1, k);
+    }
+    public List<List<Integer>> combSum3(int target, int start, int k) {
+        List<List<Integer>> out = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        if (start >= 10) return out;
+        if (k == 1) {
+            if (start <= target && target < 10) {
+                list.add(target);
+                out.add(list);
+                return out;
+            } else {
+                return out;
+            }
+        } else {
+            for (int i = start; i < 10; i++) {
+                int newStart = i+1;
+                int newTarget = target - i;
+                int newK = k - 1;
+                if (newTarget < newStart) {
+                    break;
+                } else {
+                    List<List<Integer>> doubleList = new ArrayList<>(combSum3(newTarget, newStart, newK));
+                    if (doubleList.size() == 0) {
+                        continue;
+                    } else {
+                        for (List<Integer> l : doubleList) {
+                            List<Integer> current = new ArrayList<>(l);
+                            current.add(0, i);
+                            out.add(current);
+                        }
+                    }
+                }
+            }
+            return out;
+        }
+    }
+
+
+
     public static void main(String[] args) {
         Deque<Integer> dQ = new ArrayDeque<>();
         dQ.add(5);
