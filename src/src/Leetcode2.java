@@ -2047,34 +2047,6 @@ public class Leetcode2 {
     }
 
 
-    public int minSumOfLengths(int[] arr, int target) {
-        List<Integer> l = new ArrayList<>();
-        int n = arr.length;
-        if (n == 1) return 0;
-        int currentSum = 0;
-        int leftP = 0;
-        int rightP = 0;
-        while (rightP < n) {
-            currentSum += arr[rightP];
-            if (currentSum == target) {
-                l.add(rightP - leftP + 1);
-                currentSum = 0;
-                leftP = rightP + 1;
-            } else if (currentSum > target) {
-                currentSum -= arr[leftP];
-                leftP++;
-                currentSum -= arr[rightP];
-                rightP--;
-            }
-            rightP++;
-        }
-        Collections.sort(l);
-        System.out.println(l);
-        if (l.size() < 2) return -1;
-        else {
-            return (l.get(0) + l.get(1));
-        }
-    }
 
 
     public int minimumTimeRequired(int[] jobs, int k) {
@@ -2450,6 +2422,172 @@ public class Leetcode2 {
         return (dpArray[time] == 101) ? -1 : dpArray[time];
     }
 
+
+    public int numMatchingSubseq(String s, String[] words) {
+        HashMap<String, Deque> queueMap = new HashMap<>();
+        HashMap<String, Integer> frequencyMap = new HashMap<>();
+        int n = words.length;
+        for (int i = 0; i < n; i++) {
+            String currentString = words[i];
+            char[] charArray = currentString.toCharArray();
+            if (frequencyMap.containsKey(currentString)) {
+                frequencyMap.merge(currentString, 1, Integer::sum);
+            } else {
+                Deque<Character> q = new ArrayDeque<>();
+                for (Character c : charArray) q.addLast(c);
+                queueMap.put(currentString, q);
+                frequencyMap.put(currentString, 1);
+            }
+        }
+        int sLength = s.length();
+        for (int i = 0; i < sLength; i++) {
+            Character c = s.charAt(i);
+            for (Deque q : queueMap.values()) {
+                if (q.isEmpty()) continue;
+                if (q.peek() == c) q.pollFirst();
+            }
+        }
+        Set<String> keySet = queueMap.keySet();
+        int out = 0;
+        for (String key : keySet) {
+            if (queueMap.get(key).isEmpty()) {
+                out += frequencyMap.get(key);
+            }
+        }
+        return out;
+    }
+
+
+
+    public int minSumOfLengths(int[] arr, int target) {
+        int n = arr.length;
+        int[] dpArrayRightToLeft = new int[n];
+        Arrays.fill(dpArrayRightToLeft, n);
+        int currentMinimumLength = n;
+        for (int i = n - 1; i >= 0; i--) {
+            int currentSum = 0;
+            int currentLength = 1;
+            int iterateBound = Math.min(n, i + currentMinimumLength);
+            for (int j = i; j < iterateBound; j++, currentLength++) {
+                currentSum += arr[j];
+                if (currentSum == target) {
+                    currentMinimumLength = Math.min(currentMinimumLength, currentLength);
+                    break;
+                }
+            }
+            dpArrayRightToLeft[i] = currentMinimumLength;
+        }
+        int[] dpArrayLeftToRight = new int[n];
+        Arrays.fill(dpArrayLeftToRight, n);
+        currentMinimumLength = n;
+        for (int i = 0; i < n; i++) {
+            int currentSum = 0;
+            int currentLength = 1;
+            int iterateBound = Math.max(-1, i - currentMinimumLength - 1);
+            System.out.println("i, currentsum, currentlength, ib");
+            System.out.println(i);
+            System.out.println(currentSum);
+            System.out.println(currentLength);
+            System.out.println(iterateBound);
+            for (int j = i; j > iterateBound; j--, currentLength++) {
+                System.out.println(j);
+                currentSum += arr[j];
+                if (currentSum == target) {
+                    currentMinimumLength = Math.min(currentMinimumLength, currentLength);
+                    System.out.println(j);
+                    System.out.println(currentSum);
+                    System.out.println(currentMinimumLength);
+
+                    break;
+                }
+            }
+            dpArrayLeftToRight[i] = Math.min(currentMinimumLength, currentLength);
+        }
+        int out = n*2;
+        for (int i = 0; i < n-1; i++) {
+            int a = dpArrayLeftToRight[i];
+            int b = dpArrayRightToLeft[i+1];
+            if (a == n || b == n) continue;
+            int c = a + b;
+            out = Math.min(out, c);
+        }
+        System.out.println(Arrays.toString(dpArrayLeftToRight));
+        System.out.println(Arrays.toString(dpArrayRightToLeft));
+        return (out == n*2) ? -1 : out;
+    }
+
+
+
+    public int maxRepeating(String sequence, String word) {
+        int n = sequence.length();
+        int bound = word.length();
+        int out = 0;
+        int index = 0;
+        for (int i = 0; i < n; i++) {
+            char c = sequence.charAt(i);
+            char cc = word.charAt(index);
+            if (c == cc) {
+                index++;
+            }
+            if (index == bound) {
+                out++;
+                index = 0;
+            }
+        }
+        return out;
+    }
+
+
+    int boardMax;
+    double[][] chessBoard;
+    public double knightProbability(int n, int k, int row, int column) {
+        boardMax = n;
+        chessBoard = new double[n][n];
+        for (double[] dArr : chessBoard) {
+            Arrays.fill(dArr, 1);
+        }
+        generateProbabilityBoard(k);
+        return getBoardAtPos(row, column);
+    }
+
+
+    public void generateProbabilityBoard(int k) {
+        if (k == 0) return;
+        else {
+            double[][] currentBoard = new double[boardMax][boardMax];
+            for (int x = 0; x < boardMax; x++) {
+                for (int y = 0; y < boardMax; y++) {
+                    double currentCount = 0;
+                    currentCount += getBoardAtPos(y-2, x-1);
+                    currentCount += getBoardAtPos(y-2, x+1);
+                    currentCount += getBoardAtPos(y-1, x+2);
+                    currentCount += getBoardAtPos(y+1, x+2);
+                    currentCount += getBoardAtPos(y+2, x+1);
+                    currentCount += getBoardAtPos(y+2, x-1);
+                    currentCount += getBoardAtPos(y+1, x-2);
+                    currentCount += getBoardAtPos(y-1, x-2);
+                    currentBoard[y][x] = currentCount / (double) 8;
+
+                    if (y == 1 && x == 2) {
+                        System.out.println(currentCount);
+                    }
+                }
+            }
+            chessBoard = currentBoard;
+            int newK = k - 1;
+            generateProbabilityBoard(newK);
+        }
+    }
+
+    public double getBoardAtPos(int y, int x) {
+        boolean xBound = (0 <= x && x < boardMax);
+        boolean yBound = (0 <= y && y < boardMax);
+        if (xBound && yBound) {
+            return chessBoard[y][x];
+        } else {
+            return 0;
+        }
+    }
 
 
 
