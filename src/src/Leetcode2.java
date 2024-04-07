@@ -2615,7 +2615,67 @@ public class Leetcode2 {
     }
 
 
+    public double new21Game(int n, int k, int maxPts) {
+        if (n < k) return 0;
+        if (n >= (k + maxPts)) return 1;
+        double[] dpArray = new double[n + 1];
+        dpArray[0] = 1;
+        double multiplier = (double) 1 / (double) maxPts;
+        for (int i = 1; i < k; i++) {
+            for (int j = 1; j <= maxPts; j++) {
+                int prev = i - j;
+                if (prev < 0) break;
+                else {
+                    dpArray[i] += dpArray[prev] * multiplier;
+                }
+            }
+        }
+        dpArray[k] = 1;
+        for (int i = maxPts; i > 0; i--) {
+            int prev = n - i;
+            if (prev >= k) {
+                break;
+            } else {
+                dpArray[n] += dpArray[prev] * multiplier;
+            }
+        }
+        System.out.println(Arrays.toString(dpArray));
+        return dpArray[n];
+    }
 
+
+
+
+
+    class Solution {
+        public int maxSubarraySumCircular(int[] nums) {
+            int n = nums.length;
+            if (n == 1) {
+                return nums[0];
+            }
+            int maxSum = nums[0];
+            int currentMaximumSum = 0;
+            int minSum = nums[0];
+            int currentMinimumSum = 0;
+            int totalSum = 0;
+            for (int i = 0; i < n; i++) {
+                currentMaximumSum += nums[i];
+                currentMinimumSum += nums[i];
+                totalSum += nums[i];
+                maxSum = Math.max(maxSum, currentMaximumSum);
+                minSum = Math.min(minSum, currentMinimumSum);
+                if (currentMaximumSum < 0) {
+                    currentMaximumSum = 0;
+                }
+                if (currentMinimumSum > 0) {
+                    currentMinimumSum = 0;
+                }
+
+            }
+            return maxSum > 0 ? Math.max(maxSum, totalSum - minSum) : maxSum;
+        }
+
+    }
     public static void main(String[] args) {
         Deque<Integer> dQ = new ArrayDeque<>();
         dQ.add(5);
