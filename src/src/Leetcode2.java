@@ -2047,8 +2047,6 @@ public class Leetcode2 {
     }
 
 
-
-
     public int minimumTimeRequired(int[] jobs, int k) {
         Deque<Integer> jobQueue = new ArrayDeque<>(Arrays.stream(jobs).boxed().toList());
         int[] bins = new int[k];
@@ -2306,6 +2304,7 @@ public class Leetcode2 {
     public List<List<Integer>> combinationSum3(int k, int n) {
         return combSum3(n, 1, k);
     }
+
     public List<List<Integer>> combSum3(int target, int start, int k) {
         List<List<Integer>> out = new ArrayList<>();
         List<Integer> list = new ArrayList<>();
@@ -2320,7 +2319,7 @@ public class Leetcode2 {
             }
         } else {
             for (int i = start; i < 10; i++) {
-                int newStart = i+1;
+                int newStart = i + 1;
                 int newTarget = target - i;
                 int newK = k - 1;
                 if (newTarget < newStart) {
@@ -2347,6 +2346,7 @@ public class Leetcode2 {
         for (int i : candidates) pq.add(i);
         return combSum2(pq, target);
     }
+
     public List<List<Integer>> combSum2(PriorityQueue<Integer> pq, int target) {
         System.out.println("pq and target at start");
         System.out.println(pq);
@@ -2396,7 +2396,7 @@ public class Leetcode2 {
 
 
     public int videoStitching(int[][] clips, int time) {
-        int[] dpArray = new int[time+10];
+        int[] dpArray = new int[time + 10];
         Arrays.fill(dpArray, 101);
         dpArray[0] = 0;
         Arrays.sort(clips, new Comparator<int[]>() {
@@ -2405,8 +2405,8 @@ public class Leetcode2 {
                 int a2 = a[1];
                 int b1 = b[0];
                 int b2 = b[1];
-                if (a1 != b1) return (a1-b1);
-                return (a2-b2);
+                if (a1 != b1) return (a1 - b1);
+                return (a2 - b2);
             }
         });
         for (int[] clip : clips) {
@@ -2458,7 +2458,6 @@ public class Leetcode2 {
     }
 
 
-
     public int minSumOfLengths(int[] arr, int target) {
         int n = arr.length;
         int[] dpArrayRightToLeft = new int[n];
@@ -2503,19 +2502,18 @@ public class Leetcode2 {
             }
             dpArrayLeftToRight[i] = Math.min(currentMinimumLength, currentLength);
         }
-        int out = n*2;
-        for (int i = 0; i < n-1; i++) {
+        int out = n * 2;
+        for (int i = 0; i < n - 1; i++) {
             int a = dpArrayLeftToRight[i];
-            int b = dpArrayRightToLeft[i+1];
+            int b = dpArrayRightToLeft[i + 1];
             if (a == n || b == n) continue;
             int c = a + b;
             out = Math.min(out, c);
         }
         System.out.println(Arrays.toString(dpArrayLeftToRight));
         System.out.println(Arrays.toString(dpArrayRightToLeft));
-        return (out == n*2) ? -1 : out;
+        return (out == n * 2) ? -1 : out;
     }
-
 
 
     public int maxRepeating(String sequence, String word) {
@@ -2540,6 +2538,7 @@ public class Leetcode2 {
 
     int boardMax;
     double[][] chessBoard;
+
     public double knightProbability(int n, int k, int row, int column) {
         boardMax = n;
         chessBoard = new double[n][n];
@@ -2558,14 +2557,14 @@ public class Leetcode2 {
             for (int x = 0; x < boardMax; x++) {
                 for (int y = 0; y < boardMax; y++) {
                     double currentCount = 0;
-                    currentCount += getBoardAtPos(y-2, x-1);
-                    currentCount += getBoardAtPos(y-2, x+1);
-                    currentCount += getBoardAtPos(y-1, x+2);
-                    currentCount += getBoardAtPos(y+1, x+2);
-                    currentCount += getBoardAtPos(y+2, x+1);
-                    currentCount += getBoardAtPos(y+2, x-1);
-                    currentCount += getBoardAtPos(y+1, x-2);
-                    currentCount += getBoardAtPos(y-1, x-2);
+                    currentCount += getBoardAtPos(y - 2, x - 1);
+                    currentCount += getBoardAtPos(y - 2, x + 1);
+                    currentCount += getBoardAtPos(y - 1, x + 2);
+                    currentCount += getBoardAtPos(y + 1, x + 2);
+                    currentCount += getBoardAtPos(y + 2, x + 1);
+                    currentCount += getBoardAtPos(y + 2, x - 1);
+                    currentCount += getBoardAtPos(y + 1, x - 2);
+                    currentCount += getBoardAtPos(y - 1, x - 2);
                     currentBoard[y][x] = currentCount / (double) 8;
 
                     if (y == 1 && x == 2) {
@@ -2596,10 +2595,10 @@ public class Leetcode2 {
         } else {
             long[] dpArray = new long[n];
             long out = 0;
-            for (int i = n-1; i >= 0; i--) {
+            for (int i = n - 1; i >= 0; i--) {
                 int current = arr[i];
                 dpArray[i] += current;
-                for (int j = i+1; j < n; j++) {
+                for (int j = i + 1; j < n; j++) {
                     int prev = arr[j];
                     if (current >= prev) {
                         dpArray[i] += dpArray[j];
@@ -2610,7 +2609,7 @@ public class Leetcode2 {
                 }
                 out += dpArray[i];
             }
-            return (int) (out % (Math.pow(10,9) + 7));
+            return (int) (out % (Math.pow(10, 9) + 7));
         }
     }
 
@@ -2644,9 +2643,6 @@ public class Leetcode2 {
     }
 
 
-
-
-
     class Solution {
         public int maxSubarraySumCircular(int[] nums) {
             int n = nums.length;
@@ -2676,8 +2672,6 @@ public class Leetcode2 {
         }
 
     }
-
-
 
 
     public char findTheDifference(String s, String t) {
@@ -2731,7 +2725,6 @@ public class Leetcode2 {
     }
 
 
-
     public int findUnsortedSubarray(int[] nums) {
         int n = nums.length;
         if (n == 1) {
@@ -2779,6 +2772,61 @@ public class Leetcode2 {
     }
 
 
+    public int[] asteroidCollision(int[] asteroids) {
+        Deque<Integer> q = new ArrayDeque<>();
+        int n = asteroids.length;
+        q.addLast(asteroids[0]);
+        for (int i = 1; i < n; i++) {
+            int asteroid = asteroids[i];
+            if (asteroid > 0) {
+                q.addLast(asteroid);
+            } else {
+                asteroid = Math.abs(asteroid);
+                while (!q.isEmpty()) {
+                    Integer I = q.peekLast();
+                    if (I > asteroid || I < 0) {
+                        if (I >= asteroid) asteroid = 0;
+                        break;
+                    }
+                    else {
+                        q.pollLast();
+                    }
+                }
+                if (asteroid != 0) q.addLast(asteroid * -1);
+            }
+
+        }
+        int[] output = q.stream().mapToInt(i->i).toArray();
+        return output;
+    }
+
+
+
+    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+        int n = rooms.size();
+        Set<Integer> visited = new HashSet<>();
+        Deque<Integer> q = new ArrayDeque<>();
+        q.add(0);
+        while (!q.isEmpty()) {
+            Integer currentRoom = q.pollFirst();
+            if (visited.contains(currentRoom)) {
+                continue;
+            } else {
+                visited.add(currentRoom);
+                List<Integer> keys = rooms.get(currentRoom);
+                for (Integer key : keys) {
+                    if (!visited.contains(key)) {
+                        q.addLast(key);
+                    }
+                }
+            }
+        }
+        return (visited.size() == n);
+    }
+
+
+
+
 
     public static void main(String[] args) {
         Deque<Integer> dQ = new ArrayDeque<>();
@@ -2804,7 +2852,6 @@ public class Leetcode2 {
             doubleList.add(v);
         }
         System.out.println(doubleList);
-
 
 
         List<List<Integer>> out = new ArrayList<>();
