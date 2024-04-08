@@ -2896,6 +2896,27 @@ public class Leetcode2 {
     }
 
 
+    public int[][] kClosest(int[][] points, int k) {
+        Arrays.sort(points, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                double x1 = a[0];
+                double y1 = a[1];
+                double x2 = b[0];
+                double y2 = b[1];
+                double distance1 = Math.sqrt(Math.pow(x1,2) + Math.pow(y1,2));
+                double distance2 = Math.sqrt(Math.pow(x2,2) + Math.pow(y2,2));
+                if (distance1 < distance2) return -1;
+                else return 1;
+            }
+        });
+        int[][] out = new int[k][];
+        for (int i = 0; i < k; i++) {
+            out[i] = points[i];
+        }
+        return out;
+    }
+
+
 
     public static void main(String[] args) {
         Deque<Integer> dQ = new ArrayDeque<>();
