@@ -3002,6 +3002,51 @@ public class Leetcode2 {
     }
 
 
+    HashMap<Integer, List<String>> stringHM;
+    public List<String> letterCombinations(String digits) {
+        if (digits.length() == 0) {
+            return new ArrayList<>();
+        }
+        stringHM = new HashMap<>();
+        List<String> a = Arrays.asList("a", "b", "c");
+        List<String> b = Arrays.asList("d", "e", "f");
+        List<String> c = Arrays.asList("g", "h", "i");
+        List<String> d = Arrays.asList("j", "k", "l");
+        List<String> e = Arrays.asList("m", "n", "o");
+        List<String> f = Arrays.asList("p", "q", "r", "s");
+        List<String> g = Arrays.asList("t", "u", "v");
+        List<String> h = Arrays.asList("w", "x", "y", "z");
+        stringHM.put(2,a);
+        stringHM.put(3,b);
+        stringHM.put(4,c);
+        stringHM.put(5,d);
+        stringHM.put(6,e);
+        stringHM.put(7,f);
+        stringHM.put(8,g);
+        stringHM.put(9,h);
+        stringHM.put(1, new ArrayList<>());
+        return letterCombinations2(digits);
+    }
+    public List<String> letterCombinations2(String s) {
+        List<String> output = new ArrayList<>();
+        Integer I = Integer.valueOf(String.valueOf(s.charAt(0)));
+        if (s.length() == 1) {
+            return stringHM.get(I);
+        } else {
+            String xs = s.substring(1);
+            List<String> currentList = stringHM.get(I);
+            List<String> nextList = letterCombinations2(xs);
+            for (String a : currentList) {
+                for(String b : nextList) {
+                    String c = a+b;
+                    output.add(c);
+                }
+            }
+            return output;
+        }
+    }
+
+
 
     public static void main(String[] args) {
         Deque<Integer> dQ = new ArrayDeque<>();
