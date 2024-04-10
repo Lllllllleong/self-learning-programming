@@ -2020,31 +2020,6 @@ public class Leetcode2 {
     }
 
 
-    public int maxTurbulenceSize(int[] arr) {
-        int n = arr.length;
-        int out = 1;
-        if (n == 1) {
-            return out;
-        }
-        int priorDifference = 0;
-        int counter = 1;
-        for (int i = 0; i < arr.length - 1; i++) {
-            System.out.println(i);
-            System.out.println(counter);
-            int a = arr[i];
-            int b = arr[i + 1];
-            int currentDifference = b - a;
-            if (currentDifference > 0 && priorDifference <= 0 || currentDifference < 0 && priorDifference >= 0) {
-                counter++;
-            } else {
-                out = Math.max(out, counter);
-                counter = 1;
-            }
-            priorDifference = currentDifference;
-        }
-        out = Math.max(out, counter);
-        return out;
-    }
 
 
     public int minimumTimeRequired(int[] jobs, int k) {
@@ -3089,6 +3064,56 @@ public class Leetcode2 {
 
         }
     }
+
+
+
+
+    public int maxTurbulenceSize(int[] arr) {
+        int n = arr.length;
+        if (n == 1) {
+            return 1;
+        }
+        int output = 0;
+        int turbulentSum = 0;
+        int inverseTurbulentSum = 0;
+        int previous = Integer.MIN_VALUE;
+        for (int i = 0; i < n; i++) {
+            int current = arr[i];
+            if (previous < current) {
+                turbulentSum++;
+                output = Math.max(output, inverseTurbulentSum);
+                inverseTurbulentSum = 1;
+            } else if (previous > current) {
+                inverseTurbulentSum++;
+                output = Math.max(output, turbulentSum);
+                turbulentSum = 1;
+            } else {
+                output = Math.max(output, turbulentSum);
+                output = Math.max(output, inverseTurbulentSum);
+                inverseTurbulentSum = 1;
+                turbulentSum = 1;
+            }
+            int cache = turbulentSum;
+            turbulentSum = inverseTurbulentSum;
+            inverseTurbulentSum = cache;
+            previous = current;
+        }
+        output = Math.max(output, turbulentSum);
+        output = Math.max(output, inverseTurbulentSum);
+        return output;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
