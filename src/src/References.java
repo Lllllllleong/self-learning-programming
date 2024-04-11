@@ -108,9 +108,9 @@ public class References {
 
 //          Sort based on hashmap values
         //List of the keys
-        List<Integer> l = new ArrayList<>(map.keySet());
+        List<Integer> keyList = new ArrayList<>(map.keySet());
         //Sort the list based on hashmap value
-        Collections.sort(l, new Comparator<Integer>() {
+        Collections.sort(keyList, new Comparator<Integer>() {
             public int compare(Integer a, Integer b) {
                 return (map.get(b) - map.get(a));
             }

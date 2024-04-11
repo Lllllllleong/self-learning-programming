@@ -3023,28 +3023,28 @@ public class Leetcode2 {
 
 
 
-    Boolean[][] cache;
-    public boolean canPartition(int[] nums) {
-        int n = nums.length;
-        if (n == 1) return false;
-        Integer I = 0;
-        for (int i : nums) I += i;
-        if (I % 2 != 0) return false;
-        int halfSum = I / 2;
-        cache = new Boolean[n+1][halfSum+1];
-        return canPartition2(nums, 0, halfSum);
-    }
-    public boolean canPartition2(int[] nums,int index, int halfSumTarget) {
-        int n = nums.length;
-        if (halfSumTarget == 0) return true;
-        if (index == n && halfSumTarget != 0) return false;
-        if (index == n && halfSumTarget == 0) return true;
-        if (halfSumTarget < 0) return false;
-        if (cache[index][halfSumTarget] != null) return cache[index][halfSumTarget];
-        int newTarget = halfSumTarget - nums[index];
-        cache[index][halfSumTarget] = (canPartition2(nums, index+1, newTarget) || canPartition2(nums, index+1, halfSumTarget));
-        return cache[index][halfSumTarget];
-    }
+//    Boolean[][] cache;
+//    public boolean canPartition(int[] nums) {
+//        int n = nums.length;
+//        if (n == 1) return false;
+//        Integer I = 0;
+//        for (int i : nums) I += i;
+//        if (I % 2 != 0) return false;
+//        int halfSum = I / 2;
+//        cache = new Boolean[n+1][halfSum+1];
+//        return canPartition2(nums, 0, halfSum);
+//    }
+//    public boolean canPartition2(int[] nums,int index, int halfSumTarget) {
+//        int n = nums.length;
+//        if (halfSumTarget == 0) return true;
+//        if (index == n && halfSumTarget != 0) return false;
+//        if (index == n && halfSumTarget == 0) return true;
+//        if (halfSumTarget < 0) return false;
+//        if (cache[index][halfSumTarget] != null) return cache[index][halfSumTarget];
+//        int newTarget = halfSumTarget - nums[index];
+//        cache[index][halfSumTarget] = (canPartition2(nums, index+1, newTarget) || canPartition2(nums, index+1, halfSumTarget));
+//        return cache[index][halfSumTarget];
+//    }
 
 
     public int findTargetSumWays(int[] nums, int target) {
@@ -3107,7 +3107,64 @@ public class Leetcode2 {
 
 
 
+    Integer[][] cache;
+    public int subarraySum(int[] nums, int k) {
+        int n = nums.length;
+        if (n == 1) return (nums[0] == k) ? 1 : 0;
+        cache = new Integer[n+1][k+1];
+        return subarraySum2(nums, 0, k);
+    }
+    public int subarraySum2(int[] nums, int index, int target) {
+        int n = nums.length;
+        if (target == 0) return 1;
+        if (target < 0) return 0;
+        if (index == n) return (target == 0) ? 1 : 0;
+        if (cache[index][target] != null) return cache[index][target];
+        else {
+            int newTarget = target - nums[index];
+            cache[index][target] = subarraySum2(nums, index+1, target) + subarraySum2(nums, index+1, newTarget);
+            return cache[index][target];
+        }
+    }
 
+    public int nextGreaterElement(int n) {
+        if (n <= 11) return -1;
+        String s = String.valueOf(n);
+        List<Integer> digits = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++) {
+            digits.add(s.charAt(i) - '0');
+        }
+        Collections.sort(digits, Collections.reverseOrder());
+        int output = 0;
+        for (Integer i : digits) {
+            output = output * 10;
+            output += i;
+        }
+        return (output == n) ? -1 : output;
+    }
+
+
+
+    public List<String> topKFrequent(String[] words, int k) {
+        HashMap<String, Integer> frequencyMap = new HashMap<>();
+        for (String s : words) {
+            frequencyMap.merge(s, 1, Integer::sum);
+        }
+        List<String> keyList = new ArrayList<>(frequencyMap.keySet());
+        Collections.sort(keyList, new Comparator<String>() {
+            public int compare(String a, String b) {
+                int freqA = frequencyMap.get(a);
+                int freqB = frequencyMap.get(b);
+                if (freqA != freqB) return freqB-freqA;
+                else return a.compareTo(b);
+            }
+        });
+        List<String> output = new ArrayList<>();
+        for (int i = 0; i < k; i++) {
+            output.add(keyList.get(i));
+        }
+        return output;
+    }
 
 
 
