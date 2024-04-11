@@ -1,4 +1,3 @@
-import java.security.spec.RSAOtherPrimeInfo;
 import java.util.*;
 
 public class Leetcode2 {
@@ -2020,8 +2019,6 @@ public class Leetcode2 {
     }
 
 
-
-
     public int minimumTimeRequired(int[] jobs, int k) {
         Deque<Integer> jobQueue = new ArrayDeque<>(Arrays.stream(jobs).boxed().toList());
         int[] bins = new int[k];
@@ -2762,8 +2759,7 @@ public class Leetcode2 {
                     if (I > asteroid || I < 0) {
                         if (I >= asteroid) asteroid = 0;
                         break;
-                    }
-                    else {
+                    } else {
                         q.pollLast();
                     }
                 }
@@ -2771,10 +2767,9 @@ public class Leetcode2 {
             }
 
         }
-        int[] output = q.stream().mapToInt(i->i).toArray();
+        int[] output = q.stream().mapToInt(i -> i).toArray();
         return output;
     }
-
 
 
     public boolean canVisitAllRooms(List<List<Integer>> rooms) {
@@ -2809,16 +2804,16 @@ public class Leetcode2 {
             q.addFirst(I);
         }
         int endDay = q.peek() + 1;
-        int[] dpArray = new int[endDay+1];
+        int[] dpArray = new int[endDay + 1];
         Arrays.fill(dpArray, Integer.MAX_VALUE);
         int pointerDay = q.poll();
         dpArray[pointerDay] = Math.min(oneDay, Math.min(sevenDay, thirtyDay));
         dpArray[endDay] = 0;
         while (!q.isEmpty()) {
             int day = q.poll();
-            while (pointerDay != day+1) {
+            while (pointerDay != day + 1) {
                 pointerDay--;
-                dpArray[pointerDay] = Math.min(dpArray[pointerDay], dpArray[pointerDay+1]);
+                dpArray[pointerDay] = Math.min(dpArray[pointerDay], dpArray[pointerDay + 1]);
             }
             int oneDayLater = day + 1;
             int sevenDayLater = Math.min(day + 7, endDay);
@@ -2831,8 +2826,6 @@ public class Leetcode2 {
         System.out.println(Arrays.toString(dpArray));
         return dpArray[firstDay];
     }
-
-
 
 
     public int minIncrementForUnique(int[] nums) {
@@ -2857,16 +2850,16 @@ public class Leetcode2 {
 
 
     public int[] prisonAfterNDays(int[] cells, int n) {
-        n=(n-1)%14+1;
+        n = (n - 1) % 14 + 1;
         int length = cells.length;
         if (n == 0) {
             return cells;
         } else {
             int[] nextCells = new int[length];
-            for (int i = 1; i < n-1; i++) {
-                nextCells[i] = (cells[i-1] == cells[i+1]) ? 1 : 0;
+            for (int i = 1; i < n - 1; i++) {
+                nextCells[i] = (cells[i - 1] == cells[i + 1]) ? 1 : 0;
             }
-            return prisonAfterNDays(nextCells, n-1);
+            return prisonAfterNDays(nextCells, n - 1);
         }
     }
 
@@ -2878,8 +2871,8 @@ public class Leetcode2 {
                 double y1 = a[1];
                 double x2 = b[0];
                 double y2 = b[1];
-                double distance1 = Math.sqrt(Math.pow(x1,2) + Math.pow(y1,2));
-                double distance2 = Math.sqrt(Math.pow(x2,2) + Math.pow(y2,2));
+                double distance1 = Math.sqrt(Math.pow(x1, 2) + Math.pow(y1, 2));
+                double distance2 = Math.sqrt(Math.pow(x2, 2) + Math.pow(y2, 2));
                 if (distance1 < distance2) return -1;
                 else return 1;
             }
@@ -2920,7 +2913,6 @@ public class Leetcode2 {
     }
 
 
-
     public int twoCitySchedCost(int[][] costs) {
         Arrays.sort(costs, new Comparator<int[]>() {
             public int compare(int[] a, int[] b) {
@@ -2928,11 +2920,11 @@ public class Leetcode2 {
                 int a2 = a[1];
                 int b1 = b[0];
                 int b2 = b[1];
-                return ((a1-a2) - (b1-b2));
+                return ((a1 - a2) - (b1 - b2));
             }
         });
         Deque<int[]> q = new ArrayDeque<>();
-        for(int[] c : costs) {
+        for (int[] c : costs) {
             q.addLast(c);
         }
         int out = 0;
@@ -2946,11 +2938,10 @@ public class Leetcode2 {
     }
 
 
-
-
     public List<List<Integer>> combine(int n, int k) {
-        return combine2(n,k, 1);
+        return combine2(n, k, 1);
     }
+
     public List<List<Integer>> combine2(int n, int k, int start) {
         List<List<Integer>> output = new ArrayList<>();
         if (k == 1) {
@@ -2961,7 +2952,7 @@ public class Leetcode2 {
             }
             return output;
         } else {
-            int newK = k-1;
+            int newK = k - 1;
             int upperStartBoundIncl = n - newK;
             for (int i = start; i <= upperStartBoundIncl; i++) {
                 List<List<Integer>> nextCombOutput = new ArrayList<>();
@@ -2978,6 +2969,7 @@ public class Leetcode2 {
 
 
     HashMap<Integer, List<String>> stringHM;
+
     public List<String> letterCombinations(String digits) {
         if (digits.length() == 0) {
             return new ArrayList<>();
@@ -2991,17 +2983,18 @@ public class Leetcode2 {
         List<String> f = Arrays.asList("p", "q", "r", "s");
         List<String> g = Arrays.asList("t", "u", "v");
         List<String> h = Arrays.asList("w", "x", "y", "z");
-        stringHM.put(2,a);
-        stringHM.put(3,b);
-        stringHM.put(4,c);
-        stringHM.put(5,d);
-        stringHM.put(6,e);
-        stringHM.put(7,f);
-        stringHM.put(8,g);
-        stringHM.put(9,h);
+        stringHM.put(2, a);
+        stringHM.put(3, b);
+        stringHM.put(4, c);
+        stringHM.put(5, d);
+        stringHM.put(6, e);
+        stringHM.put(7, f);
+        stringHM.put(8, g);
+        stringHM.put(9, h);
         stringHM.put(1, new ArrayList<>());
         return letterCombinations2(digits);
     }
+
     public List<String> letterCombinations2(String s) {
         List<String> output = new ArrayList<>();
         Integer I = Integer.valueOf(String.valueOf(s.charAt(0)));
@@ -3012,15 +3005,14 @@ public class Leetcode2 {
             List<String> currentList = stringHM.get(I);
             List<String> nextList = letterCombinations2(xs);
             for (String a : currentList) {
-                for(String b : nextList) {
-                    String c = a+b;
+                for (String b : nextList) {
+                    String c = a + b;
                     output.add(c);
                 }
             }
             return output;
         }
     }
-
 
 
 //    Boolean[][] cache;
@@ -3066,8 +3058,6 @@ public class Leetcode2 {
     }
 
 
-
-
     public int maxTurbulenceSize(int[] arr) {
         int n = arr.length;
         if (n == 1) {
@@ -3104,16 +3094,15 @@ public class Leetcode2 {
     }
 
 
-
-
-
     Integer[][] cache;
+
     public int subarraySum(int[] nums, int k) {
         int n = nums.length;
         if (n == 1) return (nums[0] == k) ? 1 : 0;
-        cache = new Integer[n+1][k+1];
+        cache = new Integer[n + 1][k + 1];
         return subarraySum2(nums, 0, k);
     }
+
     public int subarraySum2(int[] nums, int index, int target) {
         int n = nums.length;
         if (target == 0) return 1;
@@ -3122,7 +3111,7 @@ public class Leetcode2 {
         if (cache[index][target] != null) return cache[index][target];
         else {
             int newTarget = target - nums[index];
-            cache[index][target] = subarraySum2(nums, index+1, target) + subarraySum2(nums, index+1, newTarget);
+            cache[index][target] = subarraySum2(nums, index + 1, target) + subarraySum2(nums, index + 1, newTarget);
             return cache[index][target];
         }
     }
@@ -3144,7 +3133,6 @@ public class Leetcode2 {
     }
 
 
-
     public List<String> topKFrequent(String[] words, int k) {
         HashMap<String, Integer> frequencyMap = new HashMap<>();
         for (String s : words) {
@@ -3155,7 +3143,7 @@ public class Leetcode2 {
             public int compare(String a, String b) {
                 int freqA = frequencyMap.get(a);
                 int freqB = frequencyMap.get(b);
-                if (freqA != freqB) return freqB-freqA;
+                if (freqA != freqB) return freqB - freqA;
                 else return a.compareTo(b);
             }
         });
@@ -3187,11 +3175,107 @@ public class Leetcode2 {
     }
 
 
+    int univaluePathLength;
+
+    public int longestUnivaluePath(TreeNode root) {
+        univaluePathLength = 0;
+        if (root == null) return univaluePathLength;
+        univaluePathSearch(root, 0);
+        return univaluePathLength;
+    }
+
+    public void univalueTraverse(TreeNode root) {
+        if (root == null) return;
+        Integer current = root.val;
+        Integer leftChild = (root.left != null) ? root.left.val : null;
+        Integer rightChild = (root.right != null) ? root.right.val : null;
+        if ((leftChild != null && leftChild == current)
+                || (rightChild != null && rightChild == current)) {
+            univaluePathSearch(root, current);
+        } else {
+            univalueTraverse(root.left);
+            univalueTraverse(root.right);
+        }
+    }
+    public void univaluePathSearch(TreeNode root, int target) {
+        if (root == null) return;
+        Deque<TreeNode> q = new ArrayDeque<>();
+        q.add(root);
+        int counter = 0;
+        while (!q.isEmpty()) {
+            TreeNode currentNode = q.pop();
+            if (currentNode != null) {
+                int currentVal = currentNode.val;
+                if (currentVal == target) {
+                    counter++;
+                    q.add(root.left);
+                    q.add(root.right);
+                }
+            }
+        }
+        univaluePathLength = Math.max(univaluePathLength, counter);
+    }
 
 
 
 
+    public int repeatedStringMatch(String a, String b) {
+        if (b.equals("")) return 0;
+        int aLength = a.length();
+        int bIndex = 0;
+        boolean flag = false;
+        for (int i = 0; i < aLength; i++) {
+            char aChar = a.charAt(i);
+            char bChar = b.charAt(bIndex);
+            if (aChar == bChar) {
+                flag = true;
+                bIndex++;
+            } else {
+                if (flag) return 0;
+            }
+        }
+        if (bIndex == 0) return 0;
+        else {
+            return (1 + repeatedStringMatch(a, b.substring(bIndex)));
+        }
+    }
 
+    public int leastInterval(char[] tasks, int n) {
+        int[] jobMap = new int[26];
+        for (char c : tasks) {
+            jobMap[(c - 'A')]++;
+        }
+        Arrays.sort(jobMap);
+        //Index 25 is the job with the most frequency
+        int minimumDuration = n * jobMap[25];
+        int vacantSlots = (n-1) * jobMap[25];
+        int remainingJobs = tasks.length - jobMap[25];
+        if (remainingJobs > vacantSlots) return tasks.length;
+        else return minimumDuration;
+    }
+
+
+    double[][] dpDouble;
+    public double soupServings(int n) {
+        if (n <= 25) {
+            return 0.25*(1+0.5+0.5+0.5);
+        }
+        dpDouble = new double[n+1][n+1];
+        for (double[] d : dpDouble) Arrays.fill(d, -1);
+        return soupProbability(n, n);
+    }
+    public double soupProbability(int a, int b) {
+        if (a == b && a <= 0) return 0.5;
+        if (a <= 0 && b > 0) return 1;
+        if (a > 0 && b <= 0) return 0;
+        if (dpDouble[a][b] != -1) return dpDouble[a][b];
+        double Q = soupProbability(Math.max(a-100, 0), b);
+        double W = soupProbability(Math.max(a-75, 0), Math.max(b-25, 0));
+        double E = soupProbability(Math.max(a-50, 0), Math.max(b-50, 0));
+        double R = soupProbability(Math.max(a-25, 0), Math.max(b-75, 0));
+        double T = 0.25*(Q+W+E+R);
+        return dpDouble[a][b] = T;
+    }
 
 
     public static void main(String[] args) {
@@ -3224,6 +3308,11 @@ public class Leetcode2 {
         List<Integer> list = new ArrayList<>();
         out.add(list);
         System.out.println(out.size());
+
+
+        double[][] dpDouble = new double[10][10];
+        for (double[] d : dpDouble) Arrays.fill(d, -1);
+        System.out.println(Arrays.toString(dpDouble[0]));
 
 
     }
