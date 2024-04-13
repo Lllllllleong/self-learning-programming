@@ -3361,6 +3361,25 @@ public class Leetcode2 {
         return output;
     }
 
+    public boolean carPooling(int[][] trips, int capacity) {
+        int[] prefix = new int[1001];
+        int maxTripEnd = 0;
+        for (int[] trip : trips) {
+            int a = trip[0];
+            int b = trip[1];
+            int c = trip[2];
+            prefix[b] += a;
+            prefix[c] -= a;
+            maxTripEnd = Math.max(maxTripEnd, c);
+        }
+        int currentCapacity = capacity;
+        for (int i = 0; i < maxTripEnd+1; i++) {
+            currentCapacity -= prefix[i];
+            if (currentCapacity < 0) return false;
+        }
+        return (currentCapacity < 0) ? false : true;
+    }
+
 
 
 
