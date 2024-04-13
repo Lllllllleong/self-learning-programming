@@ -3438,6 +3438,35 @@ public class Leetcode2 {
     }
 
 
+    public int digArtifacts(int n, int[][] artifacts, int[][] dig) {
+        int[][] dpMatrix = new int[n][n];
+        for (int[] d : dig) {
+            int y = d[0];
+            int x = d[1];
+            dpMatrix[y][x] = 1;
+        }
+        int output = 0;
+        for (int[] artifact : artifacts) {
+            int yStart = artifact[0];
+            int xStart = artifact[1];
+            int yEnd = artifact[2];
+            int xEnd = artifact[3];
+            boolean flag = true;
+            for (int y = yStart; y <= yEnd; y++) {
+                for (int x = xStart; x <= xEnd; x++) {
+                    if (dpMatrix[y][x] == 0) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (!flag) break;
+            }
+            if (flag) output++;
+        }
+        return output;
+    }
+
+
 
     public static void main(String[] args) {
         Deque<Integer> dQ = new ArrayDeque<>();
