@@ -4481,6 +4481,28 @@ public class Leetcode {
         else return dpArray[n];
     }
 
+    public String removeStars(String s) {
+        Deque<Character> q = new ArrayDeque<>();
+        for (char c : s.toCharArray()) {
+            q.addFirst(c);
+        }
+        String out = "";
+        int starCount = 0;
+        while (!q.isEmpty()) {
+            char c = q.poll();
+            if (c == '*') {
+                starCount++;
+            } else {
+                if (starCount == 0) {
+                    out = c + out;
+                } else {
+                    starCount--;
+                }
+            }
+        }
+        return out;
+    }
+
 
 
 
