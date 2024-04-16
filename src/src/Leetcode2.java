@@ -3535,6 +3535,29 @@ public class Leetcode2 {
         }
     }
 
+    public String frequencySort(String s) {
+        int n = s.length();
+        if (n <= 2) return s;
+        HashMap<Character, Integer> charFrequencyMap = new HashMap<>();
+        for (Character c : s.toCharArray()) {
+            charFrequencyMap.merge(c, 1, Integer::sum);
+        }
+        List<Character> keyList = new ArrayList<>(charFrequencyMap.keySet());
+        Collections.sort(keyList, new Comparator<Character>() {
+            public int compare(Character a, Character b) {
+                return (charFrequencyMap.get(b) - charFrequencyMap.get(a));
+            }
+        });
+        String output = "";
+        for (Character c : keyList) {
+            int count = charFrequencyMap.get(c);
+            for (int i = 0; i < count; i++) {
+                output = output + c;
+            }
+        }
+        return output;
+    }
+
 
 
 
