@@ -3492,6 +3492,19 @@ public class Leetcode2 {
     }
 
 
+    public int numWaterBottles(int numBottles, int numExchange) {
+        return numWaterBottles2(numBottles, 0, numExchange);
+    }
+    public int numWaterBottles2(int numFull, int numEmpty, int numExchange) {
+        if (numFull == 0 && numEmpty < numExchange) return 0;
+        if (numFull == 0 && numEmpty >= numExchange) {
+            return numWaterBottles2((numEmpty / numExchange), (numEmpty % numExchange), numExchange);
+        } else {
+            return (numFull + numWaterBottles2(0, numEmpty+numFull, numExchange));
+        }
+    }
+
+
 
     public static void main(String[] args) {
         Deque<Integer> dQ = new ArrayDeque<>();
@@ -3531,6 +3544,8 @@ public class Leetcode2 {
         System.out.println('B' - 'A');
         System.out.println('Z' - 'A');
 
+
+        System.out.println(9/3);
 
     }
 
