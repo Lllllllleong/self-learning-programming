@@ -3564,6 +3564,27 @@ public class Leetcode2 {
     }
 
 
+    public List<String> generateParenthesis(int n) {
+        List<String> output = new ArrayList<>();
+        if (n == 1) {
+            output.add("()");
+            return output;
+        }
+        Set<String> set = new HashSet<>();
+        List<String> prevList = generateParenthesis(n-1);
+        for (String s : prevList) {
+            set.add("(" + s + ")");
+            set.add("()" + s);
+            set.add(s + "()");
+        }
+        output = new ArrayList<>(set);
+        Collections.sort(output);
+        return output;
+    }
+
+
+
+
 
 
 
@@ -3670,5 +3691,12 @@ class Trie {
         }
     }
 }
+
+
+
+
+
+
+
 //          return (int) (output % (Math.pow(10,9) + 7));
 //          long mod = 1000000007;
