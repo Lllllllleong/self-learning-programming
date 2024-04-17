@@ -56,3 +56,15 @@ public class Leetcode3 {
 
 
 }
+
+class Solution extends SolBase {
+    public int rand10() {
+        int i = 0;
+        for (int j = 0; j < 10; j++) {
+            i += rand7();
+        }
+        i = i % 10;
+        if (i == 0) i = 10;
+        return i;
+    }
+}
