@@ -29,4 +29,30 @@ public class Leetcode3 {
     }
 
 
+    public boolean checkValidString(String s) {
+        int minClosing = 0;
+        int maxClosing = 0;
+        for (char c : s.toCharArray()) {
+            switch (c) {
+                case '(' -> {
+                    minClosing++;
+                    maxClosing++;
+                }
+                case ')' -> {
+                    minClosing--;
+                    maxClosing--;
+                }
+                case '*' -> {
+                    minClosing--;
+                    maxClosing++;
+                }
+            }
+            minClosing = Math.max(minClosing, 0);
+            if (maxClosing < 0) return false;
+        }
+        return (minClosing == 0);
+    }
+
+
+
 }
