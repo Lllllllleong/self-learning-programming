@@ -54,17 +54,80 @@ public class Leetcode3 {
     }
 
 
-
-}
-
-class Solution extends SolBase {
-    public int rand10() {
-        int i = 0;
-        for (int j = 0; j < 10; j++) {
-            i += rand7();
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if (root == null) return root;
+        if (root.val == key) {
+            TreeNode mergedNode = mergeNode(root.left, root.right);
+            return mergedNode;
+        } else {
+            if (root.val < key) {
+                root.right = deleteNode(root.right, key);
+            } else {
+                root.left = deleteNode(root.left, key);
+            }
+            return root;
         }
-        i = i % 10;
-        if (i == 0) i = 10;
-        return i;
+    }
+    public TreeNode mergeNode(TreeNode a, TreeNode b) {
+        if (a == null) return b;
+        if (b == null) return a;
+        if (a.right == null) {
+            a.right = b;
+            return a;
+        } else if (b.left == null) {
+            b.left = a;
+            return b;
+        } else {
+            b.left = mergeNode(a, b.left);
+            return b;
+        }
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public static void main(String[] args) {
+
+    }
+
+
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode() {}
+        TreeNode(int val) { this.val = val; }
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
     }
 }
+
+//class Solution extends SolBase {
+//    public int rand10() {
+//        int i = 0;
+//        for (int j = 0; j < 10; j++) {
+//            i += rand7();
+//        }
+//        i = i % 10;
+//        if (i == 0) i = 10;
+//        return i;
+//    }
+//}
+
+
+
+
