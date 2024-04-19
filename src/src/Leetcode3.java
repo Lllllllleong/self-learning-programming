@@ -83,12 +83,25 @@ public class Leetcode3 {
         }
     }
 
-
-    public int change(int amount, int[] coins) {
-        return 0
+    //DP approach
+    public boolean canPartition(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return false;
+        int sum = 0;
+        for (int i : nums) sum += i;
+        if (sum % 2 != 0) return false;
+        int halfSum  = sum/2;
+        boolean[] dpBool = new boolean[halfSum + 1];
+        dpBool[0] = true;
+        for (int i : nums) {
+            for (int j = halfSum; j >= i; j--) {
+                if (dpBool[j - i]) {
+                    dpBool[j] = true;
+                }
+            }
+        }
+        return dpBool[halfSum];
     }
-
-
 
 
 
