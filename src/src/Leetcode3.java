@@ -180,6 +180,89 @@ public class Leetcode3 {
 
 
 
+    public int scoreOfStudents(String s, int[] answers) {
+        int out = 0;
+        String reverseS = "";
+        for (char c : s.toCharArray()) reverseS = c + reverseS;
+        int[] pointArray = new int[1001];
+        int addFirstLeftToRight = addFirstEval(s);
+        int addFirstRightToLeft = addFirstEval(reverseS);
+        pointArray[addFirstLeftToRight] = 2;
+        pointArray[addFirstRightToLeft] = 2;
+        int leftToRight = leftToRight(s);
+        int rightToLeft = leftToRight(reverseS);
+        pointArray[leftToRight] = 2;
+        pointArray[rightToLeft] = 2;
+
+        int fivePoints = multiFirstEval(s);
+        pointArray[fivePoints] = 5;
+        for (int i : answers) out += pointArray[i];
+        return out;
+    }
+    public int multiFirstEval(String s) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        dq.add(Integer.valueOf(String.valueOf(s.charAt(0))));
+        int n = s.length();
+        for (int i = 1; i < n; i = i + 2) {
+             char operator = s.charAt(i);
+             Integer number = Integer.valueOf(String.valueOf(s.charAt(i+1)));
+             if (operator == '*') {
+                 Integer prior = dq.pollLast();
+                 number = number * prior;
+                 dq.addLast(number);
+             } else {
+                 dq.addLast(number);
+             }
+        }
+        int out = 0;
+        while (!dq.isEmpty()) {
+            out += dq.poll();
+        }
+        return out;
+    }
+    public int addFirstEval(String s) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        dq.add(Integer.valueOf(String.valueOf(s.charAt(0))));
+        int n = s.length();
+        for (int i = 1; i < n; i = i + 2) {
+            char operator = s.charAt(i);
+            Integer number = Integer.valueOf(String.valueOf(s.charAt(i+1)));
+            if (operator == '+') {
+                Integer prior = dq.pollLast();
+                number = number + prior;
+                dq.addLast(number);
+            } else {
+                dq.addLast(number);
+            }
+        }
+        int out = dq.poll();
+        while (!dq.isEmpty()) {
+            out = out * dq.poll();
+        }
+        return out;
+    }
+
+
+    public int leftToRight(String s) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        dq.add(Integer.valueOf(String.valueOf(s.charAt(0))));
+        int n = s.length();
+        for (int i = 1; i < n; i = i + 2) {
+            char operator = s.charAt(i);
+            Integer number = Integer.valueOf(String.valueOf(s.charAt(i+1)));
+            Integer prior = dq.pollLast();
+            if (operator == '+') {
+                number = number + prior;
+                dq.addLast(number);
+            } else {
+                number = number * prior;
+                dq.addLast(number);
+            }
+        }
+        return dq.poll();
+    }
+
+
 
     public static void main(String[] args) {
         int i = Integer.MAX_VALUE;
