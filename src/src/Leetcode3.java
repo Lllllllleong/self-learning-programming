@@ -10,8 +10,8 @@ public class Leetcode3 {
         for (int i = 0; i < n; i++) {
             char c = expression.charAt(i);
             if (c == '*' || c == '+' || c == '-') {
-                List<Integer> leftCombinations = diffWaysToCompute(expression.substring(0,i));
-                List<Integer> rightCombinations = diffWaysToCompute(expression.substring(i+1));
+                List<Integer> leftCombinations = diffWaysToCompute(expression.substring(0, i));
+                List<Integer> rightCombinations = diffWaysToCompute(expression.substring(i + 1));
                 for (Integer I : leftCombinations) {
                     for (Integer II : rightCombinations) {
                         switch (c) {
@@ -70,6 +70,7 @@ public class Leetcode3 {
             return root;
         }
     }
+
     public TreeNode mergeNode(TreeNode a, TreeNode b) {
         if (a == null) return b;
         if (b == null) return a;
@@ -92,7 +93,7 @@ public class Leetcode3 {
         int sum = 0;
         for (int i : nums) sum += i;
         if (sum % 2 != 0) return false;
-        int halfSum  = sum/2;
+        int halfSum = sum / 2;
         boolean[] dpBool = new boolean[halfSum + 1];
         dpBool[0] = true;
         for (int i : nums) {
@@ -110,7 +111,7 @@ public class Leetcode3 {
         if (n == 1) return stones[0];
         int sum = 0;
         for (int i : stones) sum += i;
-        int halfSum  = sum/2;
+        int halfSum = sum / 2;
         boolean[] dpBool = new boolean[halfSum + 1];
         dpBool[0] = true;
         for (int stone : stones) {
@@ -128,10 +129,6 @@ public class Leetcode3 {
     }
 
 
-
-
-
-
     public int[][] insert(int[][] intervals, int[] newInterval) {
         List<int[]> output = new ArrayList<>();
         List<int[]> input = new ArrayList<>();
@@ -147,7 +144,7 @@ public class Leetcode3 {
             public int compare(int[] a, int[] b) {
                 int aStart = a[0];
                 int bStart = b[0];
-                return (aStart-bStart);
+                return (aStart - bStart);
             }
         });
         int[] first = input.get(0);
@@ -165,7 +162,7 @@ public class Leetcode3 {
                 output.add(first);
                 first = current;
             }
-            if (i == input.size()-1) output.add(first);
+            if (i == input.size() - 1) output.add(first);
         }
         int[][] out = new int[output.size()][2];
         int counter = 0;
@@ -175,9 +172,6 @@ public class Leetcode3 {
         }
         return out;
     }
-
-
-
 
 
     public int scoreOfStudents(String s, int[] answers) {
@@ -199,20 +193,21 @@ public class Leetcode3 {
         for (int i : answers) out += pointArray[i];
         return out;
     }
+
     public int multiFirstEval(String s) {
         Deque<Integer> dq = new ArrayDeque<>();
         dq.add(Integer.valueOf(String.valueOf(s.charAt(0))));
         int n = s.length();
         for (int i = 1; i < n; i = i + 2) {
-             char operator = s.charAt(i);
-             Integer number = Integer.valueOf(String.valueOf(s.charAt(i+1)));
-             if (operator == '*') {
-                 Integer prior = dq.pollLast();
-                 number = number * prior;
-                 dq.addLast(number);
-             } else {
-                 dq.addLast(number);
-             }
+            char operator = s.charAt(i);
+            Integer number = Integer.valueOf(String.valueOf(s.charAt(i + 1)));
+            if (operator == '*') {
+                Integer prior = dq.pollLast();
+                number = number * prior;
+                dq.addLast(number);
+            } else {
+                dq.addLast(number);
+            }
         }
         int out = 0;
         while (!dq.isEmpty()) {
@@ -220,13 +215,14 @@ public class Leetcode3 {
         }
         return out;
     }
+
     public int addFirstEval(String s) {
         Deque<Integer> dq = new ArrayDeque<>();
         dq.add(Integer.valueOf(String.valueOf(s.charAt(0))));
         int n = s.length();
         for (int i = 1; i < n; i = i + 2) {
             char operator = s.charAt(i);
-            Integer number = Integer.valueOf(String.valueOf(s.charAt(i+1)));
+            Integer number = Integer.valueOf(String.valueOf(s.charAt(i + 1)));
             if (operator == '+') {
                 Integer prior = dq.pollLast();
                 number = number + prior;
@@ -249,7 +245,7 @@ public class Leetcode3 {
         int n = s.length();
         for (int i = 1; i < n; i = i + 2) {
             char operator = s.charAt(i);
-            Integer number = Integer.valueOf(String.valueOf(s.charAt(i+1)));
+            Integer number = Integer.valueOf(String.valueOf(s.charAt(i + 1)));
             Integer prior = dq.pollLast();
             if (operator == '+') {
                 number = number + prior;
@@ -262,6 +258,36 @@ public class Leetcode3 {
         return dq.poll();
     }
 
+
+    Integer[][][] dpArray3D;
+
+    public int findMaxForm(String[] strs, int m, int n) {
+        //m zeros
+        //n ones
+        int sLength = strs.length;
+        dpArray3D = new Integer[sLength][m][n];
+        return maxForm(strs, m, n, 0);
+    }
+
+    public int maxForm(String[] sArray, int xZeros, int xOnes, int index) {
+        if (index == sArray.length) return 0;
+        if (xZeros == 0 && xOnes == 0) return 0;
+        if (dpArray3D[index][xZeros][xOnes] != null) return dpArray3D[index][xZeros][xOnes];
+        String s = sArray[index];
+        int zeroCount = 0, oneCount = 0;
+        for (char c : s.toCharArray()) {
+            switch (c) {
+                case '0' -> zeroCount++;
+                default -> oneCount++;
+            }
+        }
+        dpArray3D[index][xZeros][xOnes] = maxForm(sArray, xZeros, xOnes, index+1);
+        if ((xZeros-zeroCount) >= 0 && (xOnes-oneCount) >= 0) {
+            dpArray3D[index][xZeros][xOnes]
+                    = Math.max(dpArray3D[index][xZeros][xOnes], maxForm(sArray, xZeros-zeroCount, xOnes-oneCount, index+1));
+        }
+        return dpArray3D[index][xZeros][xOnes];
+    }
 
 
     public static void main(String[] args) {
@@ -276,8 +302,14 @@ public class Leetcode3 {
         int val;
         TreeNode left;
         TreeNode right;
-        TreeNode() {}
-        TreeNode(int val) { this.val = val; }
+
+        TreeNode() {
+        }
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
         TreeNode(int val, TreeNode left, TreeNode right) {
             this.val = val;
             this.left = left;
