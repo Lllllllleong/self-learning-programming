@@ -335,8 +335,6 @@ public class Leetcode3 {
     }
 
 
-
-
     public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
         double distanceA = Double.MAX_VALUE;
         double distanceB = Double.MIN_VALUE;
@@ -355,7 +353,7 @@ public class Leetcode3 {
             double[] currentSquare = square[i];
             double xx = currentSquare[0];
             double yy = currentSquare[1];
-            double currentDistance = Math.sqrt(Math.pow(Math.abs(xx-x),2) + Math.pow(Math.abs(yy - y),2));
+            double currentDistance = Math.sqrt(Math.pow(Math.abs(xx - x), 2) + Math.pow(Math.abs(yy - y), 2));
             distanceA = Math.min(distanceA, currentDistance);
             distanceB = Math.max(distanceB, currentDistance);
         }
@@ -367,14 +365,43 @@ public class Leetcode3 {
                 if (j == i) continue;
                 double xx = square[j][0];
                 double yy = square[j][1];
-                double currentDistance = Math.sqrt(Math.pow(Math.abs(xx-x),2) + Math.pow(Math.abs(yy - y),2));
+                double currentDistance = Math.sqrt(Math.pow(Math.abs(xx - x), 2) + Math.pow(Math.abs(yy - y), 2));
                 if (currentDistance == distanceA) checkSum++;
-                else if (currentDistance == distanceB) checkSum = checkSum+2;
+                else if (currentDistance == distanceB) checkSum = checkSum + 2;
                 else return false;
             }
             if (checkSum != 4) return false;
         }
         return true;
+    }
+
+
+    public int findLongestChain(int[][] pairs) {
+        int n = pairs.length;
+        Arrays.sort(pairs, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                int a1 = a[0];
+                int a2 = a[1];
+                int b1 = b[0];
+                int b2 = b[1];
+                if (a2 != b2) return (b2 - a2);
+                return (b1 - a1);
+            }
+        });
+        int[] dp = new int[2002];
+        int index = 2001;
+        int start = 0;
+        int end = 0;
+        for (int[] pair : pairs) {
+            start = pair[0];
+            end = pair[1];
+            while (index != end+1) {
+                dp[index] = Math.max(dp[index], dp[index+1]);
+                index--;
+            }
+            dp[start] = Math.max(dp[start], dp[index] + 1);
+        }
+        return dp[start];
     }
 
 
