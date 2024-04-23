@@ -405,6 +405,31 @@ public class Leetcode3 {
     }
 
 
+
+
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        if (k == 1) return true;
+        long sum = 0;
+        for (int i : nums) sum += i;
+        if (sum % k != 0) return false;
+        int[] buckets = new int[k];
+        int target = (int) (sum / k);
+        return canPartitionKSubsets2(nums, 0, target, buckets);
+    }
+    public boolean canPartitionKSubsets2(int[] nums, int index, int targetSum, int[] buckets) {
+        if (index == nums.length) return true;
+        int currentNumber = nums[index];
+        for (int i = 0; i < buckets.length; i++) {
+            int currentBucket = buckets[i];
+            if (currentBucket + currentNumber <= targetSum) {
+                buckets[i] += currentBucket;
+                if (canPartitionKSubsets2(nums, index+1, targetSum, buckets)) return true;
+                buckets[i] -= currentBucket;
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         int i = Integer.MAX_VALUE;
         System.out.println(i);
