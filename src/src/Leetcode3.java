@@ -490,11 +490,60 @@ public class Leetcode3 {
 
 
 
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> a =  combSum2(candidates, 0, target);
+        Set<List<Integer>> s = new HashSet<>(a);
+        return new ArrayList<>(s);
+    }
+    public List<List<Integer>> combSum2(int[] marks, int startIndex, int target) {
+        List<List<Integer>> out = new ArrayList<>();
+        if (target < 0 || startIndex == marks.length) return out;
+        if (target == 0) {
+            out.add(new ArrayList<>());
+            return out;
+        } else {
+            out = combSum2(marks, startIndex+1, target);
+            int currentMark = marks[startIndex];
+            var nextComb = combSum2(marks, startIndex+1, target-currentMark);
+            for (var v : nextComb) {
+                v.add(currentMark);
+                Collections.sort(v);
+                if (!out.contains(v)) out.add(v);
+            }
+            return out;
+        }
+    }
 
 
+    static HashMap<Integer, List<List<Integer>>> pathsFromKeyToEnd;
 
-
-
+    public static List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+        int n = graph.length;
+        pathsFromKeyToEnd = new HashMap<>();
+        List<Integer> lastNode = new ArrayList<>();
+        lastNode.add(n-1);
+        List<List<Integer>> dList = new ArrayList<>();
+        dList.add(lastNode);
+        pathsFromKeyToEnd.put(n-1,dList);
+        pathDFS(0, graph);
+        return pathsFromKeyToEnd.get(0);
+    }
+    public static void pathDFS(int currentNode, int[][] graph) {
+        List<List<Integer>> list = new ArrayList<>();
+        for (int path : graph[currentNode]) {
+            if (pathsFromKeyToEnd.get(path) == null) {
+                pathDFS(path, graph);
+            }
+            List<List<Integer>> dList = pathsFromKeyToEnd.get(path);
+            for (List<Integer> currentList : dList) {
+                List<Integer> currentListCopy = new ArrayList<>(currentList);
+                currentListCopy.add(0, currentNode);
+                list.add(currentListCopy);
+            }
+        }
+        pathsFromKeyToEnd.put(currentNode, list);
+    }
 
 
 
@@ -504,6 +553,8 @@ public class Leetcode3 {
         int i = Integer.MAX_VALUE;
         System.out.println(i);
         System.out.println(Integer.MAX_VALUE);
+        int[][] a = {{1,2},{3},{3},{}};
+        var v = allPathsSourceTarget(a);
 
     }
 
@@ -527,6 +578,9 @@ public class Leetcode3 {
         }
     }
 }
+
+
+
 
 //class Solution extends SolBase {
 //    public int rand10() {
