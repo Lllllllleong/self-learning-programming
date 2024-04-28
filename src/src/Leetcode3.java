@@ -569,6 +569,27 @@ public class Leetcode3 {
     }
 
 
+    public int longestSubarray(int[] nums) {
+        int output = 0;
+        int priorLength = 0;
+        int currentLength = 0;
+        for (int i : nums) {
+            switch (i) {
+                case 1 -> currentLength++;
+                case 0 -> {
+                    output = Math.max(output, priorLength + currentLength);
+                    priorLength = currentLength;
+                    currentLength = 0;
+                }
+
+            }
+        }
+        output = Math.max(output, priorLength + currentLength);
+        if (output == nums.length) return output-1;
+        else return output;
+    }
+
+
 
 
 
