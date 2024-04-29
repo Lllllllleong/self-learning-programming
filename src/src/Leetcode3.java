@@ -690,6 +690,36 @@ public class Leetcode3 {
 
 
 
+    public int networkDelayTime(int[][] times, int n, int k) {
+        int[] dist = new int[n];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        Map<Integer, List<int[]>> graph = new HashMap<>();
+        for (int[] time : times) {
+            graph.computeIfAbsent(time[0] - 1, x -> new ArrayList<>()).add(new int[]{time[1] - 1, time[2]});
+        }
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+        pq.add(new int[]{k - 1, 0});
+        while (!pq.isEmpty()) {
+            int[] curr = pq.poll();
+            int node = curr[0];
+            int time = curr[1];
+            if (time > dist[node]) continue;
+            if (graph.containsKey(node)) {
+                for (int[] edge : graph.get(node)) {
+                    int next = edge[0];
+                    int nextTime = time + edge[1];
+                    if (nextTime < dist[next]) {
+                        dist[next] = nextTime;
+                        pq.offer(new int[]{next, nextTime});
+                    }
+                }
+            }
+        }
+        int maxWait = Arrays.stream(dist).max().getAsInt();
+        return maxWait == Integer.MAX_VALUE ? -1 : maxWait;
+    }
+
+
     public static void main(String[] args) {
         int i = Integer.MAX_VALUE;
         System.out.println(i);
@@ -698,7 +728,6 @@ public class Leetcode3 {
         System.out.println(Math.pow(10d, 3d));
 
         int[][] flights = {{0,1,100},{1,2,100},{2,0,100},{1,3,600},{2,3,200}};
-        int cbudoe = findCheapestPrice(4,flights,0,3,1);
 
 //        List<Long> area = new ArrayList<>(Arrays.asList(1200L,1300L,1200L,1300L,1200L,2000L));
 //        List<Long> prices = new ArrayList<>(Arrays.asList(12000L,24000L,14000L,22000L,13000L,30000L));
