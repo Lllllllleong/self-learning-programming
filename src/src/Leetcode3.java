@@ -593,12 +593,74 @@ public class Leetcode3 {
 
 
 
+    public List<String> printVertically(String s) {
+        HashMap<Integer, String> hm = new HashMap<>();
+        String[] sArray = s.split(" ");
+        for (String ss : sArray) {
+            int n = ss.length();
+            for (int i = 0; i < n; i++) {
+                char c = ss.charAt(i);
+                if (!hm.containsKey(i)) hm.put(i,"");
+                String current = hm.get(i) + c;
+                hm.put(i, current);
+            }
+        }
+        List<String> output = new ArrayList<>(hm.values());
+        return output;
+    }
+
+
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        if (source == destination) return true;
+        Deque<Integer> queue = new ArrayDeque<>();
+        Set<Integer> visited = new HashSet<>();
+        queue.add(source);
+        visited.add(source);
+        while (!queue.isEmpty()) {
+            int currentSource = queue.pollFirst();
+            for (int[] edge : edges) {
+                int a = edge[0];
+                int b = edge[1];
+                if (a == currentSource || b == currentSource) {
+                    int currentDest = (a == currentSource) ? b : a;
+                    if (currentDest == destination) return true;
+                    if (!visited.contains(currentDest)) {
+                        visited.add(currentDest);
+                        queue.addLast(currentDest);
+                    }
+                } else {
+                    continue;
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+
+
+
+
     public static void main(String[] args) {
         int i = Integer.MAX_VALUE;
         System.out.println(i);
         System.out.println(Integer.MAX_VALUE);
         int[][] a = {{1,2},{3},{3},{}};
-        var v = allPathsSourceTarget(a);
+        System.out.println(Math.pow(10d, 3d));
+
+        System.out.println("geragarf");
+
+//        List<Long> area = new ArrayList<>(Arrays.asList(1200L,1300L,1200L,1300L,1200L,2000L));
+//        List<Long> prices = new ArrayList<>(Arrays.asList(12000L,24000L,14000L,22000L,13000L,30000L));
+
+
+        List<Long> area = new ArrayList<>(Arrays.asList(1200L, 1200L, 1200L, 2000L));
+        List<Long> prices = new ArrayList<>(Arrays.asList(15000L,11000L,17000L,25000L));
+
+
+
+
 
     }
 
