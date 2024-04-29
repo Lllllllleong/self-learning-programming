@@ -649,7 +649,44 @@ public class Leetcode3 {
     }
 
 
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
+        int[][] graph = new int[n][n];
+        for (int[] row : graph) {
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
+        for (int[] flight : flights) {
+            graph[flight[0]][flight[1]] = flight[2];
+        }
 
+        int[] costs = new int[n];
+        Arrays.fill(costs, Integer.MAX_VALUE);
+        costs[src] = 0;
+
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{src, 0});
+
+        int steps = 0;
+        while (!queue.isEmpty() && steps <= K) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int[] current = queue.poll();
+                int currentCity = current[0];
+                int currentCost = current[1];
+                for (int nextCity = 0; nextCity < n; nextCity++) {
+                    if (graph[currentCity][nextCity] != Integer.MAX_VALUE) {
+                        int nextCost = currentCost + graph[currentCity][nextCity];
+                        if (nextCost < costs[nextCity]) {
+                            costs[nextCity] = nextCost;
+                            queue.offer(new int[]{nextCity, nextCost});
+                        }
+                    }
+                }
+            }
+            steps++;
+        }
+
+        return costs[dst] == Integer.MAX_VALUE ? -1 : costs[dst];
+    }
 
 
 
@@ -660,7 +697,8 @@ public class Leetcode3 {
         int[][] a = {{1,2},{3},{3},{}};
         System.out.println(Math.pow(10d, 3d));
 
-        System.out.println("geragarf");
+        int[][] flights = {{0,1,100},{1,2,100},{2,0,100},{1,3,600},{2,3,200}};
+        int cbudoe = findCheapestPrice(4,flights,0,3,1);
 
 //        List<Long> area = new ArrayList<>(Arrays.asList(1200L,1300L,1200L,1300L,1200L,2000L));
 //        List<Long> prices = new ArrayList<>(Arrays.asList(12000L,24000L,14000L,22000L,13000L,30000L));
