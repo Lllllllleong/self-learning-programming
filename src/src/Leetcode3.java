@@ -836,6 +836,26 @@ public class Leetcode3 {
         return output;
     }
 
+
+
+
+
+    public int findJudge(int n, int[][] trust) {
+        if (n == 1) return (trust.length==0) ? 1 : -1;
+        if (trust.length < n-1) return -1;
+        Set<Integer> visited = new HashSet<>();
+        int[] trustArray = new int[n+1];
+        for (int[] t : trust) {
+            visited.add(t[0]);
+            trustArray[t[1]]++;
+        }
+        System.out.println(Arrays.toString(trustArray));
+        for (int i = 1; i < n+1; i++) {
+            if (trustArray[i] == n-1 && !visited.contains(i)) return i;
+        }
+        return -1;
+    }
+
     public static void main(String[] args) {
         int[] a = {-2,-2,1,-2};
 
