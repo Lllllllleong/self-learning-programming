@@ -185,7 +185,7 @@ public class References {
 
 
 
-        //Int array to list
+        //Int[] to list
         // Create a mutable list instead of an immutable one.
         List<Integer> listt = new ArrayList<>(Arrays.stream(a).boxed().toList());
 
