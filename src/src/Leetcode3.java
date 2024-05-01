@@ -908,52 +908,73 @@ public class Leetcode3 {
 
 
 
-    public static List<List<Integer>> permute(int[] nums) {
-        List<Integer> list = new ArrayList<>(Arrays.stream(nums).boxed().toList());
-        if (nums.length == 1) {
-            List<List<Integer>> output = new ArrayList<>();
-            output.add(list);
-            return output;
-        } else {
-            return permute2(list);
-        }
+//    public static List<List<Integer>> permute(int[] nums) {
+//        List<Integer> list = new ArrayList<>(Arrays.stream(nums).boxed().toList());
+//        if (nums.length == 1) {
+//            List<List<Integer>> output = new ArrayList<>();
+//            output.add(list);
+//            return output;
+//        } else {
+//            return permute2(list);
+//        }
+//
+//    }
+//    public static List<List<Integer>> permute2(List<Integer> input) {
+//        List<Integer> currentList = new ArrayList<>(input);
+//        List<List<Integer>> output = new ArrayList<>();
+//        if (input.size() == 1) {
+//            output.add(currentList);
+//            return output;
+//        } else if (input.size() == 2) {
+//            output.add(currentList);
+//            currentList = new ArrayList<>(currentList);
+//            Collections.rotate(currentList,-1);
+//            output.add(currentList);
+//            return output;
+//        } else {
+//            for (int i = 0; i < input.size(); i++) {
+//                Integer first = currentList.get(0);
+//                List<List<Integer>> nextList = permute2(currentList.subList(1, currentList.size()));
+//                for (List<Integer> l : nextList) {
+//                    List<Integer> ll = new ArrayList<>(l);
+//                    ll.add(0, first);
+//                    output.add(ll);
+//                }
+//                Collections.rotate(currentList, -1);
+//            }
+//        }
+//        return output;
+//    }
 
-    }
-    public static List<List<Integer>> permute2(List<Integer> input) {
-        List<Integer> currentList = new ArrayList<>(input);
+
+    public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> output = new ArrayList<>();
-        if (input.size() == 1) {
-            output.add(currentList);
-            return output;
-        } else if (input.size() == 2) {
-            output.add(currentList);
-            currentList = new ArrayList<>(currentList);
-            Collections.rotate(currentList,-1);
-            output.add(currentList);
+        Deque<Integer> dqNums = new ArrayDeque<>(Arrays.stream(nums).boxed().toList());
+        if (nums.length == 1) {
+            output.add(new ArrayList<>(dqNums));
             return output;
         } else {
-            for (int i = 0; i < input.size(); i++) {
-                Integer first = currentList.get(0);
-                List<List<Integer>> nextList = permute2(currentList.subList(1, currentList.size()));
-                for (List<Integer> l : nextList) {
-                    List<Integer> ll = new ArrayList<>(l);
-                    ll.add(0, first);
-                    output.add(ll);
-                }
-                Collections.rotate(currentList, -1);
+            permute2(output, new ArrayDeque<>(), dqNums);
+            return output;
+        }
+    }
+    public void permute2(List<List<Integer>> output, Deque<Integer> dq, Deque<Integer> nums) {
+        int n = nums.size();
+        if (n == 0) {
+            output.add(new ArrayList<>(dq));
+        } else {
+            for (int i = 0; i < n; i++) {
+                dq.addLast(nums.pollFirst());
+                permute2(output, dq, nums);
+                nums.addLast(dq.pollLast());
             }
         }
-        return output;
     }
-
-
-
 
 
     public static void main(String[] args) {
         int[] a = {1,2,3};
 
-        var v = permute(a);
     }
 
 
