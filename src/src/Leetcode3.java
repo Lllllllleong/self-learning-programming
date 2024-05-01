@@ -395,16 +395,14 @@ public class Leetcode3 {
         for (int[] pair : pairs) {
             start = pair[0];
             end = pair[1];
-            while (index != end+1) {
-                dp[index] = Math.max(dp[index], dp[index+1]);
+            while (index != end + 1) {
+                dp[index] = Math.max(dp[index], dp[index + 1]);
                 index--;
             }
             dp[start] = Math.max(dp[start], dp[index] + 1);
         }
         return dp[start];
     }
-
-
 
 
     public boolean canPartitionKSubsets(int[] nums, int k) {
@@ -416,6 +414,7 @@ public class Leetcode3 {
         int target = (int) (sum / k);
         return canPartitionKSubsets2(nums, 0, target, buckets);
     }
+
     public boolean canPartitionKSubsets2(int[] nums, int index, int targetSum, int[] buckets) {
         if (index == nums.length) return true;
         int currentNumber = nums[index];
@@ -423,7 +422,7 @@ public class Leetcode3 {
             int currentBucket = buckets[i];
             if (currentBucket + currentNumber <= targetSum) {
                 buckets[i] += currentBucket;
-                if (canPartitionKSubsets2(nums, index+1, targetSum, buckets)) return true;
+                if (canPartitionKSubsets2(nums, index + 1, targetSum, buckets)) return true;
                 buckets[i] -= currentBucket;
             }
         }
@@ -451,6 +450,7 @@ public class Leetcode3 {
 
 
     }
+
     public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
         int n = startTime.length;
         if (n == 1) return profit[0];
@@ -474,7 +474,7 @@ public class Leetcode3 {
             while (dpPointer > end) {
                 System.out.println(dpPointer);
                 dpPointer--;
-                dpArray[dpPointer] = Math.max(dpArray[dpPointer], dpArray[dpPointer+1]);
+                dpArray[dpPointer] = Math.max(dpArray[dpPointer], dpArray[dpPointer + 1]);
             }
             System.out.println("after while loop, dpArray[start], dpArray[dpPointer] + p, dpstart after ");
             System.out.println(dpArray[start]);
@@ -488,14 +488,13 @@ public class Leetcode3 {
     }
 
 
-
-
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         Arrays.sort(candidates);
-        List<List<Integer>> a =  combSum2(candidates, 0, target);
+        List<List<Integer>> a = combSum2(candidates, 0, target);
         Set<List<Integer>> s = new HashSet<>(a);
         return new ArrayList<>(s);
     }
+
     public List<List<Integer>> combSum2(int[] marks, int startIndex, int target) {
         List<List<Integer>> out = new ArrayList<>();
         if (target < 0 || startIndex == marks.length) return out;
@@ -503,9 +502,9 @@ public class Leetcode3 {
             out.add(new ArrayList<>());
             return out;
         } else {
-            out = combSum2(marks, startIndex+1, target);
+            out = combSum2(marks, startIndex + 1, target);
             int currentMark = marks[startIndex];
-            var nextComb = combSum2(marks, startIndex+1, target-currentMark);
+            var nextComb = combSum2(marks, startIndex + 1, target - currentMark);
             for (var v : nextComb) {
                 v.add(currentMark);
                 Collections.sort(v);
@@ -522,13 +521,14 @@ public class Leetcode3 {
         int n = graph.length;
         pathsFromKeyToEnd = new HashMap<>();
         List<Integer> lastNode = new ArrayList<>();
-        lastNode.add(n-1);
+        lastNode.add(n - 1);
         List<List<Integer>> dList = new ArrayList<>();
         dList.add(lastNode);
-        pathsFromKeyToEnd.put(n-1,dList);
+        pathsFromKeyToEnd.put(n - 1, dList);
         pathDFS(0, graph);
         return pathsFromKeyToEnd.get(0);
     }
+
     public static void pathDFS(int currentNode, int[][] graph) {
         List<List<Integer>> list = new ArrayList<>();
         for (int path : graph[currentNode]) {
@@ -544,8 +544,6 @@ public class Leetcode3 {
         }
         pathsFromKeyToEnd.put(currentNode, list);
     }
-
-
 
 
     public List<Integer> largestValues(TreeNode root) {
@@ -585,12 +583,9 @@ public class Leetcode3 {
             }
         }
         output = Math.max(output, priorLength + currentLength);
-        if (output == nums.length) return output-1;
+        if (output == nums.length) return output - 1;
         else return output;
     }
-
-
-
 
 
     public List<String> printVertically(String s) {
@@ -600,7 +595,7 @@ public class Leetcode3 {
             int n = ss.length();
             for (int i = 0; i < n; i++) {
                 char c = ss.charAt(i);
-                if (!hm.containsKey(i)) hm.put(i,"");
+                if (!hm.containsKey(i)) hm.put(i, "");
                 String current = hm.get(i) + c;
                 hm.put(i, current);
             }
@@ -689,7 +684,6 @@ public class Leetcode3 {
     }
 
 
-
     public int networkDelayTime(int[][] times, int n, int k) {
         int[] dist = new int[n];
         Arrays.fill(dist, Integer.MAX_VALUE);
@@ -720,9 +714,6 @@ public class Leetcode3 {
     }
 
 
-
-
-
     public int countStudents(int[] students, int[] sandwiches) {
         int n = students.length;
         if (n == 1) return (students[0] == sandwiches[0]) ? 0 : 1;
@@ -745,24 +736,42 @@ public class Leetcode3 {
     }
 
 
+    public int[] asteroidCollision(int[] asteroids) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int asteroid : asteroids) {
+            if (dq.isEmpty()) dq.addLast(asteroid);
+            else {
+                int priorAsteroid = dq.peekLast();
+                if (priorAsteroid > 0 && asteroid > 0
+                        || priorAsteroid < 0 && asteroid < 0
+                        || priorAsteroid < 0 && asteroid > 0) dq.addLast(asteroid);
+                else {
+                    while (!dq.isEmpty() && dq.peekLast() > 0 && dq.peekLast() < Math.abs(asteroid)) {
+
+                        dq.pollLast();
+                    }
+                    if (dq.isEmpty() || dq.peekLast() < 0) {
+
+                        dq.addLast(asteroid);
+                    } else if (dq.peekLast() == Math.abs(asteroid)) {
+                        dq.pollLast();
+                    }
+                }
+            }
+        }
+        int[] output = new int[dq.size()];
+        int i = 0;
+        while (!dq.isEmpty()) {
+            output[i] = dq.pollFirst();
+            i++;
+        }
+        return output;
+    }
+
+
     public static void main(String[] args) {
-        int i = Integer.MAX_VALUE;
-        System.out.println(i);
-        System.out.println(Integer.MAX_VALUE);
-        int[][] a = {{1,2},{3},{3},{}};
-        System.out.println(Math.pow(10d, 3d));
-
-        int[][] flights = {{0,1,100},{1,2,100},{2,0,100},{1,3,600},{2,3,200}};
-
-//        List<Long> area = new ArrayList<>(Arrays.asList(1200L,1300L,1200L,1300L,1200L,2000L));
-//        List<Long> prices = new ArrayList<>(Arrays.asList(12000L,24000L,14000L,22000L,13000L,30000L));
-
-
-        List<Long> area = new ArrayList<>(Arrays.asList(1200L, 1200L, 1200L, 2000L));
-        List<Long> prices = new ArrayList<>(Arrays.asList(15000L,11000L,17000L,25000L));
-
-
-
+        int[] a = {-2,-2,1,-2};
+        int[] b = asteroidCollision(a);
 
 
     }
@@ -787,8 +796,6 @@ public class Leetcode3 {
         }
     }
 }
-
-
 
 
 //class Solution extends SolBase {
