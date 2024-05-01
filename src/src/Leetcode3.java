@@ -947,29 +947,90 @@ public class Leetcode3 {
 //    }
 
 
+//    public List<List<Integer>> permute(int[] nums) {
+//        List<List<Integer>> output = new ArrayList<>();
+//        List<Integer> numsList = new ArrayList<>(Arrays.stream(nums).boxed().toList());
+//        if (nums.length == 1) {
+//            output.add(numsList);
+//            return output;
+//        } else {
+//            permute2(output, new ArrayList<>(), numsList, nums.length);
+//            return output;
+//        }
+//    }
+//    public void permute2(List<List<Integer>> output, List<Integer> subOutput, List<Integer> numsList, int limit) {
+//        if (subOutput.size() == limit) output.add(new ArrayList<>(subOutput));
+//        else {
+//            for (Integer I : numsList) {
+//                if (!subOutput.contains(I)) {
+//                    subOutput.add(I);
+//                    permute2(output,subOutput, numsList, limit);
+//                    subOutput.remove(I);
+//                }
+//            }
+//        }
+//    }
+
+
+
+
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> output = new ArrayList<>();
-        List<Integer> numsList = new ArrayList<>(Arrays.stream(nums).boxed().toList());
+        Deque<Integer> dqNums = new ArrayDeque<>(Arrays.stream(nums).boxed().toList());
         if (nums.length == 1) {
-            output.add(numsList);
+            output.add(new ArrayList<>(dqNums));
             return output;
         } else {
-            permute2(output, new ArrayList<>(), numsList, nums.length);
+            permute2(output, new ArrayDeque<>(), dqNums);
             return output;
         }
     }
-    public void permute2(List<List<Integer>> output, List<Integer> subOutput, List<Integer> numsList, int limit) {
-        if (subOutput.size() == limit) output.add(new ArrayList<>(subOutput));
-        else {
-            for (Integer I : numsList) {
-                if (!subOutput.contains(I)) {
-                    subOutput.add(I);
-                    permute2(output,subOutput, numsList, limit);
-                    subOutput.remove(I);
+    public void permute2(List<List<Integer>> output, Deque<Integer> dq, Deque<Integer> nums) {
+        int n = nums.size();
+        if (n == 0) {
+            output.add(new ArrayList<>(dq));
+        } else {
+            for (int i = 0; i < n; i++) {
+                dq.addLast(nums.pollFirst());
+                permute2(output, dq, nums);
+                nums.addLast(dq.pollLast());
+            }
+        }
+    }
+
+
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> output = new ArrayList<>();
+        Deque<Integer> dqNums = new ArrayDeque<>(Arrays.stream(nums).boxed().toList());
+        if (nums.length == 1) {
+            output.add(new ArrayList<>(dqNums));
+            return output;
+        } else {
+            permuteUnique2(output, new ArrayDeque<>(), dqNums);
+            return output;
+        }
+    }
+    public void permuteUnique2(List<List<Integer>> output, Deque<Integer> dq, Deque<Integer> nums) {
+        int n = nums.size();
+        if (n == 0) {
+            output.add(new ArrayList<>(dq));
+        } else {
+            Set<Integer> s = new HashSet<>();
+            for (int i = 0; i < n; i++) {
+                Integer I = nums.pollFirst();
+                if (!s.contains(I)) {
+                    s.add(I);
+                    dq.addLast(I);
+                    permuteUnique2(output, dq, nums);
+                    nums.addLast(dq.pollLast());
+                } else {
+                    nums.addLast(I);
                 }
             }
         }
     }
+
+
 
 
     public static void main(String[] args) {
