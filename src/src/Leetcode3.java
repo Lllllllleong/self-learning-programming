@@ -1030,6 +1030,38 @@ public class Leetcode3 {
         }
     }
 
+    public int edgeScore(int[] edges) {
+        int n = edges.length;
+        long[] scoreArray = new long[n];
+        for (int i = 0; i < n; i++) {
+            int edgeTo = edges[i];
+            scoreArray[edgeTo] += i;
+        }
+        System.out.println(Arrays.toString(scoreArray));
+        long currentMax = scoreArray[n-1];
+        int maxNode = n-1;
+        for (int i = n - 1; i >= 0; i--) {
+            long score = scoreArray[i];
+            if (score >= currentMax) {
+                currentMax = score;
+                maxNode = i;
+            }
+        }
+        return maxNode;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
