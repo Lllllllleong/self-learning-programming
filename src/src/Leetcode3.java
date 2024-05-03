@@ -1052,6 +1052,21 @@ public class Leetcode3 {
 
 
 
+    public List<Integer> findSmallestSetOfVertices(int n, List<List<Integer>> edges) {
+        int[] graphDP = new int[n];
+        for (List<Integer> edge : edges) {
+            int edgeTo = edge.get(1);
+            graphDP[edgeTo] = 1;
+        }
+        List<Integer> output = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (graphDP[i] == 0) output.add(i);
+        }
+        return output;
+    }
+
+
+
 
 
 
