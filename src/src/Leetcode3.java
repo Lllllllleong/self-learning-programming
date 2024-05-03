@@ -1066,6 +1066,26 @@ public class Leetcode3 {
     }
 
 
+    public String lastNonEmptyString(String s) {
+        int n = s.length();
+        if (n == 1) return s;
+        HashMap<Character, Integer> frequencyMap = new HashMap<>();
+        char[] cArray = s.toCharArray();
+        for (Character c : cArray) frequencyMap.merge(c, 1, Integer::sum);
+        int maxValueInMap = (Collections.max(frequencyMap.values()));
+        List<Character> charList = new ArrayList<>();
+        for (Map.Entry<Character, Integer> entry : frequencyMap.entrySet()) {
+            if (entry.getValue() == maxValueInMap) charList.add(entry.getKey());
+        }
+        Collections.sort(charList, new Comparator<Character>() {
+            public int compare(Character a, Character b) {
+                return (s.lastIndexOf(a) - s.lastIndexOf(b));
+            }
+        });
+        String output = "";
+        for (Character c : charList) output += c;
+        return output;
+    }
 
 
 
