@@ -1209,7 +1209,21 @@ public class Leetcode3 {
     }
 
 
-
+    public long taskSchedulerII(int[] tasks, int space) {
+        int n = tasks.length;
+        int spaceInclusive = space + 1;
+        HashMap<Integer, Long> hmIndex = new HashMap<>();
+        long dayCounter = 0;
+        for (int task : tasks) {
+            dayCounter++;
+            if (hmIndex.containsKey(task)) {
+                Long previousIndex = hmIndex.get(task);
+                dayCounter = Math.max(dayCounter, previousIndex + spaceInclusive);
+            }
+            hmIndex.put(task, dayCounter);
+        }
+        return dayCounter;
+    }
 
 
 
