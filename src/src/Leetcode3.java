@@ -1247,6 +1247,29 @@ public class Leetcode3 {
 
 
 
+    public int minOperationsMaxProfit(int[] customers, int boardingCost, int runningCost) {
+        int maxProfit = 0;
+        int profitRotations = -1;
+        int countRotations = 0;
+        int profit = 0;
+        Deque<Integer> dq = new ArrayDeque<>(Arrays.stream(customers).boxed().toList());
+        while (!dq.isEmpty()) {
+            int customer = dq.pollFirst();
+            if (customer > 4) {
+                dq.addFirst(customer-4);
+                customer = 4;
+
+            }
+            countRotations++;
+            profit += (customer * boardingCost * 2) - runningCost;
+            if (profit > maxProfit) {
+                maxProfit = profit;
+                profitRotations = countRotations;
+            }
+        }
+        return profitRotations;
+    }
+
 
 
     public static void main(String[] args) {
