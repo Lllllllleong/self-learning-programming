@@ -1445,6 +1445,28 @@ public class Leetcode3 {
 
 
 
+    public int numDistinct(String s, String t) {
+        int sLength = s.length();
+        int tLength = t.length();
+        Integer[][] dp = new Integer[sLength+1][tLength+1];
+        numDistinct(s,t,0,0,dp);
+        return numDistinct(s,t,0,0,dp);
+    }
+    public int numDistinct(String s, String t, int sIndex, int tIndex, Integer[][] dp) {
+        if (tIndex == t.length()) return dp[sIndex][tIndex] = 1;
+        if (sIndex == s.length()) return dp[sIndex][tIndex] = 0;
+        if (dp[sIndex][tIndex] != null) return dp[sIndex][tIndex];
+        char sChar = s.charAt(sIndex);
+        char tChar = t.charAt(tIndex);
+        if (sChar == tChar) {
+            return dp[sIndex][tIndex] = numDistinct(s,t,sIndex+1,tIndex+1,dp) + numDistinct(s,t,sIndex+1,tIndex,dp);
+        } else {
+            return dp[sIndex][tIndex] = numDistinct(s,t,sIndex+1,tIndex,dp);
+        }
+    }
+
+
+
 
 
 
