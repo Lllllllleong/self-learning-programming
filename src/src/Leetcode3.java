@@ -1515,6 +1515,38 @@ public class Leetcode3 {
 
 
 
+
+
+    public int candy(int[] ratings) {
+        int n = ratings.length;
+        if (n == 1) return 1;
+        int output = 0;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int i = 0; i < n; i++) hm.put(i, ratings[i]);
+        List<Integer> keyList = new ArrayList<>(hm.keySet());
+        Collections.sort(keyList, (a,b) ->  (hm.get(a) - hm.get(b)));
+        int[] candyArray = new int[n];
+        for (int i : keyList) {
+            int rating = ratings[i];
+            int candy = 1;
+            if (i != 0 && ratings[i-1] < rating) candy = candyArray[i-1]+1;
+            if (i != n-1 && ratings[i+1] < rating) candy = Math.max(candy, candyArray[i+1]+1);
+            candyArray[i] = candy;
+            output += candy;
+        }
+        return output;
+    }
+
+
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
         int[] a = {1,2,3};
         Deque<Node> dq = new ArrayDeque<>();
