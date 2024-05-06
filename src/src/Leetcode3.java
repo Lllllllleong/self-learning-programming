@@ -1539,6 +1539,15 @@ public class Leetcode3 {
     }
 
 
+    public int singleNumber(int[] nums) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int i : nums) hm.merge(i, 1, Integer::sum);
+        List<Integer> keyList = new ArrayList<>(hm.keySet());
+        for (int key : keyList) {
+            if (hm.get(key) == 1) return key;
+        }
+        return -1;
+    }
 
 
 
