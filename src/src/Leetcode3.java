@@ -1490,6 +1490,29 @@ public class Leetcode3 {
 
 
 
+    public int longestConsecutive(int[] nums) {
+        int n = nums.length;
+        if (n <= 1) return n;
+        Arrays.sort(nums);
+        int output = 0;
+        int counter = 1;
+        int expected = nums[0] + 1;
+        for (int i = 1; i < n; i++) {
+            int num = nums[i];
+            if (num < expected) {
+                continue;
+            } else if (num == expected) {
+                counter++;
+            } else {
+                output = Math.max(output, counter);
+                counter = 1;
+            }
+            expected = num + 1;
+        }
+        output = Math.max(output, counter);
+        return output;
+    }
+
 
 
     public static void main(String[] args) {
