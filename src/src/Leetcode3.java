@@ -1558,6 +1558,19 @@ public class Leetcode3 {
 
 
 
+    public int maximumGap(int[] nums) {
+        int n = nums.length;
+        if (n <= 1) return 0;
+        Arrays.sort(nums);
+        int prior = nums[0];
+        int diff = 0;
+        for (int i = 1; i < n; i++) {
+            int num = nums[i];
+            diff = Math.max(diff, num - prior);
+            prior = num;
+        }
+        return diff;
+    }
 
 
 
