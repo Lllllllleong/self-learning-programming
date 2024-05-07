@@ -1574,7 +1574,14 @@ public class Leetcode3 {
 
 
 
-
+    public int findDuplicate(int[] nums) {
+        boolean[] b = new boolean[100000];
+        for (int i : nums) {
+            if (b[i] == true) return i;
+            else b[i] = true;
+        }
+        return 2;
+    }
 
     public int findKthLargest(int[] nums, int k) {
         PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
@@ -1595,9 +1602,7 @@ public class Leetcode3 {
         n.next = dq.peekFirst();
         System.out.println(n.next);
 
-        System.out.println(' ' - '0');
-        dq.addLast(new Node());
-        System.out.println(dq.poll());
+
 
     }
 
