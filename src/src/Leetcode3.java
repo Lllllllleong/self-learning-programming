@@ -1576,6 +1576,18 @@ public class Leetcode3 {
 
 
 
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        for (int i : nums) {
+            if (!pq.contains(i)) pq.add(i);
+        }
+        while (k > 1) {
+            pq.poll();
+            k--;
+        }
+        return pq.poll();
+    }
+
     public static void main(String[] args) {
         int[] a = {1,2,3};
         Deque<Node> dq = new ArrayDeque<>();
