@@ -1731,6 +1731,22 @@ public class Leetcode3 {
         }
         return output;
     }
+    public int sumOfUnique(int[] nums) {
+        Boolean[] flag = new Boolean[101];
+        long sum = 0;
+        for (int i : nums) {
+            if (flag[i] == null) {
+                flag[i] = true;
+                sum += i;
+            } else if (flag[i] == true) {
+                flag[i] = false;
+                sum -= i;
+            } else {
+                continue;
+            }
+        }
+        return (int) sum;
+    }
 
 
 
