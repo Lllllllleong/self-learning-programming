@@ -1751,25 +1751,24 @@ public class Leetcode3 {
 
 
     public int maxOperations(int[] nums, int k) {
+        int n = nums.length;
+        if (k == 1 || n == 1) return 0;
         Arrays.sort(nums);
-        int[] dp = new int[100001];
-        HashMap<Integer, Integer> frequencyMap = new HashMap<>();
-        Set<Integer> checkSet = new HashSet<>();
-        boolean even = (k % 2 == 0);
-        int iMax = (k/2)+1;
-        for (int i : nums) {
-            frequencyMap.merge(i, 1, Integer::sum);
-            if (i >= iMax && frequencyMap.containsKey(k-i)) checkSet.add(k-i);
-        }
-        if (k == 1) return 0;
-        if (k == 2) return (frequencyMap.containsKey(1)) ? frequencyMap.get(1)/2 : 0;
+        int leftIndex = 0;
+        int rightIndex = n-1;
         int output = 0;
-        for (Integer I : checkSet) {
-            output += Math.min(frequencyMap.get(I), frequencyMap.get(k-I));
-        }
-        if (even) {
-            if (frequencyMap.containsKey(k/2)) {
-                output += frequencyMap.get(k/2)/2;
+        while (leftIndex < rightIndex) {
+            int left = nums[leftIndex];
+            int right = nums[rightIndex];
+            int currentSum = left+right;
+            if (currentSum == k) {
+                leftIndex++;
+                rightIndex--;
+                output++;
+            } else if (currentSum < k) {
+                leftIndex++;
+            } else {
+                rightIndex--;
             }
         }
         return output;
