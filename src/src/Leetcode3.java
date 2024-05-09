@@ -1,4 +1,5 @@
 import com.sun.security.jgss.GSSUtil;
+import com.sun.source.tree.Tree;
 
 import java.util.*;
 
@@ -1774,6 +1775,45 @@ public class Leetcode3 {
         return output;
     }
 
+
+
+
+    public boolean isEvenOddTree(TreeNode root) {
+        if (root == null) return false;
+        Deque<TreeNode> dq = new ArrayDeque<>();
+        dq.add(root);
+        return evenLevel(dq);
+    }
+    public boolean evenLevel(Deque<TreeNode> dq) {
+        if (dq.isEmpty()) return true;
+        Deque<TreeNode> nextDQ = new ArrayDeque<>();
+        int prior = Integer.MIN_VALUE;
+        while (!dq.isEmpty()) {
+            TreeNode current = dq.pollFirst();
+            int val = current.val;
+            if (val % 2 == 0) return false;
+            if (prior >= val) return false;
+            prior = val;
+            if (current.left != null) nextDQ.addLast(current.left);
+            if (current.right != null) nextDQ.addLast(current.right);
+        }
+        return oddLevel(nextDQ);
+    }
+    public boolean oddLevel(Deque<TreeNode> dq) {
+        if (dq.isEmpty()) return true;
+        Deque<TreeNode> nextDQ = new ArrayDeque<>();
+        int prior = Integer.MAX_VALUE;
+        while (!dq.isEmpty()) {
+            TreeNode current = dq.pollFirst();
+            int val = current.val;
+            if (val % 2 != 0) return false;
+            if (prior <= val) return false;
+            prior = val;
+            if (current.left != null) nextDQ.addLast(current.left);
+            if (current.right != null) nextDQ.addLast(current.right);
+        }
+        return evenLevel(nextDQ);
+    }
 
 
 
