@@ -1804,6 +1804,23 @@ public class Leetcode3 {
 
 
 
+    public int maximumUniqueSubarray(int[] nums) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        int output = 0;
+        int currentSum = 0;
+        for (int i : nums) {
+            while (dq.contains(i)) {
+                int removed = dq.pollFirst();
+                currentSum -= removed;
+            }
+            dq.addLast(i);
+            currentSum += i;
+            output = Math.max(output, currentSum);
+        }
+        return output;
+    }
+
+
 
 
 
