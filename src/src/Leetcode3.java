@@ -1776,7 +1776,8 @@ public class Leetcode3 {
     }
 
 
-=
+
+
     public boolean isEvenOddTree(TreeNode root) {
         if (root == null) return false;
         Queue<TreeNode> queue = new LinkedList<>();
@@ -1828,15 +1829,67 @@ public class Leetcode3 {
     }
 
 
+    public int bestTeamScore(int[] scores, int[] ages) {
+        int n = scores.length;
+        int[][] players = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            int score = scores[i];
+            int age = ages[i];
+            int[] tmp = {score, age};
+            players[i] = tmp;
+        }
+        Arrays.sort(players, (a, b) -> {
+            if (a[1] == b[1]) return a[0] - b[0];
+            return a[1] - b[1];
+        });
+        int output = 0;
+        for (int i = 0; i < n; i++) {
+            int[] player = players[i];
+            int currentScore = player[0];
+            int scoreSum = currentScore;
+            for (int j = 1; j < n; j++) {
+                int[] nextPlayer = players[j];
+                if (nextPlayer[0] <= currentScore) scoreSum += nextPlayer[0];
+            }
+            output = Math.max(output, scoreSum);
+        }
+        return output;
+    }
+
+
+
+    public int maxCoins(int[] piles) {
+        Arrays.sort(piles);
+        int n = piles.length;
+        int steps = n/3;
+        int index = n-2;
+        int output = 0;
+        while (steps != 0) {
+            output += piles[index];
+            index -= 2;
+            steps--;
+        }
+        return output;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
     public static void main(String[] args) {
         int[] a = {1, 2, 3};
-        Deque<Node> dq = new ArrayDeque<>();
-        Node n = new Node(2);
-        n.next = dq.peekFirst();
-        System.out.println(n.next);
 
 
     }
