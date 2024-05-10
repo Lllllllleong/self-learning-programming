@@ -1877,39 +1877,12 @@ public class Leetcode3 {
 
 
 
-    public int numberWays(List<List<Integer>> hats) {
-        int numPeople = hats.size();
-        if (numPeople == 1) return hats.get(0).size();
-        return numberWays2(hats, 0, new ArrayList<>());
+
+    public int addedInteger(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        return nums2[0] - nums1[0];
     }
-
-
-    public int numberWays2(List<List<Integer>> hats, int personIndex, List<Integer> illegalHats) {
-        if (personIndex == hats.size()) return 1;
-        List<Integer> myLegalHats = new ArrayList<>();
-        for (Integer myHat : hats.get(personIndex)) {
-            if (!illegalHats.contains(myHat)) myLegalHats.add(myHat);
-        }
-        int output = 0;
-        for (Integer myHat : myLegalHats) {
-            illegalHats.add(myHat);
-            output += numberWays2(hats, personIndex+1, illegalHats);
-            illegalHats.remove(illegalHats.size()-1);
-        }
-        return output;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
 
     public static void main(String[] args) {
         int[] a = {1, 2, 3};
