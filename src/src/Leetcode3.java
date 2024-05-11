@@ -1984,6 +1984,30 @@ public class Leetcode3 {
 
 
 
+
+
+
+    int globalPathSum;
+    public int pathSum(TreeNode root, int targetSum) {
+        if (root == null) return 0;
+        pathSumFromNode(root, targetSum, 0);
+        pathSum(root.left, targetSum);
+        pathSum(root.right, targetSum);
+        return globalPathSum;
+    }
+
+    private void pathSumFromNode(TreeNode node, long targetSum, long currentSum) {
+        if (node == null) return;
+        currentSum += node.val;
+        if (currentSum == targetSum) {
+            globalPathSum++;
+        }
+        pathSumFromNode(node.left, targetSum, currentSum);
+        pathSumFromNode(node.right, targetSum, currentSum);
+    }
+
+
+
     public static void main(String[] args) {
         int[] a = {1,1,1,1};
         List<Integer> aList = Arrays.stream(a).boxed().toList();
