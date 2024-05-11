@@ -2022,6 +2022,21 @@ public class Leetcode3 extends Leetcode2{
     }
 
 
+    public int firstMissingPositive(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        int prev = 1;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] <= 0) continue;
+            if (i > 0 && nums[i] == nums[i-1]) continue;
+            if (nums[i] == prev) {
+                prev++;
+            }
+            return prev;
+        }
+        return prev;
+    }
+
 
     public static void main(String[] args) {
         int[] a = {1,1,1,1};
