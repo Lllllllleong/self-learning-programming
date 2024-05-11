@@ -3,7 +3,7 @@ import com.sun.source.tree.Tree;
 
 import java.util.*;
 
-public class Leetcode3 {
+public class Leetcode3 extends Leetcode2{
 
     public List<Integer> diffWaysToCompute(String expression) {
         int n = expression.length();
@@ -2004,6 +2004,21 @@ public class Leetcode3 {
         }
         pathSumFromNode(node.left, targetSum, currentSum);
         pathSumFromNode(node.right, targetSum, currentSum);
+    }
+
+
+
+    public ListNode swapNodes(ListNode head, int k) {
+        ListNode ln = head;
+        List<ListNode> list = new ArrayList<>();
+        while (ln != null) {
+            list.add(ln);
+            ln = ln.next;
+        }
+        int tmp = list.get(k-1).val;
+        list.get(k-1).val = list.get(list.size()-k).val;
+        list.get(list.size()-k).val = tmp;
+        return head;
     }
 
 
