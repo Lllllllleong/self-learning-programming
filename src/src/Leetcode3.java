@@ -1912,14 +1912,47 @@ public class Leetcode3 {
 
 
 
+
+
+    public int threeSumClosest(int[] nums, int target) {
+        int n = nums.length;
+        Arrays.sort(nums);
+        int difference = Integer.MAX_VALUE;
+        int output = 0;
+        for (int i = 0; i < n-2; i++) {
+            int first = nums[i];
+            if (i > 0 && first == nums[i-1]) continue;
+            for (int j = i+1; j < n-1; j++) {
+                if (j > i+1 && nums[j] == nums[j-1]) continue;
+                int second = nums[j];
+                for (int k = j+1; k < n; k++) {
+                    if (k > j+1 && nums[k] == nums[k-1]) continue;
+                    int third = nums[k];
+                    int currentSum = first + second + third;
+                    int currentDifference = Math.abs(target - currentSum);
+                    if (currentDifference < difference) {
+                        output = currentSum;
+                        difference = currentDifference;
+                    }
+                }
+            }
+        }
+        return output;
+    }
+
+
+
+
+
+
     public static void main(String[] args) {
-        int[] a = {1,0,-1,0,-2,2};
+        int[] a = {1,1,1,1};
         List<Integer> aList = Arrays.stream(a).boxed().toList();
         Set<List<Integer>> set = new HashSet<>();
         set.add(aList);
         set.add(aList);
         System.out.println(set );
-        var v = fourSum(a, 0);
+        var v = threeSumClosest(a, 0);
     }
 
 
