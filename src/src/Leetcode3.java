@@ -1959,6 +1959,29 @@ public class Leetcode3 {
 
 
 
+    public List<Integer> majorityElement(int[] nums) {
+        List<Integer> output = new ArrayList<>();
+        int n = nums.length;
+        int threshold = n / 3;
+        if (n < 3) {
+            output.add(nums[0]);
+            if (nums[0] != nums[1]) output.add(nums[1]);
+            return output;
+        }
+        Arrays.sort(nums);
+        for (int i = 0; i < n; i++) {
+            int first = nums[i];
+            if (i > 0 && first == nums[i-1]) continue;
+            if (i + threshold >= n) break;
+            int second = nums[i+threshold];
+            if (first == second) {
+                output.add(first);
+                i += threshold;
+            }
+        }
+        return output;
+    }
+
 
 
     public static void main(String[] args) {
