@@ -2055,8 +2055,6 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
-
-
     public static String minWindow(String s, String t) {
         if (t.length() == 1) {
             if (s.contains(t)) return t;
@@ -2100,14 +2098,13 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
-
     public int eraseOverlapIntervals(int[][] intervals) {
         //Sort by end time, first to last
         Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
         int n = intervals.length;
         int overlapCounter = 0;
         for (int i = 1; i < n; i++) {
-            int[] previousInterval = intervals[i-1];
+            int[] previousInterval = intervals[i - 1];
             int[] currentInterval = intervals[i];
             if (currentInterval[0] < previousInterval[1]) {
                 overlapCounter++;
@@ -2120,12 +2117,12 @@ public class Leetcode3 extends Leetcode2 {
     public class Point {
         int index;
         int sum;
+
         public Point(int index, int sum) {
             this.index = index;
             this.sum = sum;
         }
     }
-
 
 
     public boolean makesquare(int[] matchsticks) {
@@ -2139,6 +2136,7 @@ public class Leetcode3 extends Leetcode2 {
         Arrays.fill(lengths, maxLength);
         return makesquare(matchsticks, 0, lengths);
     }
+
     public boolean makesquare(int[] matchsticks, int matchIndex, int[] lengths) {
         int n = matchsticks.length;
         if (matchIndex == n) {
@@ -2157,8 +2155,6 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
-
-
     public static int[] findRedundantConnection(int[][] edges) {
         int n = edges.length;
         boolean[][] graph = new boolean[n][n];
@@ -2170,7 +2166,7 @@ public class Leetcode3 extends Leetcode2 {
             if (findRedundantConnectionSearch(graph, from, to, visited)) return edge;
             graph[from][to] = true;
         }
-        return edges[n-1];
+        return edges[n - 1];
     }
 
     public static boolean findRedundantConnectionSearch(boolean[][] graph, int from, int to, boolean[] visited) {
@@ -2188,7 +2184,6 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
-
     public int change(int amount, int[] coins) {
         Arrays.sort(coins);
         int n = coins.length;
@@ -2197,18 +2192,17 @@ public class Leetcode3 extends Leetcode2 {
             if (amount % coins[0] == 0) return 1;
             else return 0;
         }
-        int[] dp = new int[amount+1];
+        int[] dp = new int[amount + 1];
         dp[0] = 1;
         for (int i = 0; i < n; i++) {
             int currentCoin = coins[i];
-            for (int j = 0; j < amount+1; j++) {
+            for (int j = 0; j < amount + 1; j++) {
                 if (j + currentCoin > amount) break;
-                if (dp[j] > 0) dp[j+currentCoin] += dp[j];
+                if (dp[j] > 0) dp[j + currentCoin] += dp[j];
             }
         }
         return dp[amount];
     }
-
 
 
     public int lengthOfLongestSubsequence(List<Integer> nums, int target) {
@@ -2218,31 +2212,49 @@ public class Leetcode3 extends Leetcode2 {
             return -1;
         }
         Collections.sort(nums);
-        int[] dp = new int[target+1];
+        int[] dp = new int[target + 1];
         int first = nums.get(0);
         if (first > target) return -1;
         dp[first] = 1;
         for (int i = 1; i < n; i++) {
             int num = nums.get(i);
-            for (int j = target-num; j >= 0; j--) {
+            for (int j = target - num; j >= 0; j--) {
                 if (j == 0) {
-                    dp[j+num] = Math.max(dp[j+num], 1);
+                    dp[j + num] = Math.max(dp[j + num], 1);
                 } else {
-                    if (dp[j] > 0) dp[j+num] = Math.max(dp[j+num], dp[j] + 1);
+                    if (dp[j] > 0) dp[j + num] = Math.max(dp[j + num], dp[j] + 1);
                 }
             }
         }
         return (dp[target] == 0) ? -1 : dp[target];
     }
 
-    public static void main(String[] args) {
-        int[] a = {1, 1, 1, 1};
-        int[][] g = {{1,2},{2,3},{3,4},{1,4},{1,5}};
-        findRedundantConnection(g);
+
+    public int maxValueOfCoins(List<List<Integer>> piles, int k) {
+        int xMax = piles.size();
+        int[][] dp = new int[xMax+1][k+1];
+        for (int x = 0; x < xMax; x++) {
+            List<Integer> pile = piles.get(x);
+            for (int y = 0; y <= k; y++) {
+                dp[x + 1][y] = dp[x][y];
+            }
+            int currentSum = 0;
+            for (int c = 0; c < pile.size() && c < k; c++) {
+                currentSum += pile.get(c);
+                for (int y = k; y >= c + 1; y--) {
+                    dp[x+1][y] = Math.max(dp[x+1][y], dp[x][y-(c+1)] + currentSum);
+                }
+            }
+        }
+        return dp[xMax][k];
     }
 
 
-
+    public static void main(String[] args) {
+        int[] a = {1, 1, 1, 1};
+        int[][] g = {{1, 2}, {2, 3}, {3, 4}, {1, 4}, {1, 5}};
+        findRedundantConnection(g);
+    }
 
 
     public class TreeNode {
