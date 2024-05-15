@@ -2159,8 +2159,33 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public static int[] findRedundantConnection(int[][] edges) {
+        int n = edges.length;
+        boolean[][] graph = new boolean[n][n];
+        for (int i = 0; i < n; i++) {
+            boolean[] visited = new boolean[n];
+            int[] edge = edges[i];
+            int from = edge[0] - 1;
+            int to = edge[1] - 1;
+            if (findRedundantConnectionSearch(graph, from, to, visited)) return edge;
+            graph[from][to] = true;
+        }
+        return edges[n-1];
+    }
 
-
+    public static boolean findRedundantConnectionSearch(boolean[][] graph, int from, int to, boolean[] visited) {
+        if (graph[from][to]) return true;
+        if (visited[from]) return false;
+        boolean[] fromGraph = graph[from];
+        visited[from] = true;
+        for (int i = 0; i < graph.length; i++) {
+            if (fromGraph[i] && !visited[i]) {
+                boolean nextSearch = findRedundantConnectionSearch(graph, i, to, visited);
+                if (nextSearch) return true;
+            }
+        }
+        return false;
+    }
 
 
 
@@ -2170,16 +2195,8 @@ public class Leetcode3 extends Leetcode2 {
 
     public static void main(String[] args) {
         int[] a = {1, 1, 1, 1};
-        List<Integer> aList = Arrays.stream(a).boxed().toList();
-        Set<List<Integer>> set = new HashSet<>();
-        set.add(aList);
-        set.add(aList);
-        System.out.println(set);
-
-
-        String s = "ADOBECODEBANC";
-        String t = "ABC";
-        minWindow(s, t);
+        int[][] g = {{1,2},{2,3},{3,4},{1,4},{1,5}};
+        findRedundantConnection(g);
     }
 
 
