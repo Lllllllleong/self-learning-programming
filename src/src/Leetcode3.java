@@ -2189,7 +2189,25 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
-
+    public int change(int amount, int[] coins) {
+        Arrays.sort(coins);
+        int n = coins.length;
+        if (n == 0) return 0;
+        if (coins.length == 1) {
+            if (amount % coins[0] == 0) return 1;
+            else return 0;
+        }
+        int[] dp = new int[amount+1];
+        dp[0] = 1;
+        for (int i = 0; i < n; i++) {
+            int currentCoin = coins[i];
+            for (int j = 0; j < amount+1; j++) {
+                if (j + currentCoin > amount) break;
+                if (dp[j] > 0) dp[j+currentCoin] += dp[j];
+            }
+        }
+        return dp[amount];
+    }
 
 
 
