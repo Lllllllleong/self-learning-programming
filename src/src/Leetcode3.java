@@ -2287,6 +2287,24 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
+    public int findPairs(int[] nums, int k) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int i : nums) hm.merge(i, 1, Integer::sum);
+        int output = 0;
+        if (k == 0) {
+            for (Integer key : hm.keySet()) if (hm.get(key) >= 2) output++;
+            return output;
+        }
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+            if (set.contains(num)) continue;
+            if (hm.containsKey(num+k)) output++;
+            set.add(num);
+
+        }
+        return output;
+    }
 
     public static void main(String[] args) {
         int[] a = {1, 1, 1, 1};
