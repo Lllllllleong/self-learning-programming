@@ -2273,13 +2273,13 @@ public class Leetcode3 extends Leetcode2 {
         char[] b = text2.toCharArray();
         int yMax = text1.length();
         int xMax = text2.length();
-        int[][] dpMatrix = new int[yMax+1][xMax+1];
+        int[][] dpMatrix = new int[yMax + 1][xMax + 1];
         for (int y = yMax - 1; y >= 0; y--) {
             for (int x = xMax - 1; x >= 0; x--) {
                 if (a[y] == b[x]) {
-                    dpMatrix[y][x] = Math.max(dpMatrix[y+1][x+1] + 1, dpMatrix[y][x+1]);
+                    dpMatrix[y][x] = Math.max(dpMatrix[y + 1][x + 1] + 1, dpMatrix[y][x + 1]);
                 } else {
-                    dpMatrix[y][x] = Math.max(dpMatrix[y][x+1], dpMatrix[y+1][x]);
+                    dpMatrix[y][x] = Math.max(dpMatrix[y][x + 1], dpMatrix[y + 1][x]);
                 }
             }
         }
@@ -2299,7 +2299,7 @@ public class Leetcode3 extends Leetcode2 {
         for (int i = 0; i < nums.length; i++) {
             int num = nums[i];
             if (set.contains(num)) continue;
-            if (hm.containsKey(num+k)) output++;
+            if (hm.containsKey(num + k)) output++;
             set.add(num);
 
         }
@@ -2307,10 +2307,8 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
-
-
     public int lengthOfLIS(int[] nums) {
-        TreeMap<Integer,Integer> tm = new TreeMap<>();
+        TreeMap<Integer, Integer> tm = new TreeMap<>();
         for (int i : nums) {
             int currentLIS = 0;
             Integer lKey = tm.lowerKey(i);
@@ -2318,7 +2316,7 @@ public class Leetcode3 extends Leetcode2 {
                 currentLIS = Math.max(currentLIS, tm.get(lKey));
                 lKey = tm.lowerKey(lKey);
             }
-            tm.put(i, currentLIS+1);
+            tm.put(i, currentLIS + 1);
         }
         int output = 0;
         for (Integer I : tm.values()) output = Math.max(output, I);
@@ -2326,6 +2324,7 @@ public class Leetcode3 extends Leetcode2 {
     }
 
     int maxDiff = 0;
+
     public int maxAncestorDiff(TreeNode root) {
         if (root == null) return maxDiff;
         if (root.left == null && root.right == null) return maxDiff;
@@ -2333,6 +2332,7 @@ public class Leetcode3 extends Leetcode2 {
         maxAncestorDiff(root.right, root.val, root.val);
         return maxDiff;
     }
+
     public void maxAncestorDiff(TreeNode root, int min, int max) {
         if (root == null) return;
         int value = root.val;
@@ -2346,12 +2346,53 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public int minCostConnectPoints(int[][] points) {
+        int n = points.length;
+        if (n == 1) return 0;
+        boolean[] searchedPoints = new boolean[n];
+        //int[]: {Distance, Index of the point}
+        //Priority based on smallest distance
+        PriorityQueue<int[]> distanceIndexPQ = new PriorityQueue<>((a,b) -> a[0] - b[0]);
+        //First point has no cost
+        int[] first = {0,0};
+        distanceIndexPQ.add(first);
+        //Minimum cost per point, array
+        int[] minimumCost = new int[n];
+        minimumCost[0] = 0;
+        Arrays.fill(minimumCost, Integer.MAX_VALUE);
+        int output = 0;
+        while (!distanceIndexPQ.isEmpty()) {
+            int[] currentQuery = distanceIndexPQ.poll();
+            int index = currentQuery[1];
+            int[] currentPoint = points[index];
+            //If already in the MST
+            if (searchedPoints[index]) continue;
+            //This is already the minimum cost to connect
+            int cost = currentQuery[0];
+            output += cost;
+            searchedPoints[index] = true;
+            //Find the distance from this point to all other points, and take the minimum.
+            for (int i = 0; i < n; i++) {
+                if (searchedPoints[i]) continue;
+                int[] queryPoint = points[i];
+                int queryDistance = Math.abs(currentPoint[0] - queryPoint[0]) + Math.abs(currentPoint[1] - queryPoint[1]);
+                if (queryDistance < minimumCost[i]) {
+                    minimumCost[i] = queryDistance;
+                    distanceIndexPQ.add(new int[] {queryDistance, i});
+                }
+            }
+        }
+        return output;
+    }
+
+
+
 
 
     public static void main(String[] args) {
         int[] a = {1, 1, 1, 1};
-        int[][] g = {{1, 2}, {2, 3}, {3, 4}, {1, 4}, {1, 5}};
-        findRedundantConnection(g);
+        int[][] points = { {2, 2}, {0, 0}, {3, 10}, {5, 2}, {7, 0} };
+//        minCostConnectPoints(points);
     }
 
 
