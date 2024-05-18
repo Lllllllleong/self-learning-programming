@@ -2412,6 +2412,27 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public int maximalNetworkRank(int n, int[][] roads) {
+        if (n == 2) return roads.length;
+        int maxRank = 0;
+        for (int i = 0; i < n-1; i++) {
+            for (int j = i+1; j < n; j++) {
+                int currentRank = 0;
+                for (int[] road : roads) {
+                    int a = (road[0] < road[1]) ? road[0] : road[1];
+                    int b = (road[0] < road[1]) ? road[1] : road[0];
+                    if (i == a && j == b) currentRank++;
+                    else if (i == a || i == b) currentRank++;
+                    else if (j == a || j == b) currentRank++;
+                }
+                maxRank = Math.max(maxRank, currentRank);
+            }
+        }
+        return maxRank;
+    }
+
+
+
 
     public static void main(String[] args) {
         int[] a = {1, 1, 1, 1};
