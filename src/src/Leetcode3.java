@@ -2438,13 +2438,47 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public static List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        if (n == 1) return new ArrayList<>(Arrays.asList(0));
+        HashMap<Integer, List<Integer>> hm = new HashMap<>();
+        for (int[] edge : edges) {
+            int a = edge[0];
+            int b = edge[1];
+            if (!hm.containsKey(a)) hm.put(a, new ArrayList<>());
+            if (!hm.containsKey(b)) hm.put(b, new ArrayList<>());
+            hm.get(a).add(b);
+            hm.get(b).add(a);
+        }
+        List<Integer> leafNodes = new ArrayList<>();
+        boolean flag = true;
+        while (flag) {
+            flag = false;
+            for (Integer leaf : leafNodes) {
+                hm.remove(leaf);
+                for (List<Integer> l : hm.values()) {
+                    if (l.contains(leaf)) l.remove(leaf);
+                }
+            }
+            for (var entry: hm.entrySet()) {
+                if (entry.getValue().size() == 1) {
+                    leafNodes.add(entry.getKey());
+                } else if (entry.getValue().size() > 1) flag = true;
+            }
+        }
+        List<Integer> output = new ArrayList<>(hm.keySet());
+        return output;
+    }
+
+
+
+
     public static void main(String[] args) {
         int[] a = {1, 1, 1, 1};
         int[][] points = { {2, 2}, {0, 0}, {3, 10}, {5, 2}, {7, 0} };
 //        minCostConnectPoints(points);
 
-        int[] candidates = {10,1,2,7,6,1,5};
-        var v = combinationSum22(candidates, 8);
+        int[][] edges ={{3,0},{3,1},{3,2},{3,4},{5,4}};
+        findMinHeightTrees(6, edges);
     }
 
 
