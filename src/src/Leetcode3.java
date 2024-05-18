@@ -1,6 +1,7 @@
 import com.sun.security.jgss.GSSUtil;
 import com.sun.source.tree.Tree;
 
+import java.sql.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -2383,6 +2384,19 @@ public class Leetcode3 extends Leetcode2 {
             }
         }
         return output;
+    }
+
+    public boolean uniqueOccurrences(int[] arr) {
+        HashMap<Integer, Long> frequencyMap = new HashMap<>();
+        for (int i : arr) frequencyMap.merge(i, 1L, Long::sum);
+        List<Long> list = new ArrayList<>(frequencyMap.values());
+        Collections.sort(list);
+        System.out.println(list);
+        if (list.size() == 1) return true;
+        for (int i = 1; i < list.size(); i++) {
+            if (list.get(i) == list.get(i-1)) return false;
+        }
+        return true;
     }
 
 
