@@ -2512,6 +2512,68 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+
+    Integer[] dpPower;
+    public int getKth(int lo, int hi, int k) {
+        dpPower = new Integer[3000];
+        dpPower[1] = 0;
+        if (lo == hi && lo == 1) return 1;
+        if (lo == hi) return getPowerNumber(lo);
+        List<Integer> range = new ArrayList<>();
+        for (int i = lo; i <= hi; i++) {
+            range.add(i);
+        }
+        Collections.sort(range, (a,b) -> {
+            if (getPowerNumber(a) == getPowerNumber(b)) return (a-b);
+            else return (getPowerNumber(a) - getPowerNumber(b));
+        });
+        return range.get(k-1);
+    }
+    public int getPowerNumber(int i) {
+        if (dpPower[i] != null) return dpPower[i];
+        boolean even = (i%2==0);
+        if (even) {
+            dpPower[i] = getPowerNumber(i/2) + 1;
+        } else {
+            dpPower[i] = getPowerNumber(i*3 + 1) + 1;
+        }
+        return dpPower[i];
+    }
+
+
+    public int maxProfit(int[] prices) {
+        int n = prices.length;
+        int[] dpArray = new int[n+10];
+        for (int i = n - 2; i >= 0; i--) {
+            int price = prices[i];
+            int profit = 0;
+            for (int j = i+1; j < n; j++) {
+                int futurePrice = dpArray[j];
+                System.out.println(price);
+                System.out.println(futurePrice);
+                int currentProfit = price - futurePrice + dpArray[j+2];
+                profit = Math.max(profit, currentProfit);
+            }
+            dpArray[i] = Math.max(dpArray[i+1], profit);
+        }
+        return dpArray[0];
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
 
         int[] a = {1, 1, 1, 1};
