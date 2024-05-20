@@ -1376,28 +1376,28 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
-    public int maxProfit(int[] prices) {
-        int n = prices.length;
-        int[] dpArray = new int[n];
-        int maxProfit = 0;
-        if (n < 3) {
-            maxProfit = Math.max(maxProfit, prices[n - 1] - prices[0]);
-            return maxProfit;
-        }
-        int maxSell = prices[n - 1];
-        for (int i = n - 2; i >= 0; i--) {
-            int price = prices[i];
-            dpArray[i] = Math.max(maxSell - price, dpArray[i + 1]);
-            maxSell = Math.max(maxSell, price);
-        }
-        int minBuy = prices[0];
-        for (int i = 1; i <= n - 1; i++) {
-            int price = prices[i];
-            maxProfit = Math.max(maxProfit, price - minBuy + dpArray[i]);
-            minBuy = Math.min(minBuy, price);
-        }
-        return maxProfit;
-    }
+//    public int maxProfit(int[] prices) {
+//        int n = prices.length;
+//        int[] dpArray = new int[n];
+//        int maxProfit = 0;
+//        if (n < 3) {
+//            maxProfit = Math.max(maxProfit, prices[n - 1] - prices[0]);
+//            return maxProfit;
+//        }
+//        int maxSell = prices[n - 1];
+//        for (int i = n - 2; i >= 0; i--) {
+//            int price = prices[i];
+//            dpArray[i] = Math.max(maxSell - price, dpArray[i + 1]);
+//            maxSell = Math.max(maxSell, price);
+//        }
+//        int minBuy = prices[0];
+//        for (int i = 1; i <= n - 1; i++) {
+//            int price = prices[i];
+//            maxProfit = Math.max(maxProfit, price - minBuy + dpArray[i]);
+//            minBuy = Math.min(minBuy, price);
+//        }
+//        return maxProfit;
+//    }
 
 
     public int longestConsecutive(int[] nums) {
