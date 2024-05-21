@@ -2654,6 +2654,43 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
+
+    public List<TreeNode> allPossibleFBT(int n) {
+        Map<Integer, List<TreeNode>> memoryMap = new HashMap<>();
+        return allPossibleFBT(n, memoryMap);
+    }
+
+    private List<TreeNode> allPossibleFBT(int n, Map<Integer, List<TreeNode>> memo) {
+        if (memo.containsKey(n)) {
+            return memo.get(n);
+        }
+        List<TreeNode> result = new ArrayList<>();
+        if (n == 1) {
+            result.add(new TreeNode(0));
+            memo.put(n, result);
+            return result;
+        }
+        if (n % 2 == 0) {
+            return result;
+        }
+        for (int leftSize = 1; leftSize < n; leftSize += 2) {
+            int rightSize = n - 1 - leftSize;
+            List<TreeNode> leftTrees = allPossibleFBT(leftSize, memo);
+            List<TreeNode> rightTrees = allPossibleFBT(rightSize, memo);
+            for (TreeNode left : leftTrees) {
+                for (TreeNode right : rightTrees) {
+                    TreeNode root = new TreeNode(0);
+                    root.left = left;
+                    root.right = right;
+                    result.add(root);
+                }
+            }
+        }
+        memo.put(n, result);
+        return result;
+    }
+
+
     public class TreeNode {
         int val;
         TreeNode left;
