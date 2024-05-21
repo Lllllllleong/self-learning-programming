@@ -2554,14 +2554,15 @@ public class Leetcode3 extends Leetcode2 {
         return dpArray[0];
     }
 
+    int[] childCount;
+    int[] distanceSum;
+    List<List<Integer>> graph;
 
     public int[] sumOfDistancesInTree(int n, int[][] edges) {
-        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
-        graph.ensureCapacity(4000);
-        for (int i = 0; i < 4000; i++) {
-            ArrayList<Integer> innerList = new ArrayList<>();
-            innerList.ensureCapacity(4000);
-            graph.add(innerList);
+        //Build Graph
+        graph = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
         }
         for (int[] edge : edges) {
             int a = edge[0];
@@ -2569,30 +2570,41 @@ public class Leetcode3 extends Leetcode2 {
             graph.get(a).add(b);
             graph.get(b).add(a);
         }
-        int[] output = new int[n];
-        for (int i = 0; i < n; i++) {
-            Set<Integer> visited = new HashSet<>();
-            visited.add(i);
-            int distance = 0;
-            ArrayList<Integer> current = graph.get(i);
-            while (!current.isEmpty()) {
-                distance++;
-                output[i] += current.size() * distance;
-                ArrayList<Integer> next = new ArrayList<>();
-                for (Integer I : current) {
-                    visited.add(I);
-                    for (Integer II : graph.get(I)) {
-                        if (!visited.contains(II)) {
-                            next.add(II);
-                        }
-                    }
-                }
-                current = next;
-            }
-        }
-        return output;
+        //Child array, representing the number of child nodes, including itself
+        childCount = new int[n];
+        //Including self
+        Arrays.fill(childCount, 1);
+        //Result/Output array, representing the sum of all distances, at this node
+        distanceSum = new int[n];
+        //DFS from leaf to root
+        //Fill in the childCount array
+        //Fill in the sumDistance array, as the number of child
+        sumDistanceDFS(-1, 0);
+        //Reverse DFS from root to leaf
+        reverseSumDistanceDFS(-1,0);
+        return distanceSum;
     }
 
+    public void sumDistanceDFS(Integer parentNode, Integer currentNode) {
+        System.out.println("ParentNode " + parentNode + " currentNode " + currentNode);
+        for (Integer childNode : graph.get(currentNode)) {
+            if (!Objects.equals(childNode, parentNode)) {
+                sumDistanceDFS(currentNode, childNode);
+                childCount[currentNode] += childCount[childNode];
+                distanceSum[currentNode] += distanceSum[childNode] + childCount[childNode];
+            }
+        }
+    }
+    public void reverseSumDistanceDFS(Integer parentNode, Integer currentNode) {
+        int n = childCount.length;
+        for (Integer childNode : graph.get(currentNode)) {
+            if (!Objects.equals(childNode, parentNode)) {
+                int adjustedDistance = distanceSum[currentNode] - childCount[childNode] + n - childCount[childNode];
+                distanceSum[childNode] = adjustedDistance;
+                reverseSumDistanceDFS(currentNode, childNode);
+            }
+        }
+    }
 
 
     public int[] productExceptSelf(int[] nums) {
@@ -2606,17 +2618,17 @@ public class Leetcode3 extends Leetcode2 {
         int[] leftDP = new int[n];
         int[] rightDP = new int[n];
         leftDP[0] = nums[0];
-        rightDP[n-1]= nums[n-1];
+        rightDP[n - 1] = nums[n - 1];
         for (int i = 1; i < n; i++) {
-            leftDP[i] = leftDP[i-1] * nums[i];
+            leftDP[i] = leftDP[i - 1] * nums[i];
         }
         for (int i = n - 2; i >= 0; i--) {
-            rightDP[i] = rightDP[i+1] * nums[i];
+            rightDP[i] = rightDP[i + 1] * nums[i];
         }
         nums[0] = rightDP[1];
-        nums[n-1] = leftDP[n-2];
-        for (int i = 1; i < n-1; i++) {
-            nums[i] = leftDP[i-1] * rightDP[i+1];
+        nums[n - 1] = leftDP[n - 2];
+        for (int i = 1; i < n - 1; i++) {
+            nums[i] = leftDP[i - 1] * rightDP[i + 1];
         }
         return nums;
     }
@@ -2732,10 +2744,6 @@ public class Leetcode3 extends Leetcode2 {
         }
     }
 }
-
-
-
-
 
 
 //class Solution extends SolBase {
