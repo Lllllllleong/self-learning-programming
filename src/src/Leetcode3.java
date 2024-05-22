@@ -2710,6 +2710,30 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
+
+
+
+
+    public int[] rowAndMaximumOnes(int[][] mat) {
+        int n = mat.length;
+        int maxFrequency = Integer.MIN_VALUE;
+        int maxIndex = -1;
+        for (int i = n - 1; i >= 0; i--) {
+            int[] ints = mat[i];
+            int currentFrequency = 0;
+            for (int currentInt : ints) if (currentInt == 1) currentFrequency++;
+            if (currentFrequency >= maxFrequency) {
+                maxFrequency = currentFrequency;
+                maxIndex = i;
+            }
+        }
+        return new int[]{maxIndex, maxFrequency};
+    }
+
+
+
+
+
     public static void main(String[] args) {
         long mod = 1000000007;
 
