@@ -2807,6 +2807,63 @@ public class Leetcode3 extends Leetcode2 {
         return min;
     }
 
+
+
+    public int findTheCity(int n, int[][] edges, int distanceThreshold) {
+        int[][] dpArray = new int[n][n];
+        for (int[] row : dpArray) Arrays.fill(row, 100001);
+        for (int i = 0; i < n; i++) dpArray[i][i] = 0;
+        HashMap<Integer, List<int[]>> adjList = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            adjList.put(i, new ArrayList<>());
+        }
+        for (int[] edge : edges) {
+            int a = edge[0];
+            int b = edge[1];
+            int c = edge[2];
+            adjList.get(a).add(new int[]{b, c});
+            adjList.get(b).add(new int[]{a, c});
+        }
+        for (int i = 0; i < n; i++) {
+            PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+            pq.offer(new int[]{i, 0});
+            boolean[] visited = new boolean[n];
+            while (!pq.isEmpty()) {
+                int[] current = pq.poll();
+                int city = current[0];
+                int distance = current[1];
+                if (visited[city]) continue;
+                visited[city] = true;
+                for (int[] neighbor : adjList.get(city)) {
+                    int nextCity = neighbor[0];
+                    int nextDistance = neighbor[1] + distance;
+                    if (nextDistance < dpArray[i][nextCity]) {
+                        dpArray[i][nextCity] = nextDistance;
+                        pq.offer(new int[]{nextCity, nextDistance});
+                    }
+                }
+            }
+        }
+        int output = -1;
+        int minReachable = Integer.MAX_VALUE;
+        for (int i = 0; i < n; i++) {
+            int reachableCount = 0;
+            for (int j = 0; j < n; j++) {
+                if (i != j && dpArray[i][j] <= distanceThreshold) {
+                    reachableCount++;
+                }
+            }
+            if (reachableCount <= minReachable) {
+                minReachable = reachableCount;
+                output = i;
+            }
+        }
+        return output;
+    }
+
+
+
+
     public static void main(String[] args) {
         long mod = 1000000007;
 
