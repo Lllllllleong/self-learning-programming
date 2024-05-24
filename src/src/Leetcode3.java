@@ -2864,6 +2864,50 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+
+
+    public static int minHeightShelves(int[][] books, int shelfWidth) {
+        int[] dp = new int[1000];
+        Arrays.sort(books, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                int w = a[0];
+                int x = a[1];
+                int y = b[0];
+                int z = b[1];
+                if (x != z) return z - x;
+                else return y - w;
+            }
+        });
+        return minHeightShelves(books, 0, shelfWidth, dp);
+    }
+    public static int minHeightShelves(int[][] books, int index, int shelfWidth, int[] dp) {
+        int n = books.length;
+        if (index == n) return 0;
+        int output = Integer.MAX_VALUE;
+        int currentBookHeight = books[index][1];
+        int currentBookWidth = books[index][0];
+        System.out.println(currentBookHeight);
+        System.out.println(currentBookWidth);
+        for (int i = 0; i < dp.length; i++) {
+            if (dp[i] + currentBookWidth > shelfWidth) continue;
+            int current = (dp[i] == 0) ? currentBookHeight : 0;
+            dp[i] += currentBookWidth;
+            current += minHeightShelves(books, index+1, shelfWidth, dp);
+            output = Math.min(output, current);
+            dp[i] -= currentBookWidth;
+            if (dp[i] == 0) break;
+        }
+        return output;
+    }
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
         long mod = 1000000007;
 
@@ -2883,6 +2927,8 @@ public class Leetcode3 extends Leetcode2 {
         int[] b = {2, 3, 6, 8, 4};
         int cr = countRoutes(b, 1, 3, 5);
 
+        int[][] books = {{1,1},{2,3},{2,3},{1,1},{1,1},{1,1},{1,2}};
+        int fewji = minHeightShelves(books,4);
 
     }
 
