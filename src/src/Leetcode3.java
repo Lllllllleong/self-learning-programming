@@ -3021,6 +3021,33 @@ public class Leetcode3 extends Leetcode2 {
         return -1;
     }
 
+    private int maxSum = 0;
+
+    public int maxSumBST(TreeNode root) {
+        postOrder(root);
+        return maxSum;
+    }
+
+    private int[] postOrder(TreeNode node) {
+        if (node == null) {
+            return new int[] {1, Integer.MAX_VALUE, Integer.MIN_VALUE, 0}; // isBST, min, max, sum
+        }
+        int[] left = postOrder(node.left);
+        int[] right = postOrder(node.right);
+        if (left[0] == 1 && right[0] == 1 && node.val > left[2] && node.val < right[1]) {
+            int sum = node.val + left[3] + right[3];
+            maxSum = Math.max(maxSum, sum);
+            int minVal = (node.left == null) ? node.val : left[1];
+            int maxVal = (node.right == null) ? node.val : right[2];
+            return new int[] {1, minVal, maxVal, sum};
+        } else {
+            return new int[] {0, 0, 0, 0};
+        }
+    }
+
+
+
+
 
     public static void main(String[] args) {
         System.out.println(levenshteinDistance("Hello World!", "Hello Word!",1,1));
