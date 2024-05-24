@@ -2917,32 +2917,153 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public long maxAlternatingSum(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return  nums[0];
+        long[] dpArray = new long[n+1];
+        for (int i = n - 1; i >= 0; i--) {
+            long num = nums[i];
+            long currentMax = num;
+            for (int j = i+1; j < n; j++) {
+                long l = nums[j];
+                long result = num - l + dpArray[j+1];
+                if (result < 0 ) break;
+                currentMax = Math.max(currentMax, result);
+            }
+            dpArray[i] = Math.max(dpArray[i+1], currentMax);
+        }
+        return dpArray[0];
+    }
 
+
+
+
+
+
+    public static double levenshteinDistance(String aString, String bString) {
+        char[] a = aString.toLowerCase().toCharArray();
+        char[] b = bString.toLowerCase().toCharArray();
+        double[][] dpArray = new double[a.length + 1][b.length + 1];
+        for (int i = 0; i <= a.length; i++) {
+            for (int j = 0; j <= b.length; j++) {
+                if (i == 0) {
+                    dpArray[i][j] = j;
+                } else if (j == 0) {
+                    dpArray[i][j] = i;
+                } else {
+                    double substitutionCost = (a[i - 1] == b[j - 1] ? 0 : 1);
+                    double substitution = dpArray[i - 1][j - 1] + substitutionCost;
+                    double insertion = dpArray[i - 1][j] + 1;
+                    double deletion = dpArray[i][j - 1] + 1;
+                    dpArray[i][j] = Math.min(substitution, Math.min(insertion, deletion));
+                }
+            }
+        }
+        return dpArray[a.length][b.length];
+    }
+
+
+
+    public static double levenshteinDistance(String aString,
+                                             String bString,
+                                             double insertDeleteCost,
+                                             double subCost) {
+        char[] a = aString.toLowerCase().toCharArray();
+        char[] b = bString.toLowerCase().toCharArray();
+        double[][] dpArray = new double[a.length + 1][b.length + 1];
+        for (int i = 0; i <= a.length; i++) {
+            for (int j = 0; j <= b.length; j++) {
+                if (i == 0) {
+                    dpArray[i][j] = j;
+                } else if (j == 0) {
+                    dpArray[i][j] = i;
+                } else {
+                    double substitutionCost = (a[i - 1] == b[j - 1] ? 0 : subCost);
+                    double substitution = dpArray[i - 1][j - 1] + substitutionCost;
+                    double insertion = dpArray[i - 1][j] + insertDeleteCost;
+                    double deletion = dpArray[i][j - 1] + insertDeleteCost;
+                    dpArray[i][j] = Math.min(substitution, Math.min(insertion, deletion));
+                }
+            }
+        }
+        return dpArray[a.length][b.length];
+    }
+
+
+
+
+
+
+
+
+    public int makeArrayIncreasing(int[] arr1, int[] arr2) {
+        Arrays.sort(arr2);
+        int n = arr1.length;
+        int[][] dp = new int[n][n + 1];
+        for (int[] row : dp) Arrays.fill(row, Integer.MAX_VALUE);
+        dp[0][0] = arr1[0];
+        dp[0][1] = arr2[0];
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j <= i; j++) {
+                if (dp[i - 1][j] < arr1[i]) {
+                    dp[i][j] = Math.min(dp[i][j], arr1[i]);
+                }
+                if (j > 0 && dp[i - 1][j - 1] < arr2[i]) {
+                    dp[i][j] = Math.min(dp[i][j], arr2[j - 1]);
+                }
+            }
+        }
+
+        for (int i = 0; i <= n; i++) {
+            if (dp[n - 1][i] < Integer.MAX_VALUE) return i;
+        }
+        return -1;
+    }
 
 
     public static void main(String[] args) {
-        long mod = 1000000007;
+        System.out.println(levenshteinDistance("Hello World!", "Hello Word!",1,1));
+        System.out.println(levenshteinDistance("Hello World!", "Hello word",1,1));
+        System.out.println(levenshteinDistance("Hello World!", "HelloWorld!",1,1));
+        System.out.println(levenshteinDistance("Hello World!", "Hello",1,1));
+        System.out.println(levenshteinDistance("Hello World!", "Lorem ipsum",1,1));
 
-        int[] a = {1, 1, 1, 1};
-        int[][] points = {{2, 2}, {0, 0}, {3, 10}, {5, 2}, {7, 0}};
-//        minCostConnectPoints(points);
-
-        int[][] edges = {{3, 0}, {3, 1}, {3, 2}, {3, 4}, {5, 4}};
-        findMinHeightTrees(6, edges);
-
-        String[] words = {"dog", "cat", "dad", "good"};
-        char[] letters = {'a', 'a', 'c', 'd', 'd', 'd', 'g', 'o', 'o'};
-        int[] score = {1, 0, 9, 5, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        int res = maxScoreWords(words, letters, score);
+        System.out.println(levenshteinDistance("Hello World!", "Hello Word!",1,0.5d));
+        System.out.println(levenshteinDistance("Hello World!", "Hello word",1,0.5d));
+        System.out.println(levenshteinDistance("Hello World!", "HelloWorld!",1,0.5d));
+        System.out.println(levenshteinDistance("Hello World!", "Hello",1,0.5d));
+        System.out.println(levenshteinDistance("Hello World!", "Lorem ipsum",1,0.5d));
 
 
-        int[] b = {2, 3, 6, 8, 4};
-        int cr = countRoutes(b, 1, 3, 5);
-
-        int[][] books = {{1,1},{2,3},{2,3},{1,1},{1,1},{1,1},{1,2}};
-        int fewji = minHeightShelves(books,4);
+//        long mod = 1000000007;
+//
+//        int[] a = {1, 1, 1, 1};
+//        int[][] points = {{2, 2}, {0, 0}, {3, 10}, {5, 2}, {7, 0}};
+////        minCostConnectPoints(points);
+//
+//        int[][] edges = {{3, 0}, {3, 1}, {3, 2}, {3, 4}, {5, 4}};
+//        findMinHeightTrees(6, edges);
+//
+//        String[] words = {"dog", "cat", "dad", "good"};
+//        char[] letters = {'a', 'a', 'c', 'd', 'd', 'd', 'g', 'o', 'o'};
+//        int[] score = {1, 0, 9, 5, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//        int res = maxScoreWords(words, letters, score);
+//
+//
+//        int[] b = {2, 3, 6, 8, 4};
+//        int cr = countRoutes(b, 1, 3, 5);
+//
+//        int[][] books = {{1,1},{2,3},{2,3},{1,1},{1,1},{1,1},{1,2}};
+//        int fewji = minHeightShelves(books,4);
 
     }
+
+
+
+
+
+
 
     public class TreeNode {
         int val;
