@@ -3093,6 +3093,23 @@ public class Leetcode3 extends Leetcode2 {
         return dp[n - 1];
     }
 
+
+
+
+    public int kthFactor(int n, int k) {
+        for (int i = 1; i <= n; i++) {
+            int remainder = n % i;
+            if (remainder == 0) {
+                if (k == 1) return i;
+                k--;
+            }
+        }
+        return -1;
+    }
+
+
+
+
     public static void main(String[] args) {
         System.out.println(levenshteinDistance("Hello World!", "Hello Word!",1,1));
         System.out.println(levenshteinDistance("Hello World!", "Hello word",1,1));
