@@ -3109,6 +3109,25 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public int partitionString(String s) {
+        if (s.length() == 1) return 1;
+        return partitionString(s.toCharArray(), 0);
+    }
+    public int partitionString(char[] sCharArray, int index) {
+        int n = sCharArray.length;
+        int[] frequencyArray = new int[26];
+        for (int i = index; i < n; i++) {
+            int charIndex = sCharArray[i] - 'a';
+            if (frequencyArray[charIndex] > 0) {
+                return 1 + partitionString(sCharArray, i);
+            }
+            frequencyArray[charIndex]++;
+        }
+        return 1;
+    }
+
+
+
 
     public static void main(String[] args) {
         System.out.println(levenshteinDistance("Hello World!", "Hello Word!",1,1));
