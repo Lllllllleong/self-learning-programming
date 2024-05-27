@@ -3322,6 +3322,45 @@ public class Leetcode3 extends Leetcode2 {
         return false;
     }
 
+    public int findNumberOfLIS(int[] nums) {
+        int n = nums.length;
+        if (n <= 1) return n;
+        int[] lengths = new int[n];
+        int[] counts = new int[n];
+        Arrays.fill(counts, 1);
+        int maxLISLength = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    if (lengths[j] + 1 > lengths[i]) {
+                        lengths[i] = lengths[j] + 1;
+                        counts[i] = counts[j]; // inherit count from counts[j]
+                    } else if (lengths[j] + 1 == lengths[i]) {
+                        counts[i] += counts[j];
+                    }
+                }
+            }
+            maxLISLength = Math.max(maxLISLength, lengths[i]);
+        }
+        int result = 0;
+        for (int i = 0; i < n; i++) {
+            if (lengths[i] == maxLISLength) {
+                result += counts[i];
+            }
+        }
+        return result;
+    }
+
+
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
         System.out.println(levenshteinDistance("Hello World!", "Hello Word!",1,1));
         System.out.println(levenshteinDistance("Hello World!", "Hello word",1,1));
