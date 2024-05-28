@@ -2735,28 +2735,6 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
-    public int maxProfit(int[] prices, int fee) {
-        int n = prices.length;
-        if (n == 1) {
-            return 0;
-        }
-        int[] dpArray = new int[n+10];
-        for (int i = n - 2; i >= 0; i--) {
-            int price = prices[i];
-            int currentProfit = 0;
-            for (int j = i+1; j < n; j++) {
-                int secondPrice = prices[j];
-                if (secondPrice > price) {
-                    int thisProfit = secondPrice - price - fee;
-                    thisProfit += dpArray[j+1];
-                    currentProfit = Math.max(currentProfit, thisProfit);
-                }
-            }
-            currentProfit = Math.max(currentProfit, dpArray[i+1]);
-            dpArray[i] = currentProfit;
-        }
-        return dpArray[0];
-    }
 
 
 
@@ -3371,24 +3349,29 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
+    public int maxProfit(int[] prices, int fee) {
+        int n = prices.length;
+        if (n == 1) {
+            return 0;
+        }
+        int cash = 0;
+        int hold = -prices[0];
+        for (int i = 1; i < n; i++) {
+            cash = Math.max(cash, hold + prices[i] - fee);
+            hold = Math.max(hold, cash - prices[i]);
+        }
+
+        return cash;
+    }
+
+
 
     public static void main(String[] args) {
-        System.out.println(levenshteinDistance("Hello World!", "Hello Word!",1,1));
-        System.out.println(levenshteinDistance("Hello World!", "Hello word",1,1));
-        System.out.println(levenshteinDistance("Hello World!", "HelloWorld!",1,1));
-        System.out.println(levenshteinDistance("Hello World!", "Hello",1,1));
-        System.out.println(levenshteinDistance("Hello World!", "Lorem ipsum",1,1));
-
-        System.out.println(levenshteinDistance("Hello World!", "Hello Word!",1,0.5d));
-        System.out.println(levenshteinDistance("Hello World!", "Hello word",1,0.5d));
-        System.out.println(levenshteinDistance("Hello World!", "HelloWorld!",1,0.5d));
-        System.out.println(levenshteinDistance("Hello World!", "Hello",1,0.5d));
-        System.out.println(levenshteinDistance("Hello World!", "Lorem ipsum",1,0.5d));
 
         boolean b = wordBreak("leetcode", Arrays.asList(new String[]{"leet", "code"}));
 
-        int[] prices = {7, 1, 5, 3, 6, 4};
-        int ndf = maxProfit(1, prices);
+        int[] prices = {1,3,2,8,4,9};
+        int hfue = maxProfit(prices, 2);
 
 
 
