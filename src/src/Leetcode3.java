@@ -3425,6 +3425,41 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public int maxHeight(int[][] cuboids) {
+        int n = cuboids.length;
+        for (int[] cube : cuboids) {
+            Arrays.sort(cube);
+        }
+        Arrays.sort(cuboids, (a, b) -> {
+            if (a[0] != b[0]) return a[0] - b[0];
+            if (a[1] != b[1]) return a[1] - b[1];
+            return a[2] - b[2];
+        });
+
+        int[] dpArray = new int[n+1];
+        for (int i = 0; i < n; i++) {
+            dpArray[i] = cuboids[i][2];
+        }
+        int output = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            int[] currentCube = cuboids[i];
+            int a = currentCube[0];
+            int b = currentCube[1];
+            int c = currentCube[2];
+            for (int j = i + 1; j < n; j++) {
+                int[] nextCube = cuboids[j];
+                int aa = nextCube[0];
+                int bb = nextCube[1];
+                int cc = nextCube[2];
+                if (a <= aa && b <= bb && c <= cc) {
+                    dpArray[i] = Math.max(dpArray[i], c + dpArray[j]);
+                }
+            }
+            output = Math.max(output, dpArray[i]);
+        }
+        return output;
+    }
+
 
 
 
