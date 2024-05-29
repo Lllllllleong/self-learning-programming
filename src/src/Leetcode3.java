@@ -3486,6 +3486,26 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public int deleteAndEarn(int[] nums) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int i : nums) hm.merge(i, 1, Integer::sum);
+        hm.put(Integer.MAX_VALUE, 0);
+        List<Integer> keyList = new ArrayList<>(hm.keySet());
+        Collections.sort(keyList);
+        for (int i = keyList.size() - 2; i >= 0; i--) {
+            int key = keyList.get(i);
+            System.out.println(key);
+            int frequency = hm.get(key);
+            int sum = key * frequency;
+            int upperKey = keyList.get(i+1);
+            if (upperKey == key + 1) upperKey = keyList.get((i+2));
+            sum += hm.get(upperKey);
+            hm.put(key, Math.max(sum, hm.get(key+1)));
+        }
+        return (Collections.max(hm.values()));
+    }
+
+
 
 
     public static void main(String[] args) {
