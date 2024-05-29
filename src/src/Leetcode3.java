@@ -3508,11 +3508,45 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public static String stoneGameIII(int[] stoneValue) {
+        int n = stoneValue.length;
+        int[] nextTurnIndex = new int[n+10];
+        nextTurnIndex[n] = n;
+        int[] dpMaxScore = new int[n+10];
+        for (int i = n - 1; i >= 0; i--) {
+            int stonesTaken = 0;
+            int maxScore = Integer.MIN_VALUE;
+            int stoneScore = 0;
+            for (int j = 0; j < 3; j++) {
+                if (i + j == n) break;
+                stoneScore += stoneValue[i+j];
+                int currentScore = stoneScore + dpMaxScore[nextTurnIndex[i+j+1]];
+                if (currentScore > maxScore) {
+                    maxScore = currentScore;
+                    stonesTaken = j+1;
+                }
+            }
+            nextTurnIndex[i] = i + stonesTaken;
+            dpMaxScore[i] = maxScore;
+        }
+        int aScore = dpMaxScore[0];
+        int bScore = dpMaxScore[nextTurnIndex[0]];
+        System.out.println(Arrays.toString(nextTurnIndex));
+        System.out.println(Arrays.toString(dpMaxScore));
+        if (aScore > bScore) return "Alice";
+        else if (aScore < bScore) return "Bob";
+        else return "Tie";
+    }
+
+
+
+
     public static void main(String[] args) {
 
         boolean b = wordBreak("leetcode", Arrays.asList(new String[]{"leet", "code"}));
 
-        int[] prices = {1,3,2,8,4,9};
+        int[] prices = {1,2,3,-9};
+        stoneGameIII(prices);
 
 
 
