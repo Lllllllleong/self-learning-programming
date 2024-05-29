@@ -3540,6 +3540,46 @@ public class Leetcode3 extends Leetcode2 {
 
 
 
+    public int numDecodings(String s) {
+        int n = s.length();
+        long mod = 1000000007;
+        if (n == 0) return 0;
+        long[] dpArray = new long[n + 1];
+        dpArray[n] = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            if (s.charAt(i) == '0') {
+                dpArray[i] = 0;
+            } else if (s.charAt(i) == '*') {
+                dpArray[i] = 9 * dpArray[i + 1] % mod;
+                if (i + 1 < n) {
+                    if (s.charAt(i + 1) == '*') {
+                        dpArray[i] = (dpArray[i] + 15 * dpArray[i + 2]) % mod;
+                    } else if (s.charAt(i + 1) <= '6') {
+                        dpArray[i] = (dpArray[i] + 2 * dpArray[i + 2]) % mod;
+                    } else {
+                        dpArray[i] = (dpArray[i] + dpArray[i + 2]) % mod;
+                    }
+                }
+            } else {
+                dpArray[i] = dpArray[i + 1];
+                if (i + 1 < n) {
+                    if (s.charAt(i + 1) == '*') {
+                        if (s.charAt(i) == '1') {
+                            dpArray[i] = (dpArray[i] + 9 * dpArray[i + 2]) % mod;
+                        } else if (s.charAt(i) == '2') {
+                            dpArray[i] = (dpArray[i] + 6 * dpArray[i + 2]) % mod;
+                        }
+                    } else {
+                        int num = (s.charAt(i) - '0') * 10 + (s.charAt(i + 1) - '0');
+                        if (num <= 26) {
+                            dpArray[i] = (dpArray[i] + dpArray[i + 2]) % mod;
+                        }
+                    }
+                }
+            }
+        }
+        return (int) dpArray[0];
+    }
 
     public static void main(String[] args) {
 
@@ -3547,6 +3587,8 @@ public class Leetcode3 extends Leetcode2 {
 
         int[] prices = {1,2,3,-9};
         stoneGameIII(prices);
+
+        System.out.println('*'-'a');
 
 
 
