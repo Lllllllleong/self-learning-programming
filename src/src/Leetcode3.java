@@ -3544,6 +3544,19 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
+    public int subarraysDivByK(int[] nums, int k) {
+        HashMap<Integer, Integer> moduloFrequencyMap = new HashMap<>();
+        moduloFrequencyMap.put(0, 1);
+        int prefixSum = 0;
+        int count = 0;
+        for (int i : nums) {
+            prefixSum += i;
+            int mod = ((prefixSum % k) + k) % k;
+            count += moduloFrequencyMap.getOrDefault(mod, 0);
+            moduloFrequencyMap.put(mod, moduloFrequencyMap.getOrDefault(mod, 0) + 1);
+        }
+        return count;
+    }
 
 
 
@@ -3553,10 +3566,11 @@ public class Leetcode3 extends Leetcode2 {
 
         boolean b = wordBreak("leetcode", Arrays.asList(new String[]{"leet", "code"}));
 
-        int[] prices = {1,2,3,-9};
-        stoneGameIII(prices);
+        int[] prices = {4,5,0,-2,-3,1};
+        subarraysDivByK(prices, 5);
 
         System.out.println('*'-'a');
+        System.out.println(-15%5);
 
 
 
