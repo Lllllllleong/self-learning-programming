@@ -433,62 +433,7 @@ public class Leetcode3 extends Leetcode2 {
     }
 
 
-    public class Job {
-        int start;
-        int end;
-        int profit;
 
-        public Job(int start, int end, int profit) {
-            this.start = start;
-            this.end = end;
-            this.profit = profit;
-        }
-
-        public static final Comparator<Job> endComparator = new Comparator<Job>() {
-            @Override
-            public int compare(Job j1, Job j2) {
-                return Integer.compare(j2.end, j1.end);
-            }
-        };
-
-
-    }
-
-    public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
-        int n = startTime.length;
-        if (n == 1) return profit[0];
-        Job[] jobs = new Job[n];
-        for (int i = 0; i < n; i++) {
-            jobs[i] = new Job(startTime[i], endTime[i], profit[i]);
-        }
-        Arrays.sort(jobs, Job.endComparator);
-        int[] dpArray = new int[jobs[0].end + 1];
-        int dpPointer = jobs[0].end;
-        int start = 0;
-        int output = 0;
-        for (Job j : jobs) {
-            start = j.start;
-            int end = j.end;
-            int p = j.profit;
-            System.out.println("start, end, profit, dpPointer in the loop");
-            System.out.println(start);
-            System.out.println(end);
-            System.out.println(profit);
-            while (dpPointer > end) {
-                System.out.println(dpPointer);
-                dpPointer--;
-                dpArray[dpPointer] = Math.max(dpArray[dpPointer], dpArray[dpPointer + 1]);
-            }
-            System.out.println("after while loop, dpArray[start], dpArray[dpPointer] + p, dpstart after ");
-            System.out.println(dpArray[start]);
-            System.out.println(dpArray[dpPointer] + p);
-            dpArray[start] = Math.max(dpArray[start], dpArray[dpPointer] + p);
-            System.out.println(dpArray[start]);
-            output = Math.max(output, dpArray[start]);
-        }
-        System.out.println(Arrays.toString(dpArray));
-        return output;
-    }
 
 
     static HashMap<Integer, List<List<Integer>>> pathsFromKeyToEnd;
@@ -3580,6 +3525,29 @@ public class Leetcode3 extends Leetcode2 {
         }
         return (int) dpArray[0];
     }
+
+
+
+
+    public int longestSubsequence(int[] arr, int difference) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int i : arr) {
+            int prior = i + difference;
+            int currentLongest = 1;
+            if (hm.containsKey(prior)) {
+                currentLongest = hm.get(prior) + 1;
+            }
+            hm.merge(i, currentLongest, Integer::max);
+        }
+        System.out.println(hm.values());
+        return (Collections.max(hm.values()));
+    }
+
+
+
+
+
+
 
     public static void main(String[] args) {
 
