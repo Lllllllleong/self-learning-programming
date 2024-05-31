@@ -133,8 +133,48 @@ public class Practice4 {
     }
 
 
+    char[][] maze;
+    int minSteps = Integer.MAX_VALUE;
 
+    public int nearestExit(char[][] maze, int[] entrance) {
+        this.maze = maze;
+        int rows = maze.length;
+        int cols = maze[0].length;
 
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{entrance[0], entrance[1], 0}); // {row, col, steps}
+        boolean[][] visited = new boolean[rows][cols];
+        visited[entrance[0]][entrance[1]] = true;
+
+        int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+        while (!queue.isEmpty()) {
+            int[] currentPos = queue.poll();
+            int y = currentPos[0];
+            int x = currentPos[1];
+            int steps = currentPos[2];
+
+            for (int[] dir : directions) {
+                int newY = y + dir[0];
+                int newX = x + dir[1];
+
+                if (newY >= 0 && newY < rows && newX >= 0 && newX < cols && maze[newY][newX] == '.' && !visited[newY][newX]) {
+                    // Check if it's an exit (not the entrance)
+                    if (newY == 0 || newY == rows - 1 || newX == 0 || newX == cols - 1) {
+                        if (!(newY == entrance[0] && newX == entrance[1])) {
+                            return steps + 1;
+                        }
+                    }
+
+                    // Add the new position to the queue
+                    queue.add(new int[]{newY, newX, steps + 1});
+                    visited[newY][newX] = true;
+                }
+            }
+        }
+
+        return -1; // If no exit is found
+    }
 
 
 
