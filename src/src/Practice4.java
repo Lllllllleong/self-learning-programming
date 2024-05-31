@@ -37,7 +37,6 @@ public class Practice4 {
     }
 
 
-
     public int longestOnes(int[] nums, int k) {
         int output = 0;
         int counter = 0;
@@ -72,6 +71,40 @@ public class Practice4 {
         return output;
     }
 
+
+    public String decodeString(String s) {
+        return decodeString(s.toCharArray(), new int[]{0});
+    }
+
+    private String decodeString(char[] sChar, int[] index) {
+        StringBuilder result = new StringBuilder();
+        while (index[0] < sChar.length && sChar[index[0]] != ']') {
+            if (Character.isDigit(sChar[index[0]])) {
+                int repeat = 0;
+                while (Character.isDigit(sChar[index[0]])) {
+                    repeat = repeat * 10 + sChar[index[0]] - '0';
+                    index[0]++;
+                }
+                index[0]++; // Skip the '['
+                String decodedPart = decodeString(sChar, index);
+                index[0]++; // Skip the ']'
+                while (repeat-- > 0) {
+                    result.append(decodedPart);
+                }
+            } else {
+                result.append(sChar[index[0]++]);
+            }
+        }
+        return result.toString();
+    }
+
+
+    public int maxDepth(TreeNode root) {
+        if (root == null) return 0;
+        return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+    }
+
+
     public static void main(String[] args) {
 
     }
@@ -79,8 +112,8 @@ public class Practice4 {
 
     public class TreeNode {
         int val;
-        Leetcode3.TreeNode left;
-        Leetcode3.TreeNode right;
+        TreeNode left;
+        TreeNode right;
 
         TreeNode() {
         }
@@ -89,32 +122,10 @@ public class Practice4 {
             this.val = val;
         }
 
-        TreeNode(int val, Leetcode3.TreeNode left, Leetcode3.TreeNode right) {
+        TreeNode(int val, TreeNode left, TreeNode right) {
             this.val = val;
             this.left = left;
             this.right = right;
-        }
-    }
-
-
-    static class Node {
-        public int val;
-        public Leetcode3.Node left;
-        public Leetcode3.Node right;
-        public Leetcode3.Node next;
-
-        public Node() {
-        }
-
-        public Node(int _val) {
-            val = _val;
-        }
-
-        public Node(int _val, Leetcode3.Node _left, Leetcode3.Node _right, Leetcode3.Node _next) {
-            val = _val;
-            left = _left;
-            right = _right;
-            next = _next;
         }
     }
 
