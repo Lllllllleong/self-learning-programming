@@ -212,6 +212,27 @@ public class Practice4 {
         }
         return total;
     }
+
+
+    public int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+        TreeMap<Integer, Integer> tm = new TreeMap<>();
+        for (int i = n - 1; i >= 0; i--) {
+            int temperature = temperatures[i];
+            int next = Integer.MAX_VALUE;
+            Integer higherTemperature = tm.higherKey(temperature);
+            while (higherTemperature != null) {
+                next = Math.min(next, tm.get(higherTemperature) - i);
+                higherTemperature = tm.higherKey(higherTemperature);
+            }
+            if (next == Integer.MAX_VALUE) next = 0;
+            temperatures[i] = next;
+            tm.put(temperature, i);
+        }
+        return temperatures;
+    }
+
+
     public static void main(String[] args) {
 
     }
