@@ -172,12 +172,46 @@ public class Practice4 {
                 }
             }
         }
-
         return -1; // If no exit is found
     }
 
 
+    public long totalCost(int[] costs, int k, int candidates) {
+        int n = costs.length;
+        long total = 0;
 
+        if (candidates * 2 >= n) {
+            Arrays.sort(costs);
+            for (int i = 0; i < k; i++) {
+                total += costs[i];
+            }
+            return total;
+        }
+        PriorityQueue<Integer> left = new PriorityQueue<>(candidates);
+        PriorityQueue<Integer> right = new PriorityQueue<>(candidates);
+        for (int i = 0; i < candidates; i++) {
+            left.offer(costs[i]);
+        }
+        for (int i = n - 1; i >= n - candidates; i--) {
+            right.offer(costs[i]);
+        }
+        int leftIndex = candidates;
+        int rightIndex = n - candidates - 1;
+        while (k-- > 0) {
+            if (!left.isEmpty() && (right.isEmpty() || left.peek() <= right.peek())) {
+                total += left.poll();
+                if (leftIndex <= rightIndex) {
+                    left.offer(costs[leftIndex++]);
+                }
+            } else {
+                total += right.poll();
+                if (leftIndex <= rightIndex) {
+                    right.offer(costs[rightIndex--]);
+                }
+            }
+        }
+        return total;
+    }
     public static void main(String[] args) {
 
     }
