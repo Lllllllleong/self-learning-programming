@@ -233,8 +233,208 @@ public class Practice4 {
     }
 
 
-    public static void main(String[] args) {
+    public int[] getConcatenation(int[] nums) {
+        int n = nums.length;
+        int[] output = new int[2 * n];
+        int index = 0;
+        for (int i : nums) {
+            output[index] = i;
+            output[n] = i;
+            index++;
+            n++;
+        }
+        return output;
+    }
 
+
+
+
+    public static int fuzzyAnd(int a, int b) {
+        if (a == 0) return 0;
+        if (a == 1) return b;
+        if (a == 2) {
+            if (b == 0) return 0;
+            else return 2;
+        }
+        return -1;
+    }
+    public static int intuitionisticAnd(int a, int b) {
+        if (a == 0) return 0;
+        if (a == 1) return b;
+        if (a == 2) {
+            if (b == 0) return 0;
+            else return 2;
+        }
+        return -1;
+    }
+    public static int relevantAnd(int a, int b) {
+        if (a == 0) return 0;
+        if (a == 1) return b;
+        if (a == 2) {
+            if (b == 0) return 0;
+            else return 2;
+        }
+        return -1;
+    }
+
+    public static int fuzzyOr(int a, int b) {
+        if (a == 0) return b;
+        if (a == 1) return 1;
+        if (a == 2) {
+            if (b == 1) return 1;
+            else return 2;
+        }
+        return -1;
+    }
+    public static int intuitionisticOr(int a, int b) {
+        if (a == 0) return b;
+        if (a == 1) return 1;
+        if (a == 2) {
+            if (b == 1) return 1;
+            else return 2;
+        }
+        return -1;
+    }
+    public static int relevantOr(int a, int b) {
+        if (a == 0) return b;
+        if (a == 1) return 1;
+        if (a == 2) {
+            if (b == 1) return 1;
+            else return 2;
+        }
+        return -1;
+    }
+    public static int fuzzyImplication(int a, int b) {
+        if (a == 0) return 1;
+        if (a == 1) return b;
+        if (a == 2) {
+            if (b == 0) return 2;
+            else return 1;
+        }
+        return -1;
+    }
+    public static int intuitionisticImplication(int a, int b) {
+        if (a == 0) return 1;
+        if (a == 1) return b;
+        if (a == 2) {
+            if (b == 0) return 0;
+            else return 1;
+        }
+        return -1;
+    }
+    public static int relevantImplication(int a, int b) {
+        if (a == 0) return 1;
+        if (a == 1) {
+            if (b == 1) return 1;
+            else return 0;
+        }
+        if (a == 2) return b;
+        return -1;
+    }
+    public static int fuzzyNegate(int a) {
+        if (a == 0) return 1;
+        if (a == 1) return 0;
+        if (a == 2) return 2;
+        return -1;
+    }
+    public static int intuitionisticNegate(int a) {
+        if (a == 0) return 1;
+        if (a == 1) return 0;
+        if (a == 2) return 0;
+        return -1;
+    }
+    public static int relevantNegate(int a) {
+        if (a == 0) return 1;
+        if (a == 1) return 0;
+        if (a == 2) return 2;
+        return -1;
+    }
+
+
+
+    public static void main(String[] args) {
+        for (int p = 0; p < 3; p++) {
+            for (int q = 0; q < 3; q++) {
+                int lhs = relevantImplication(p, q);
+                int rhs = relevantOr(relevantNegate(p), q);
+                if (lhs == 1 && (rhs == 0 || rhs == 2) || lhs == 2 && rhs == 0) {
+                    System.out.println(p);
+                    System.out.println(q);
+                    System.out.println("q1 relevant invalid");
+                }
+
+            }
+        }
+        for (int p = 0; p < 3; p++) {
+            for (int q = 0; q < 3; q++) {
+                int lhs = fuzzyImplication(p, q);
+                int rhs = fuzzyOr(fuzzyNegate(p), q);
+                if (lhs == 1 && (rhs == 0 || rhs == 2) || lhs == 2 && rhs == 0) {
+                    System.out.println(p);
+                    System.out.println(q);
+                    System.out.println("q1 fuzzy invalid");
+                }
+
+            }
+        }
+        for (int p = 0; p < 3; p++) {
+            for (int q = 0; q < 3; q++) {
+                int rhs = fuzzyAnd(p, q);
+                int lhs = fuzzyNegate(fuzzyNegate(fuzzyAnd(p, q)));
+                if (lhs == 1 && (rhs == 0 || rhs == 2) || lhs == 2 && rhs == 0) {
+                    System.out.println(p);
+                    System.out.println(q);
+                    System.out.println("q2 fuzzy invalid");
+                }
+
+            }
+        }
+        for (int p = 0; p < 3; p++) {
+            for (int q = 0; q < 3; q++) {
+                int rhs = intuitionisticAnd(p,q);
+                int lhs = intuitionisticNegate(intuitionisticNegate(intuitionisticAnd(p,q)));
+                if (lhs == 1 && (rhs == 0 || rhs == 2) || lhs == 2 && rhs == 0) {
+                    System.out.println(p);
+                    System.out.println(q);
+                    System.out.println("q2 intuitionistic invalid");
+                }
+            }
+        }
+
+        for (int p = 0; p < 3; p++) {
+            for (int q = 0; q < 3; q++) {
+                for (int r = 0; r < 3; r++) {
+                    int lhs = relevantAnd(p, relevantAnd(q,r));
+                    int rhs = relevantAnd(relevantImplication(p,q),relevantImplication(p,r));
+                    if (lhs == 1 && (rhs == 0 || rhs == 2) || lhs == 2 && rhs == 0) {
+                        System.out.println(p);
+                        System.out.println(q);
+                        System.out.println("q3 relevant invalid");
+                    }
+                }
+
+            }
+        }
+        for (int p = 0; p < 3; p++) {
+            for (int q = 0; q < 3; q++) {
+                for (int r = 0; r < 3; r++) {
+                    int lhs = intuitionisticAnd(p, intuitionisticAnd(q,r));
+                    int rhs = intuitionisticAnd(intuitionisticImplication(p,q),intuitionisticImplication(p,r));
+                    if (lhs == 1 && (rhs == 0 || rhs == 2) || lhs == 2 && rhs == 0) {
+                        System.out.println(p);
+                        System.out.println(q);
+                        System.out.println("q3 intui invalid");
+                    }
+                }
+
+            }
+        }
+
+
+        int lhs = intuitionisticAnd(2,2);
+        int rhs = intuitionisticNegate(intuitionisticAnd(intuitionisticNegate(2), intuitionisticNegate(2)));
+        System.out.println(lhs);
+        System.out.println(rhs);
     }
 
 
