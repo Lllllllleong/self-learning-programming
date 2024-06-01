@@ -285,6 +285,35 @@ public class Practice4 {
 
 
 
+    public int countArrangement(int n) {
+        HashMap<Integer, List<Integer>> hm = new HashMap<>();
+        for (int i = 1; i <= n; i++) {
+            List<Integer> list = new ArrayList<>();
+            for (int j = 1; j <= n; j++) {
+                if (j % i == 0) {
+                    list.add(j);
+                    continue;
+                }
+                if (i % j == 0) list.add(j);
+            }
+            hm.put(i, list);
+        }
+        return countArrangement(hm, 0, n, new HashSet<Integer>());
+    }
+    public int countArrangement(HashMap<Integer, List<Integer>> hm, int index, int n, HashSet<Integer> set) {
+        if (index == n+1) return 1;
+        List<Integer> list = hm.get(index);
+        int output = 0;
+        for (Integer I : list) {
+            if (!set.contains(I)) {
+                set.add(I);
+                output += countArrangement(hm, index+1, n, set);
+                set.remove(I);
+            }
+        }
+        return output;
+    }
+
 
 
     public static void main(String[] args) {
