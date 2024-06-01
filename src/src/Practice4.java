@@ -254,6 +254,20 @@ public class Practice4 {
         return output;
     }
 
+    public int[] createTargetArray(int[] nums, int[] index) {
+        List<Integer> list = new ArrayList<>();
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            int num = nums[i];
+            int ind = index[i];
+            list.add(ind, num);
+            System.out.println(num);
+            System.out.println(ind);
+            System.out.println(list);
+        }
+        return list.stream().mapToInt(i->i).toArray();
+    }
+
 
 
 
