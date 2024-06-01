@@ -316,10 +316,48 @@ public class Practice4 {
 
 
 
+    public static String compressedString(String word) {
+        int n = word.length();
+        if (n == 1) return "1"+word;
+        char[] charArray = word.toCharArray();
+        char prior = charArray[0];
+        int length = 0;
+        List<Character> list = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            if (i == n) {
+                while (length != 0) {
+                    int currentLength = Math.min(9, length);
+                    length -= currentLength;
+                    list.add(Character.forDigit(currentLength, 10));
+                    list.add(prior);
+                }
+            } else {
+                char c = charArray[i];
+                if (prior != c) {
+                    while (length != 0) {
+                        int currentLength = Math.min(9, length);
+                        length -= currentLength;
+                        list.add(Character.forDigit(currentLength, 10));
+                        list.add(prior);
+                    }
+                }
+                length++;
+                prior = c;
+            }
+        }
+        String str = list.stream()
+                .map(e->e.toString())
+                .reduce((acc, e) -> acc  + e)
+                .get();
+        return str;
+    }
+
+
+
     public static void main(String[] args) {
         int i = substrings("123");
 
-
+        String s = compressedString("abcde");
 
 
 
