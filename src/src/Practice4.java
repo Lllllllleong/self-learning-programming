@@ -370,9 +370,26 @@ public class Practice4 {
     }
 
 
+    public static long stockmax(List<Integer> prices) {
+        long output = 0;
+        int n = prices.size();
+        if (n == 1) return output;
+        Integer maxPrice = -1;
+        for (int i = n - 1; i >= 0; i--) {
+            Integer currentPrice = prices.get(i);
+            if (currentPrice >= maxPrice) maxPrice = currentPrice;
+            else {
+                output += maxPrice - currentPrice;
+            }
+        }
+        return output;
+    }
+
+
     public static void main(String[] args) {
         int i = substrings("123");
-
+        int[] prices = {1, 2, 100};
+        stockmax(new ArrayList<>(Arrays.stream(prices).boxed().toList()));
         String s = compressedString("abcde");
 
 
