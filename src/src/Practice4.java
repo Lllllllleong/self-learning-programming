@@ -354,6 +354,22 @@ public class Practice4 {
 
 
 
+    public int minimumCardPickup(int[] cards) {
+        int n = cards.length;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        int difference = Integer.MAX_VALUE;
+        for (int i = 0; i < n; i++) {
+            int card = cards[i];
+            if (hm.containsKey(card)) {
+                difference = Math.min(difference, i - hm.get(card) + 1);
+            }
+            hm.put(card,i);
+        }
+        if (difference == Integer.MAX_VALUE) return -1;
+        return difference;
+    }
+
+
     public static void main(String[] args) {
         int i = substrings("123");
 
