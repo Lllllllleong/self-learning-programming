@@ -417,8 +417,27 @@ public class Practice4 {
         return primeCount;
     }
 
+
+
+    public static long mandragora(List<Integer> H) {
+        int n = H.size();
+        Collections.sort(H);
+        long[] dpArray = new long[n+1];
+        long currentSum = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            long multiplier = i + 1;
+            currentSum += H.get(i);
+            dpArray[i] = Math.max(dpArray[i+1], currentSum * multiplier);
+        }
+        return dpArray[0];
+    }
+
+
+
+
     public static void main(String[] args) {
         int i = redJohn(5);
+        mandragora(Arrays.asList(3,2,5));
         int[] prices = {1, 2, 100};
         stockmax(new ArrayList<>(Arrays.stream(prices).boxed().toList()));
         String s = compressedString("abcde");
