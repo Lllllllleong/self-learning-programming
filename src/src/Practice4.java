@@ -616,6 +616,62 @@ public class Practice4 {
 
 
 
+    boolean[][] boolGrid;
+    int gridPaths;
+    int remainingPaths;
+
+    public int uniquePathsIII(int[][] grid) {
+        int yMax = grid.length;
+        int xMax = grid[0].length;
+        gridPaths = 0;
+        remainingPaths = 0;
+        boolGrid = new boolean[yMax][xMax];
+        int startY = -1;
+        int startX = -1;
+        int finishY = -1;
+        int finishX = -1;
+        for (int y = 0; y < yMax; y++) {
+            for (int x = 0; x < xMax; x++) {
+                int i = grid[y][x];
+                if (i == 1) {
+                    startY = y;
+                    startX = x;
+                } else if (i == 2) {
+                    finishY = y;
+                    finishX = x;
+                }
+                if (i != -1) {
+                    remainingPaths++;
+                }
+            }
+        }
+        return gridDFS(startY, startX, finishY, finishX, remainingPaths, grid);
+    }
+
+    public int gridDFS(int y, int x, int finishY, int finishX, int remainingPaths, int[][] grid) {
+        if (y < 0 || y >= grid.length || x < 0 || x >= grid[0].length || grid[y][x] == -1) {
+            return 0;
+        }
+        if (y == finishY && x == finishX) {
+            return (remainingPaths == 1) ? 1 : 0;
+        }
+        int temp = grid[y][x];
+        grid[y][x] = -1;
+        remainingPaths--;
+
+        int output = 0;
+        output += gridDFS(y + 1, x, finishY, finishX, remainingPaths, grid);
+        output += gridDFS(y - 1, x, finishY, finishX, remainingPaths, grid);
+        output += gridDFS(y, x + 1, finishY, finishX, remainingPaths, grid);
+        output += gridDFS(y, x - 1, finishY, finishX, remainingPaths, grid);
+        grid[y][x] = temp;
+        remainingPaths++;
+        return output;
+    }
+
+
+
+
     public static void main(String[] args) {
         int i = redJohn(5);
         mandragora(Arrays.asList(3,2,5));
