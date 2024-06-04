@@ -669,6 +669,50 @@ public class Practice4 {
         return output;
     }
 
+    char[][] sudokuBoard;
+    boolean[][] rowGrid;
+    boolean[][] colGrid;
+    boolean[][][] boxGrid;
+
+    public void solveSudoku(char[][] board) {
+        sudokuBoard = board;
+        rowGrid = new boolean[9][9];
+        colGrid = new boolean[9][9];
+        boxGrid = new boolean[3][3][9];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] != '.') {
+                    int value = board[i][j] - '1';
+                    rowGrid[i][value] = true;
+                    colGrid[j][value] = true;
+                    boxGrid[i / 3][j / 3][value] = true;
+                }
+            }
+        }
+        solve(0, 0);
+    }
+
+    private boolean solve(int y, int x) {
+        if (y == 9) return true;
+        if (x == 9) return solve(y + 1, 0);
+        if (sudokuBoard[y][x] != '.') return solve(y, x + 1);
+        for (int value = 0; value < 9; value++) {
+            if (!rowGrid[y][value] && !colGrid[x][value] && !boxGrid[y / 3][x / 3][value]) {
+                sudokuBoard[y][x] = (char) (value + '1');
+                rowGrid[y][value] = true;
+                colGrid[x][value] = true;
+                boxGrid[y / 3][x / 3][value] = true;
+                if (solve(y, x + 1)) return true;
+                sudokuBoard[y][x] = '.';
+                rowGrid[y][value] = false;
+                colGrid[x][value] = false;
+                boxGrid[y / 3][x / 3][value] = false;
+            }
+        }
+        return false;
+    }
+
+
 
 
 
