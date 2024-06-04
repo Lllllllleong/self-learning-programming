@@ -95,15 +95,20 @@ public class References {
          */
 
 
-
+        //Map merge
 //          Increment hashmap value by 1 if it exists, if not, set it to 1
         HashMap<Integer, Integer> map = new HashMap<>();
+        HashMap<Integer, List<Integer>> indexMap = new HashMap<>();
         Integer key = 3;
         Integer value = 3;
         map.put(1, value);
 
 
         map.merge(key, 1, Integer::sum);
+
+        indexMap.merge(1, new ArrayList<>(List.of(1)), (a, b) -> {a.addAll(b); return a;});
+
+
 
 
 //          Sort based on hashmap values

@@ -560,6 +560,62 @@ public class Practice4 {
 
 
 
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
+        HashMap<Integer, PriorityQueue<Integer>> indexMap = new HashMap<>();
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            int num = nums[i];
+            if (!indexMap.containsKey(num)) indexMap.put(num, new PriorityQueue<>());
+            indexMap.get(num).offer(i);
+        }
+        List<Integer> keyList = new ArrayList<>(indexMap.keySet());
+        Collections.sort(keyList);
+        if (valueDiff == 0) {
+            for (Integer key : keyList) {
+                List<Integer> indexes = new ArrayList<>(indexMap.get(key));
+                int size = indexes.size();
+                if (size <= 1) continue;
+                Collections.sort(indexes);
+                for (int i = 1; i < size; i++) {
+                    if (indexes.get(i) - indexes.get(i-1) <= indexDiff) return true;
+                }
+            }
+            return false;
+        }
+        else {
+            int keyListSize = keyList.size();
+            for (int i = 0; i < keyListSize-1; i++) {
+                int lowerKey = keyList.get(i);
+                for (int j = i; j < keyListSize; j++) {
+                    if (j == i) {
+                        List<Integer> indexes = new ArrayList<>(indexMap.get(lowerKey));
+                        for (int k = 1; k < indexes.size(); k++) {
+                            if (indexes.get(k) - indexes.get(k-1) <= indexDiff) return true;
+                        }
+                    } else {
+                        int upperKey = keyList.get(j);
+                        if (Math.abs(upperKey - lowerKey) > valueDiff) break;
+                        PriorityQueue<Integer> lowerPQ = new PriorityQueue<>(indexMap.get(lowerKey));
+                        PriorityQueue<Integer> upperPQ = new PriorityQueue<>(indexMap.get(upperKey));
+                        while (!lowerPQ.isEmpty() && !upperPQ.isEmpty()) {
+                            int a = lowerPQ.peek();
+                            int b = upperPQ.peek();
+                            if (Math.abs(a - b) <= indexDiff) return true;
+                            if (a < b) {
+                                lowerPQ.poll();
+                            } else {
+                                upperPQ.poll();
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+    }
+
+
+
     public static void main(String[] args) {
         int i = redJohn(5);
         mandragora(Arrays.asList(3,2,5));
