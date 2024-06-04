@@ -544,6 +544,20 @@ public class Practice4 {
     }
 
 
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        int index = 0;
+        for (int i : nums) {
+            if (hm.containsKey(i)) {
+                int priorIndex = hm.get(i);
+                if (index - priorIndex <= k) return true;
+            }
+            hm.put(i, index);
+            index++;
+        }
+        return false;
+    }
+
 
 
     public static void main(String[] args) {
