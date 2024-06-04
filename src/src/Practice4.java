@@ -531,6 +531,21 @@ public class Practice4 {
     }
 
 
+
+
+    public boolean containsDuplicate(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        Arrays.sort(nums);
+        for (int i : nums) {
+            if (set.contains(i)) return true;
+            set.add(i);
+        }
+        return false;
+    }
+
+
+
+
     public static void main(String[] args) {
         int i = redJohn(5);
         mandragora(Arrays.asList(3,2,5));
