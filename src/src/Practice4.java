@@ -749,7 +749,44 @@ public class Practice4 {
         return sequenceCounter;
     }
 
+    public int lengthOfLIS(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int[] dp = new int[nums.length];
+        int length = 0;
+        for (int num : nums) {
+            int index = Arrays.binarySearch(dp, 0, length, num);
+            if (index < 0) {
+                index = -(index + 1);
+            }
+            dp[index] = num;
+            if (index == length) {
+                length++;
+            }
+        }
+        return length;
+    }
 
+    public static int longestIncreasingSubsequence(List<Integer> arr) {
+        if (arr == null || arr.size() == 0) {
+            return 0;
+        }
+        int n = arr.size();
+        Integer[] dpArray = new Integer[n];
+        int length = 0;
+        for (Integer num : arr) {
+            int index = Arrays.binarySearch(dpArray, 0, length, num);
+            if (index < 0) {
+                index = -(index + 1);
+            }
+            dpArray[index] = num;
+            if (index == length) {
+                length++;
+            }
+        }
+        return length;
+    }
 
 
     public static void main(String[] args) {
