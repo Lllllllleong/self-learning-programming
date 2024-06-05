@@ -732,6 +732,24 @@ public class Practice4 {
     }
 
 
+    public int shortestSequence(int[] rolls, int k) {
+        boolean[] flagArray = new boolean[k+1];
+        int flagCount = k;
+        int sequenceCounter = 0;
+        for (int i : rolls) {
+            if (!flagArray[i]) {
+                flagArray[i] = true;
+                flagCount--;
+            }
+            if (flagCount == 0) {
+                sequenceCounter++;
+                Arrays.fill(flagArray, false);
+            }
+        }
+        return sequenceCounter;
+    }
+
+
 
 
     public static void main(String[] args) {
