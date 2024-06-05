@@ -919,6 +919,38 @@ public class Practice4 {
         return maxProbabilities[end_node];
     }
 
+
+
+    public int shortestPathLength(int[][] graph) {
+        int n = graph.length;
+        int finalState = (1 << n) - 1;
+        Queue<int[]> queue = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        for (int i = 0; i < n; i++) {
+            int mask = 1 << i;
+            queue.offer(new int[]{i, mask, 0});
+            visited.add(i + " " + mask);
+        }
+        while (!queue.isEmpty()) {
+            int[] node = queue.poll();
+            int u = node[0], mask = node[1], dist = node[2];
+            if (mask == finalState) {
+                return dist;
+            }
+            for (int v : graph[u]) {
+                int newMask = mask | (1 << v);
+                String state = v + " " + newMask;
+                if (!visited.contains(state)) {
+                    queue.offer(new int[]{v, newMask, dist + 1});
+                    visited.add(state);
+                }
+            }
+        }
+        return -1;
+    }
+
+
+
     public static void main(String[] args) {
         int i = redJohn(5);
         mandragora(Arrays.asList(3,2,5));
