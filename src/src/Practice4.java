@@ -831,6 +831,14 @@ public class Practice4 {
     }
 
 
+    public boolean isStrictlyPalindromic(int n) {
+        int max = n-2;
+        for (int i = 2; i <= max; i++) {
+            String binaryString = Integer.toString(n,i);
+            if (!binaryString.equals(new StringBuilder(binaryString).reverse().toString())) return false;
+        }
+        return true;
+    }
 
 
 
