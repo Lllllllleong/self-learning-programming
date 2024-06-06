@@ -997,6 +997,25 @@ public class Practice4 {
     }
 
 
+    public int[] sortArray(int[] nums) {
+        int n = nums.length;
+        List<Integer> list = new ArrayList<>();
+        int counter = 0;
+        for (int i : nums) {
+            int index = Collections.binarySearch(list, 0);
+            System.out.println(index);
+            if (index < 0) index = -(index-1);
+            list.add(index, i);
+        }
+        return list.stream().mapToInt(i->i).toArray();
+    }
+
+
+
+
+
+
+
     public static void main(String[] args) {
         int i = redJohn(5);
         mandragora(Arrays.asList(3,2,5));

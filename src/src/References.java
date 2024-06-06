@@ -165,7 +165,11 @@ public class References {
 
         PriorityQueue<Integer> queue = new PriorityQueue<>((a,b) -> (a-b));
 
-        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+        PriorityQueue<int[]> pq = new PriorityQueue<>(
+                Comparator.comparingInt((int[] a) -> a[1])
+                        .thenComparingInt(a -> a[0])
+        );
+
 
 
 //        Condensed for loop for strings
