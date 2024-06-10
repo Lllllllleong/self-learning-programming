@@ -1,4 +1,5 @@
 
+import com.google.gson.*;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.*;
@@ -253,6 +254,17 @@ public class References {
         //Write md
         writeMD("writeMD.md", mdString);
 
+
+        //JSON
+        Company company = new Company("TechCorp");
+        company.addEmployee(new Person("Alice", 30, "Engineer"));
+        company.addEmployee(new Person("Bob", 40, "Manager"));
+
+        File writeFile = new File("/Users/leong/Desktop/Personal Projects/self-learning-programming/src/src/res/techcorp.JSON");
+        writeJson(writeFile, company);
+        File readFile = new File("/Users/leong/Desktop/Personal Projects/self-learning-programming/src/src/res/techcorp.JSON");
+        Company techcorp = readJsonCompany(readFile);
+        System.out.println(techcorp.getCompanyName());
     }
 
 
@@ -398,6 +410,26 @@ public class References {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static void writeJson(File file, Object object) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try (FileWriter writer = new FileWriter(file)) {
+            gson.toJson(object, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Company readJsonCompany(File file) {
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader(file)) {
+            return gson.fromJson(reader, Company.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
