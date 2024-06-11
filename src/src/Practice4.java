@@ -1160,6 +1160,67 @@ public class Practice4 {
     }
 
 
+    class Bomb {
+        int x;
+        int y;
+        int r;
+        List<Bomb> bombsWithinRange;
+
+        public Bomb(int x, int y, int r) {
+            this.x = x;
+            this.y = y;
+            this.r = r;
+            this.bombsWithinRange = new ArrayList<>();
+        }
+    }
+
+    public int maximumDetonation(int[][] bombs) {
+        int n = bombs.length;
+        Bomb[] bombObjects = new Bomb[n];
+
+        for (int i = 0; i < n; i++) {
+            bombObjects[i] = new Bomb(bombs[i][0], bombs[i][1], bombs[i][2]);
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i != j && isInRange(bombObjects[i], bombObjects[j])) {
+                    bombObjects[i].bombsWithinRange.add(bombObjects[j]);
+                }
+            }
+        }
+
+        int maxDetonated = 0;
+        for (int i = 0; i < n; i++) {
+            boolean[] visited = new boolean[n];
+            maxDetonated = Math.max(maxDetonated, dfs(bombObjects, visited, i));
+        }
+
+        return maxDetonated;
+    }
+
+    private boolean isInRange(Bomb a, Bomb b) {
+        long dx = a.x - b.x;
+        long dy = a.y - b.y;
+        long distanceSquared = dx * dx + dy * dy;
+        long radiusSquared = (long) a.r * a.r;
+        return distanceSquared <= radiusSquared;
+    }
+
+    private int dfs(Bomb[] bombObjects, boolean[] visited, int index) {
+        visited[index] = true;
+        int count = 1;
+
+        for (Bomb b : bombObjects[index].bombsWithinRange) {
+            int nextIndex = Arrays.asList(bombObjects).indexOf(b);
+            if (!visited[nextIndex]) {
+                count += dfs(bombObjects, visited, nextIndex);
+            }
+        }
+
+        return count;
+    }
+
     public static void main(String[] args) {
         int[] tasks = {10,6,6,8,3,7};
         minSessions(tasks, 13);
