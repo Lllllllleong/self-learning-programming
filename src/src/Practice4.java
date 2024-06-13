@@ -1241,6 +1241,24 @@ public class Practice4 {
     }
 
 
+    public int findContentChildren(int[] g, int[] s) {
+        PriorityQueue<Integer> greedQueue = new PriorityQueue<>(Arrays.stream(g).boxed().toList());
+        PriorityQueue<Integer> supplyQueue = new PriorityQueue<>(Arrays.stream(s).boxed().toList());
+        int output = 0;
+        while (!greedQueue.isEmpty() && !supplyQueue.isEmpty()) {
+            int greed = greedQueue.peek();
+            int supply = supplyQueue.peek();
+            if (supply >= greed) {
+                output++;
+                greedQueue.poll();
+                supplyQueue.poll();
+            } else {
+                supplyQueue.poll();
+            }
+        }
+        return output;
+    }
+
 
 
 
