@@ -1296,6 +1296,17 @@ public class Practice4 {
     }
 
 
+    public int findPoisonedDuration(int[] timeSeries, int duration) {
+        int n = timeSeries.length;
+        if (n == 0) return 0;
+        int totalPoisonedDuration = 0;
+        for (int i = 1; i < n; i++) {
+            int gap = timeSeries[i] - timeSeries[i - 1];
+            totalPoisonedDuration += Math.min(gap, duration);
+        }
+        totalPoisonedDuration += duration;
+        return totalPoisonedDuration;
+    }
 
 
 
