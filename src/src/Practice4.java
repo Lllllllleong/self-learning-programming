@@ -501,7 +501,7 @@ public class Practice4 {
 
 
 
-    public static String abbreviation(String a, String b) {
+    public static String abbreviationOG(String a, String b) {
         char[] yCharArray = b.toCharArray();
         char[] xCharArray = a.toCharArray();
         int yMax = b.length();
@@ -1266,18 +1266,55 @@ public class Practice4 {
     }
 
 
+    public static String abbreviation(String a, String b) {
+        int yMax = a.length();
+        int xMax = b.length();
+        char[] yCharArray = a.toCharArray();
+        char[] xCharArray = b.toCharArray();
+        boolean[][] dpMatrix = new boolean[yMax+1][xMax+1];
+        dpMatrix[0][0] = true;
+        for (int y = 1; y < yMax; y++) {
+            if (Character.isLowerCase(yCharArray[y-1])) {
+                dpMatrix[y][0] = true;
+            } else {
+                break;
+            }
+        }
+        for (int y = 1; y <= yMax; y++) {
+            for (int x = 1; x <= xMax; x++) {
+                char yChar = yCharArray[y-1];
+                char xChar = xCharArray[x-1];
+
+                if (Character.toUpperCase(yChar) == xChar) {
+                    dpMatrix[y][x] = dpMatrix[y - 1][x - 1] || (Character.isLowerCase(yChar) && dpMatrix[y - 1][x]);
+                } else if (Character.isLowerCase(yChar)) {
+                    dpMatrix[y][x] = dpMatrix[y - 1][x];
+                }
+            }
+        }
+        return dpMatrix[yMax][xMax] ? "YES" : "NO";
+    }
+
+
+
+
+
 
     public static void main(String[] args) {
         int[] tasks = {10,6,6,8,3,7};
         minSessions(tasks, 13);
         int[] spells = {3,1,2};
         int[] potions = {8,5,8};
-        int[] b = successfulPairs(spells,potions, 16);
 
 
-        Arrays.sort(tasks);
-        System.out.println("here");
-        System.out.println(Arrays.binarySearch(tasks, 6));
+        String og = abbreviationOG("daBcD", "ABCD");
+        String ab = abbreviation("daBcD", "ABCD");
+
+
+
+
+
+
 
         for (int p = 0; p < 3; p++) {
             for (int q = 0; q < 3; q++) {
