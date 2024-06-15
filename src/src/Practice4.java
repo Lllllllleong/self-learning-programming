@@ -1308,6 +1308,37 @@ public class Practice4 {
         return totalPoisonedDuration;
     }
 
+    public long minimumFuelCost(int[][] roads, int seats) {
+        int n = roads.length + 1;
+        List<Integer>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        for (int[] road : roads) {
+            int u = road[0], v = road[1];
+            graph[u].add(v);
+            graph[v].add(u);
+        }
+        long[] totalFuelCost = new long[1];
+        dfs(graph, 0, -1, seats, totalFuelCost);
+        return totalFuelCost[0];
+    }
+
+    private int dfs(List<Integer>[] graph, int current, int parent, int seats, long[] totalFuelCost) {
+        int representatives = 1;
+        for (int neighbor : graph[current]) {
+            if (neighbor != parent) {
+                representatives += dfs(graph, neighbor, current, seats, totalFuelCost);
+            }
+        }
+        if (current != 0) {
+            int trips = (representatives + seats - 1) / seats;
+            totalFuelCost[0] += trips;
+        }
+        return representatives;
+    }
+
+
 
 
 
