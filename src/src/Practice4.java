@@ -1489,7 +1489,6 @@ public class Practice4 {
 
     public int closestMeetingNode(int[] edges, int node1, int node2) {
         HashMap<Integer, Integer> hmA = new HashMap<>();
-        HashMap<Integer, Integer> hmB = new HashMap<>();
         //BFS
         int currentNode = node1;
         int currentDistance = 0;
@@ -1499,27 +1498,25 @@ public class Practice4 {
             currentNode = edges[currentNode];
             currentDistance++;
         }
+        int output = Integer.MAX_VALUE;
+        int minDistance = Integer.MAX_VALUE;
         currentNode = node2;
         currentDistance = 0;
+        HashSet<Integer> visited = new HashSet<>();
         while (currentNode != -1) {
-            if (hmB.containsKey(currentNode)) break;
-            hmB.put(currentNode, currentDistance);
+            if (visited.contains(currentNode)) break;
+            visited.add(currentNode);
+            if (hmA.containsKey(currentNode)) {
+                int distance = Math.max(currentDistance, hmA.get(currentNode));
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    output = currentNode;
+                } else if (distance == minDistance && currentNode < output) {
+                    output = currentNode;
+                }
+            }
             currentNode = edges[currentNode];
             currentDistance++;
-        }
-        int output = -1;
-        int minDistance = Integer.MAX_VALUE;
-        List<Integer> keySet = new ArrayList<>(hmA.keySet());
-        Collections.sort(keySet);
-        for (Integer key : keySet) {
-            if (!hmB.containsKey(key)) continue;
-            int distanceA = hmA.get(key);
-            int distanceB = hmB.get(key);
-            int distance = Math.max(distanceA, distanceB);
-            if (distance < minDistance) {
-                minDistance = distance;
-                output = key;
-            }
         }
         return output;
     }
