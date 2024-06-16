@@ -1438,6 +1438,18 @@ public class Practice4 {
         return false;
     }
 
+    public int appendCharacters(String s, String t) {
+        int output = 0;
+        Deque<Character> sDQ = new ArrayDeque<>();
+        for (Character C : s.toCharArray()) sDQ.addLast(C);
+        Deque<Character> tDQ = new ArrayDeque<>();
+        for (Character C : t.toCharArray()) tDQ.addLast(C);
+        while (!sDQ.isEmpty() && !tDQ.isEmpty()) {
+            if (sDQ.poll() == tDQ.peek()) tDQ.poll();
+        }
+        return tDQ.size();
+    }
+
 
 
 
