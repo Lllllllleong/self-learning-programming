@@ -1554,6 +1554,20 @@ public class Practice4 {
     }
 
 
+
+    public int lengthOfLastWord(String s) {
+        s = s.trim();
+        String[] sArray = s.split(" ");
+        int n = sArray.length;
+        String last = sArray[n-1];
+        return last.length();
+    }
+
+
+
+
+
+
     public static void main(String[] args) {
         int[] tasks = {10, 6, 6, 8, 3, 7};
         minSessions(tasks, 13);
