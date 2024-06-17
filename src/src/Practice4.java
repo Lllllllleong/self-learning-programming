@@ -1370,9 +1370,9 @@ public class Practice4 {
             if (i < 0) neg++;
             if (i > 0) pos++;
         }
-        System.out.println(pos/n);
-        System.out.println(neg/n);
-        System.out.println((n - pos - neg)/n);
+        System.out.println(pos / n);
+        System.out.println(neg / n);
+        System.out.println((n - pos - neg) / n);
     }
 
 
@@ -1474,6 +1474,7 @@ public class Practice4 {
         }
         return left;
     }
+
     boolean canRepairInTime(long time, int[] ranks, int cars) {
         long totalCarsRepaired = 0;
         for (int rank : ranks) {
@@ -1554,237 +1555,55 @@ public class Practice4 {
     }
 
 
-
     public int lengthOfLastWord(String s) {
         s = s.trim();
         String[] sArray = s.split(" ");
         int n = sArray.length;
-        String last = sArray[n-1];
+        String last = sArray[n - 1];
         return last.length();
     }
 
 
 
+    public String rankTeams(String[] votes) {
+        int yMax = votes.length;
+        if (yMax == 1) return votes[0];
+        int xMax = votes[0].length();
+        HashMap<Character, int[]> hm = new HashMap<>();
+        for (String s : votes) {
+            char[] sCharArray = s.toCharArray();
+            for (int i = 0; i < xMax; i++) {
+                char c = sCharArray[i];
+                if (!hm.containsKey(c)) hm.put(c, new int[xMax]);
+                hm.get(c)[i]++;
+            }
+        }
+        List<Character> keyList = new ArrayList<>(hm.keySet());
+        Collections.sort(keyList, (a,b) -> rankCompare(a, b, hm.get(a), hm.get(b), 0));
+        StringBuilder sb = new StringBuilder();
+        for (Character c : keyList) sb.append(c);
+        return sb.toString();
+    }
 
+    public int rankCompare(char a, char b, int[] aRanks, int[] bRanks, int index) {
+        int maxIndex = aRanks.length;
+        if (index == maxIndex) {
+            return (Character.compare(a, b));
+        }
+        int aRank = aRanks[index];
+        int bRank = bRanks[index];
+        if (aRank == bRank) return rankCompare(a, b, aRanks, bRanks, index + 1);
+        else return (bRank - aRank);
+    }
 
 
     public static void main(String[] args) {
-        int[] tasks = {10, 6, 6, 8, 3, 7};
-        minSessions(tasks, 13);
-        int[] spells = {3, 1, 2};
-        int[] potions = {8, 5, 8};
-
-
-        String og = abbreviationOG("daBcD", "ABCD");
-        String ab = abbreviation("daBcD", "ABCD");
-
-
-        int[][] game = {{100}};
-        int fc = calculateMinimumHP(game);
 
 
 
 
 
-
-
-
-        for (int p = 0; p < 3; p++) {
-            for (int q = 0; q < 3; q++) {
-                int lhs = relevantImplication(p, q);
-                int rhs = relevantOr(relevantNegate(p), q);
-                if (lhs == 1 && (rhs == 0 || rhs == 2) || lhs == 2 && rhs == 0) {
-                    System.out.println(p);
-                    System.out.println(q);
-                    System.out.println("q1 relevant invalid");
-                }
-
-            }
-        }
-        for (int p = 0; p < 3; p++) {
-            for (int q = 0; q < 3; q++) {
-                int lhs = fuzzyImplication(p, q);
-                int rhs = fuzzyOr(fuzzyNegate(p), q);
-                if (lhs == 1 && (rhs == 0 || rhs == 2) || lhs == 2 && rhs == 0) {
-                    System.out.println(p);
-                    System.out.println(q);
-                    System.out.println("q1 fuzzy invalid");
-                }
-
-            }
-        }
-        for (int p = 0; p < 3; p++) {
-            for (int q = 0; q < 3; q++) {
-                int rhs = fuzzyAnd(p, q);
-                int lhs = fuzzyNegate(fuzzyNegate(fuzzyAnd(p, q)));
-                if (lhs == 1 && (rhs == 0 || rhs == 2) || lhs == 2 && rhs == 0) {
-                    System.out.println(p);
-                    System.out.println(q);
-                    System.out.println("q2 fuzzy invalid");
-                }
-
-            }
-        }
-        for (int p = 0; p < 3; p++) {
-            for (int q = 0; q < 3; q++) {
-                int rhs = intuitionisticAnd(p, q);
-                int lhs = intuitionisticNegate(intuitionisticNegate(intuitionisticAnd(p, q)));
-                if (lhs == 1 && (rhs == 0 || rhs == 2) || lhs == 2 && rhs == 0) {
-                    System.out.println(p);
-                    System.out.println(q);
-                    System.out.println("q2 intuitionistic invalid");
-                }
-            }
-        }
-
-        for (int p = 0; p < 3; p++) {
-            for (int q = 0; q < 3; q++) {
-                for (int r = 0; r < 3; r++) {
-                    int lhs = relevantAnd(p, relevantAnd(q, r));
-                    int rhs = relevantAnd(relevantImplication(p, q), relevantImplication(p, r));
-                    if (lhs == 1 && (rhs == 0 || rhs == 2) || lhs == 2 && rhs == 0) {
-                        System.out.println(p);
-                        System.out.println(q);
-                        System.out.println("q3 relevant invalid");
-                    }
-                }
-
-            }
-        }
-        for (int p = 0; p < 3; p++) {
-            for (int q = 0; q < 3; q++) {
-                for (int r = 0; r < 3; r++) {
-                    int lhs = intuitionisticAnd(p, intuitionisticAnd(q, r));
-                    int rhs = intuitionisticAnd(intuitionisticImplication(p, q), intuitionisticImplication(p, r));
-                    if (lhs == 1 && (rhs == 0 || rhs == 2) || lhs == 2 && rhs == 0) {
-                        System.out.println(p);
-                        System.out.println(q);
-                        System.out.println("q3 intui invalid");
-                    }
-                }
-
-            }
-        }
-
-
-        int lhs = intuitionisticAnd(2, 2);
-        int rhs = intuitionisticNegate(intuitionisticAnd(intuitionisticNegate(2), intuitionisticNegate(2)));
-        System.out.println(lhs);
-        System.out.println(rhs);
     }
-
-
-    public static int fuzzyAnd(int a, int b) {
-        if (a == 0) return 0;
-        if (a == 1) return b;
-        if (a == 2) {
-            if (b == 0) return 0;
-            else return 2;
-        }
-        return -1;
-    }
-
-    public static int intuitionisticAnd(int a, int b) {
-        if (a == 0) return 0;
-        if (a == 1) return b;
-        if (a == 2) {
-            if (b == 0) return 0;
-            else return 2;
-        }
-        return -1;
-    }
-
-    public static int relevantAnd(int a, int b) {
-        if (a == 0) return 0;
-        if (a == 1) return b;
-        if (a == 2) {
-            if (b == 0) return 0;
-            else return 2;
-        }
-        return -1;
-    }
-
-    public static int fuzzyOr(int a, int b) {
-        if (a == 0) return b;
-        if (a == 1) return 1;
-        if (a == 2) {
-            if (b == 1) return 1;
-            else return 2;
-        }
-        return -1;
-    }
-
-    public static int intuitionisticOr(int a, int b) {
-        if (a == 0) return b;
-        if (a == 1) return 1;
-        if (a == 2) {
-            if (b == 1) return 1;
-            else return 2;
-        }
-        return -1;
-    }
-
-    public static int relevantOr(int a, int b) {
-        if (a == 0) return b;
-        if (a == 1) return 1;
-        if (a == 2) {
-            if (b == 1) return 1;
-            else return 2;
-        }
-        return -1;
-    }
-
-    public static int fuzzyImplication(int a, int b) {
-        if (a == 0) return 1;
-        if (a == 1) return b;
-        if (a == 2) {
-            if (b == 0) return 2;
-            else return 1;
-        }
-        return -1;
-    }
-
-    public static int intuitionisticImplication(int a, int b) {
-        if (a == 0) return 1;
-        if (a == 1) return b;
-        if (a == 2) {
-            if (b == 0) return 0;
-            else return 1;
-        }
-        return -1;
-    }
-
-    public static int relevantImplication(int a, int b) {
-        if (a == 0) return 1;
-        if (a == 1) {
-            if (b == 1) return 1;
-            else return 0;
-        }
-        if (a == 2) return b;
-        return -1;
-    }
-
-    public static int fuzzyNegate(int a) {
-        if (a == 0) return 1;
-        if (a == 1) return 0;
-        if (a == 2) return 2;
-        return -1;
-    }
-
-    public static int intuitionisticNegate(int a) {
-        if (a == 0) return 1;
-        if (a == 1) return 0;
-        if (a == 2) return 0;
-        return -1;
-    }
-
-    public static int relevantNegate(int a) {
-        if (a == 0) return 1;
-        if (a == 1) return 0;
-        if (a == 2) return 2;
-        return -1;
-    }
-
 
     public class TreeNode {
         int val;
