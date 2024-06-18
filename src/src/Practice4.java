@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.*;
 
 
 public class Practice4 {
@@ -1564,7 +1563,6 @@ public class Practice4 {
     }
 
 
-
     public String rankTeams(String[] votes) {
         int yMax = votes.length;
         if (yMax == 1) return votes[0];
@@ -1579,7 +1577,7 @@ public class Practice4 {
             }
         }
         List<Character> keyList = new ArrayList<>(hm.keySet());
-        Collections.sort(keyList, (a,b) -> rankCompare(a, b, hm.get(a), hm.get(b), 0));
+        Collections.sort(keyList, (a, b) -> rankCompare(a, b, hm.get(a), hm.get(b), 0));
         StringBuilder sb = new StringBuilder();
         for (Character c : keyList) sb.append(c);
         return sb.toString();
@@ -1614,7 +1612,6 @@ public class Practice4 {
     }
 
 
-
     public static int hackerlandRadioTransmitters(List<Integer> x, int k) {
         Set<Integer> set = new HashSet<>(x);
         x = new ArrayList<>(set);
@@ -1623,12 +1620,12 @@ public class Practice4 {
         int currentRange = -1;
         for (int i : x) {
             if (currentRange < i) {
-                for (int j = i+k; j >= i; j--) {
-                     if (set.contains(j)) {
-                         currentRange = j+k;
-                         output++;
-                         break;
-                     }
+                for (int j = i + k; j >= i; j--) {
+                    if (set.contains(j)) {
+                        currentRange = j + k;
+                        output++;
+                        break;
+                    }
 
                 }
             }
@@ -1644,7 +1641,7 @@ public class Practice4 {
             int end = query.get(1);
             int value = query.get(2);
             hm.merge(start, value, Integer::sum);
-            hm.merge(end+1, -value, Integer::sum);
+            hm.merge(end + 1, -value, Integer::sum);
         }
         long sum = 0;
         long output = Long.MIN_VALUE;
@@ -1706,6 +1703,7 @@ public class Practice4 {
     }
 
     int[] redundantConnection = new int[2];
+
     public int[] findRedundantConnection(int[][] edges) {
         int n = edges.length;
         boolean[][] graph = new boolean[n][n];
@@ -1716,9 +1714,10 @@ public class Practice4 {
             graph[from][to] = true;
             graph[to][from] = true;
         }
-        findRedundantConnection(new HashSet<>() , graph, 0, -1);
+        findRedundantConnection(new HashSet<>(), graph, 0, -1);
         return redundantConnection;
     }
+
     public void findRedundantConnection(HashSet<Integer> visited, boolean[][] graph, int currentNode, int fromNode) {
         visited.add(currentNode);
         boolean[] to = graph[currentNode];
@@ -1759,17 +1758,61 @@ public class Practice4 {
         return sb.toString();
     }
 
+    public List<Interval> employeeFreeTime(List<List<Interval>> schedule) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (List<Interval> List : schedule) {
+            for (Interval I : List) {
+                Integer start = I.start;
+                Integer end = I.end;
+                hm.merge(start, 1, Integer::sum);
+                hm.merge(end, -1, Integer::sum);
+            }
+        }
+        List<Interval> output = new ArrayList<>();
+        List<Integer> keyList = new ArrayList<>(hm.keySet());
+        Collections.sort(keyList);
+        int n = keyList.size();
+        Integer sum = hm.get(keyList.get(0));
+        Integer currentIntervalStart = -1;
+        for (int i = 1; i < n; i++) {
+            Integer key = keyList.get(i);
+            Integer value = hm.get(key);
+            if (sum == 0) {
+                output.add(new Interval(currentIntervalStart, value));
+            }
+            sum += value;
+            if (sum == 0) currentIntervalStart = key;
+        }
+        return output;
+    }
+
+
 
 
 
     public static void main(String[] args) {
 
-        int[] nums = {3,5,0,3,4};
+        int[] nums = {3, 5, 0, 3, 4};
         String s = removeKdigits("1432219", 3);
         System.out.println(s);
 
 
     }
+
+
+    class Interval {
+        public int start;
+        public int end;
+
+        public Interval() {
+        }
+
+        public Interval(int _start, int _end) {
+            start = _start;
+            end = _end;
+        }
+    }
+
 
     public class TreeNode {
         int val;
