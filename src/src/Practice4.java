@@ -1898,6 +1898,40 @@ public class Practice4 {
     }
 
 
+    public boolean isThereAPath(int[][] grid) {
+        int yMax = grid.length;
+        int xMax = grid[0].length;
+        int maxDifference = yMax + xMax - 1;
+        int rangeDifference = (maxDifference*2) + 1;
+        int zeroDifferenceIndex = maxDifference;
+        boolean[][][] dp = new boolean[yMax+1][xMax+1][rangeDifference];
+        dp[yMax][xMax-1][zeroDifferenceIndex] = true;
+        dp[yMax+1][xMax][zeroDifferenceIndex] = true;
+        for (int y = yMax - 1; y >= 0; y--) {
+            for (int x = xMax - 1; x >= 0; x--) {
+                int i = grid[y][x];
+                if (i == 0) i = -1;
+                boolean[] right = dp[y][x+1];
+                boolean[] down = dp[y+1][x];
+                for (int j = 0; j < rangeDifference; j++) {
+                    boolean d = down[j];
+                    if (d) dp[y][x][j+i] = true;
+                    boolean u = right[j];
+                    if (u) dp[y][x][j+i] = true;
+                }
+            }
+        }
+        return dp[0][0][zeroDifferenceIndex];
+    }
+    public boolean pathDFS(int[][] grid, int y, int x, int count, int yMax, int xMax) {
+        if (grid[y][x] == 1) count++;
+        else count --;
+        if (y == yMax && x == xMax) return (count == 0);
+        boolean a = (y != yMax) && pathDFS(grid, y+1, x, count, yMax, xMax);
+        boolean b = (x != xMax) && pathDFS(grid, y, x+1, count, yMax, xMax);
+        return (a || b);
+    }
+
 
     public static void main(String[] args) {
 
