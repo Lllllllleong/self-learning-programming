@@ -1844,6 +1844,46 @@ public class Practice4 {
 
 
 
+    public int visibleMountains(int[][] peaks) {
+        Arrays.sort(peaks, Comparator.comparingInt((int[] a) -> a[0]).thenComparingInt(a -> a[1]));
+        Deque<int[]> dq = new ArrayDeque<>();
+        for (int[] peak : peaks) {
+            boolean isVisible = true;
+            int pos = peak[0];
+            int height = peak[1];
+            while (!dq.isEmpty()) {
+                int[] last = dq.peekLast();
+                int lastPos = last[0];
+                int lastHeight = last[1];
+                int posDifference = pos - lastPos;
+                if (height - lastHeight >= posDifference) {
+                    dq.pollLast();
+                } else if (lastHeight - height >= posDifference) {
+                    isVisible = false;
+                    break;
+                } else {
+                    break;
+                }
+            }
+            if (isVisible) {
+                dq.addLast(peak);
+            }
+        }
+        HashMap<String, Integer> frequencyMap = new HashMap<>();
+        for (int[] peak : peaks) {
+            String key = Arrays.toString(peak);
+            frequencyMap.merge(key, 1, Integer::sum);
+        }
+        List<int[]> uniqueVisiblePeaks = new ArrayList<>();
+        for (int[] peak : dq) {
+            String key = Arrays.toString(peak);
+            if (frequencyMap.get(key) == 1) {
+                uniqueVisiblePeaks.add(peak);
+            }
+        }
+        return uniqueVisiblePeaks.size();
+    }
+
 
     public static void main(String[] args) {
 
