@@ -1884,6 +1884,20 @@ public class Practice4 {
         return uniqueVisiblePeaks.size();
     }
 
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        Deque<Integer> poppedDQ = new ArrayDeque<>(Arrays.stream(popped).boxed().toList());
+        for (int i : pushed) {
+            dq.addLast(i);
+            while (!dq.isEmpty() && !poppedDQ.isEmpty() && dq.peekLast().equals(poppedDQ.peekFirst())) {
+                dq.pollLast();
+                poppedDQ.pollFirst();
+            }
+        }
+        return (dq.isEmpty() && poppedDQ.isEmpty());
+    }
+
+
 
     public static void main(String[] args) {
 
