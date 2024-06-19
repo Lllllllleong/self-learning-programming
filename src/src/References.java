@@ -171,10 +171,10 @@ public class References {
     // Section 4: Queue Examples
     public static void queueExamples() {
         System.out.println("=== Queue Examples ===");
-        int[] a = new int[100];
+        int[] ab = new int[100];
 
         //int[] to deque
-        Deque<Integer> queue = new ArrayDeque<>(Arrays.stream(a).boxed().toList());
+        Deque<Integer> queue = new ArrayDeque<>(Arrays.stream(ab).boxed().toList());
 
 
         // PriorityQueue from smallest to biggest
@@ -199,6 +199,10 @@ public class References {
         while (!pq3.isEmpty()) {
             System.out.println("PriorityQueue with custom comparator: " + Arrays.toString(pq3.poll()));
         }
+        PriorityQueue<int[]> minQueue = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        PriorityQueue<int[]> maxQueue = new PriorityQueue<>(Comparator.comparingInt(a -> -a[0]));
+
+
     }
 
     // Section 5: Miscellaneous Examples

@@ -2110,6 +2110,58 @@ public class Practice4 {
 
 
 
+    class StockPrice {
+        PriorityQueue<int[]> minQueue = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        PriorityQueue<int[]> maxQueue = new PriorityQueue<>(Comparator.comparingInt(a -> -a[0]));
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        int currentTime;
+        int currentPrice;
+        public StockPrice() {
+            currentTime = 0;
+            currentPrice = 0;
+        }
+
+        public void update(int timestamp, int price) {
+            int[] record = new int[]{price, timestamp};
+            if (currentTime <= timestamp) {
+                currentTime = timestamp;
+                currentPrice = price;
+            }
+            hm.put(timestamp, price);
+            minQueue.offer(record);
+            maxQueue.offer(record);
+        }
+
+        public int current() {
+            return currentPrice;
+        }
+
+        public int maximum() {
+            int output = maxQueue.peek()[0];
+            while (output != hm.get(maxQueue.peek()[1])) {
+                maxQueue.poll();
+                output = maxQueue.peek()[0];
+            }
+            return output;
+        }
+
+        public int minimum() {
+            int output = minQueue.peek()[0];
+            while (output != hm.get(minQueue.peek()[1])) {
+                minQueue.poll();
+                output = minQueue.peek()[0];
+            }
+            return output;
+        }
+    }
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
 
         int[] nums = {3, 5, 0, 3, 4};
