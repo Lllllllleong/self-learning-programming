@@ -2160,6 +2160,32 @@ public class Practice4 {
 
 
 
+    public int[][] highFive(int[][] items) {
+        Arrays.sort(items, Comparator.comparing((int[] a) -> a[0]).thenComparingInt(a -> -a[1]));
+        List<int[]> list = new ArrayList<>();
+        int priorStudent = -1;
+        int index = 0;
+        int n = items.length;
+        while (index < n) {
+            while (items[index][0] == priorStudent) {
+                index++;
+            }
+            priorStudent = items[index][0];
+            int currentScore = 0;
+            for (int i = 0; i < 5; i++) {
+                currentScore += items[index][1];
+                index++;
+            }
+            currentScore = currentScore / 5;
+            list.add(new int[]{priorStudent, currentScore});
+        }
+        int[][] output = new int[list.size()][];
+        for (int i = 0; i < list.size(); i++) {
+            output[i] = list.get(i);
+        }
+        return output;
+    }
+
 
 
     public static void main(String[] args) {
