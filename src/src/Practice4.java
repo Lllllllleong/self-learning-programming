@@ -2188,6 +2188,47 @@ public class Practice4 {
 
 
 
+
+    public static int minKnightMoves(int x, int y) {
+        // Normalize target to first quadrant to reduce search space
+        x = Math.abs(x);
+        y = Math.abs(y);
+
+        // Define moves of a knight
+        int[][] directions = {
+                {2, 1}, {1, 2}, {-1, 2}, {-2, 1},
+                {-2, -1}, {-1, -2}, {1, -2}, {2, -1}
+        };
+
+        // Priority queue with heuristic comparator (Manhattan distance)
+        int finalX = x;
+        int finalY = y;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) ->
+                Integer.compare(a[0] + Math.abs(a[1] - finalX) + Math.abs(a[2] - finalY),
+                        b[0] + Math.abs(b[1] - finalX) + Math.abs(b[2] - finalY))
+        );
+        Set<String> visited = new HashSet<>();
+        pq.offer(new int[]{0, 0, 0});
+        while (!pq.isEmpty()) {
+            int[] current = pq.poll();
+            int moves = current[0];
+            int currentX = current[1];
+            int currentY = current[2];
+            String position = currentX + "," + currentY;
+            if (visited.contains(position)) continue;
+            visited.add(position);
+            if (currentX == x && currentY == y) return moves;
+            for (int[] direction : directions) {
+                int nextX = currentX + direction[0];
+                int nextY = currentY + direction[1];
+                pq.offer(new int[]{moves + 1, nextX, nextY});
+            }
+        }
+
+        return -1; // Should never reach here for a valid chessboard
+    }
+
+
     public static void main(String[] args) {
 
         int[] nums = {3, 5, 0, 3, 4};
@@ -2201,6 +2242,10 @@ public class Practice4 {
         String pattern = "abc";
 
         int[] z =  computeZArray("AABZAABZCAABZAABZA");
+
+        int i = minKnightMoves(-34,-156);
+        System.out.println(i);
+
 
     }
 
