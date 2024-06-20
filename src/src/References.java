@@ -438,8 +438,25 @@ public class References {
 
 
 
+    public static void bitOperators() {
+        int a = 5;  // 0101 in binary
+        int b = 3;  // 0011 in binary
+
+        int AND = a & b;  // 0001 in binary (1 in decimal)
+        int OR = a | b;  // 0111 in binary (7 in decimal)
+        int XOR = a ^ b;  // 0110 in binary (6 in decimal)
+        int NEGATE = ~a;  // 1010 in binary (two's complement representation, -6 in decimal)
+        int LEFTSHIFT = a << 1;  // 1010 in binary (10 in decimal)
+        int RIGHTSHIFT = a >> 1;  // 0010 in binary (2 in decimal)
 
 
+
+
+
+
+
+
+    }
 
 
 
