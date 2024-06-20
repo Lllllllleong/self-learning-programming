@@ -2390,6 +2390,57 @@ public class Practice4 {
     }
 
 
+    public int maxA(int n) {
+        int[] dp = new int[n+1];
+        int[] ctrlA = new int[n+1];
+        int[] ctrlC = new int[n+1];
+        int[] ctrlV =  new int[n+1];
+        for (int i = 1; i < n; i++) {
+            ctrlA[i] = dp[i-1];
+            ctrlC[i] = ctrlA[i-1];
+            ctrlV[i] = ctrlC[i-1];
+            int currentCount = Math.max(dp[i-1]+1, dp[i-1] + ctrlV[i]);
+            dp[i] = currentCount;
+        }
+        return dp[n];
+    }
+
+    int maxRequest;
+    public int maximumRequests(int n, int[][] requests) {
+        maxRequest = Integer.MIN_VALUE;
+        List<int[]> requestList = new ArrayList<>();
+        int[] buildingBalance = new int[n];
+        int nonTransfer = 0;
+        for (int[] request : requests) {
+            if (request[0] == request[1]) {
+                nonTransfer++;
+            } else {
+                requestList.add(request);
+            }
+        }
+        maximumRequests(requestList, 0, 0, buildingBalance);
+        return maxRequest + nonTransfer;
+    }
+    public void maximumRequests(List<int[]> requestList, int requestIndex, int currentCount, int[] buildingBalance) {
+        int n = requestList.size();
+        if (requestIndex == n) {
+            for (int i : buildingBalance) if (i != 0) return;
+            maxRequest = Math.max(maxRequest, currentCount);
+            return;
+        }
+        //Early exit: Remaining requests including this one
+        int remainingRequests = n - requestIndex;
+        if (currentCount + (n - requestIndex) < maxRequest) return;
+        //Backtrack
+        int[] currentRequest = requestList.get(requestIndex);
+        buildingBalance[currentRequest[0]]--;
+        buildingBalance[currentRequest[1]]++;
+        maximumRequests(requestList, requestIndex+1, currentCount+1, buildingBalance);
+        buildingBalance[currentRequest[0]]++;
+        buildingBalance[currentRequest[1]]--;
+        maximumRequests(requestList, requestIndex+1, currentCount, buildingBalance);
+    }
+
 
 
     public static void main(String[] args) {
