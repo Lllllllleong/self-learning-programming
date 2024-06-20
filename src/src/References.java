@@ -84,6 +84,8 @@ public class References {
 
         // Section 6: Reading and Writing
         readWrite();
+
+        bitOperators();
     }
 
     // Section 1: Sorting Examples
@@ -449,6 +451,38 @@ public class References {
         int LEFTSHIFT = a << 1;  // 1010 in binary (10 in decimal)
         int RIGHTSHIFT = a >> 1;  // 0010 in binary (2 in decimal)
 
+        //Position = 0 indexed, counting from right to left
+
+        //Setting a bit to 1
+        int num = 5; // 0101 in binary
+        //Set the bit at position 3
+        int result = num | (1 << 3);; // 1101 in binary (13 in decimal)
+
+        // Clearing a bit to 0
+        num = 13; // 1101 in binary
+        // Clear the bit at position 3
+        result = num & ~(1 << 3); // 0101 in binary (5 in decimal)
+
+
+
+        // Flipping a bit
+        num = 5; // 0101 in binary
+        // Flip the bit at position 2
+        result = num ^ (1 << 2); // 0001 in binary (1 in decimal)
+
+        // Flip the bit at position 0
+        result = num ^ (1 << 0); // 0100 in binary (4 in decimal)
+
+
+
+
+        // Checking a bit
+        num = 5; // 0101 in binary
+        // Check the bit at position 2
+        boolean isSet = (num & (1 << 2)) != 0; // true, because the bit at position 2 is 1
+
+        // Check the bit at position 1
+        isSet = (num & (1 << 1)) != 0; // false, because the bit at position 1 is 0
 
 
 
