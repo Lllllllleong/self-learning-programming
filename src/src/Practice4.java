@@ -2302,6 +2302,25 @@ public class Practice4 {
         return output;
     }
 
+    public int lengthOfLongestSubstringKDistinct(String s, int k) {
+        char[] cArray = s.toCharArray();
+        Deque<Character> dq = new ArrayDeque<>();
+        HashMap<Character, Integer> hm = new HashMap<>();
+        int output = 0;
+        for (Character c : cArray) {
+            hm.merge(c, 1 , Integer::sum);
+            dq.addLast(c);
+            if (hm.keySet().size() > k) {
+                while (hm.keySet().size() > k) {
+                    Character removeC = dq.pollFirst();
+                    hm.merge(removeC, -1, Integer::sum);
+                    if (hm.get(removeC) == 0) hm.remove(removeC);
+                }
+            }
+            output = Math.max(output, dq.size());
+        }
+        return output;
+    }
 
 
 
