@@ -1,6 +1,4 @@
 import java.util.*;
-
-
 public class Practice4 {
 
     public static List<Integer> maxSubarray(List<Integer> arr) {
@@ -2359,10 +2357,45 @@ public class Practice4 {
 
 
 
+    public int setMask(int number, int position) {return (number | (1 << position));}
+    public boolean checkMask(int number, int position) {return (number & (1 << position)) != 0;}
+    public int manhattanDistance(int[] p1, int[] p2) {return Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);}
+
+
+    public int assignBikes(int[][] workers, int[][] bikes) {
+        int numWorkers = workers.length;
+        int numBikes = bikes.length;
+        // Number of permutation of bike selections is 2^numBikes
+        int bikePermutations = 1 << numBikes;
+        Integer[][] dpMatrix = new Integer[numWorkers][bikePermutations];
+        return assignBikes(workers, bikes, dpMatrix, 0,0);
+    }
+    public int assignBikes(int[][] workers, int[][] bikes, Integer[][] dpMatrix, int workerIndex, int bikeMask) {
+        //Base case
+        if (workerIndex == workers.length) return 0;
+        //Cache case
+        if (dpMatrix[workerIndex][bikeMask] != null) return dpMatrix[workerIndex][bikeMask];
+        //Bitmask
+        int minDistances = Integer.MAX_VALUE;
+        for (int i = 0; i < bikes.length; i++) {
+            //Check if the current bike is available
+            if (!checkMask(bikeMask, i)) {
+                int distance = manhattanDistance(workers[workerIndex], bikes[i]);
+                int nextMask = setMask(bikeMask, i);
+                int remainingDistances = assignBikes(workers, bikes, dpMatrix, workerIndex+1, nextMask);
+                minDistances = Math.min(minDistances, distance + remainingDistances);
+            }
+        }
+        return dpMatrix[workerIndex][bikeMask] = minDistances;
+    }
+
+
 
 
     public static void main(String[] args) {
-        double d = probabilityOfHeads(new double[]{0.4}, 1);
+        int[][] workers = {{0,0},{2,1}};
+        int[][] bikes = {{1,2},{3,3}};
+
 
     }
 

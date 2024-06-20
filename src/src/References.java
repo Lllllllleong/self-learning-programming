@@ -1,7 +1,6 @@
 
 import com.google.gson.*;
 import org.w3c.dom.*;
-
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
@@ -12,35 +11,32 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-class Seed {
-    int x;
-    int y;
-    static int totalSeedCount = 0;
-    List<Seed> next = new ArrayList<>();
+/**
+ Intellij Shortcuts
 
-    public Seed(int x, int y) {
-        this.x = x;
-        this.y = y;
-        totalSeedCount++;
-    }
+ Change font size
+    Shift + Control + , or .
 
-    @Override
-    public String toString() {
-        return "Seed{" +
-                "x=" + x +
-                ", y=" + y;
-    }
-}
+ Freeform text selection
+    Hold down option and select with cursor
 
-enum Key {
-    RESET, UP, DOWN, RIGHT, LEFT, S, L;
-}
+ Find and Replace
+    Command + R
+    Fill in search and replace query
+    Highlight text
+    Press replace
 
+
+
+
+
+    Italics method name means that it's static
+ **/
 
 public class References {
 
         /*
-            Static: Used when you dont care about the instance
+            Static: Used when you don't care about the instance
             e.g. Seed class above
             Then totalSeedCount will return total of all seeds created
             Also e.g.
@@ -53,17 +49,7 @@ public class References {
          */
 
 
-    //SHORTCUTS
 
-    //itar
-    //ritar
-    //itco
-    //Max and min
-    //mx
-    //mn
-
-    //Last element
-    //lst
 
 
     public static void main(String[] args) {
@@ -441,6 +427,10 @@ public class References {
 
 
     public static void bitOperators() {
+        //Position = 0 indexed, counting from right to left
+        //Limits:
+        //Integer: Up to 32 (31st bit is the last)
+        //Long: Up to 64 (63rd bit is the last)
         int a = 5;  // 0101 in binary
         int b = 3;  // 0011 in binary
 
@@ -449,50 +439,72 @@ public class References {
         int XOR = a ^ b;  // 0110 in binary (6 in decimal)
         int NEGATE = ~a;  // 1010 in binary (two's complement representation, -6 in decimal)
         int LEFTSHIFT = a << 1;  // 1010 in binary (10 in decimal)
+        // 1 << m === 2^m
+        // 3 << m === 3 * 2^m
         int RIGHTSHIFT = a >> 1;  // 0010 in binary (2 in decimal)
+        // 1 >> m === 1 / (2^m)
+        // Right-shift integer division
+        // num >> 1 === num / 2
 
-        //Position = 0 indexed, counting from right to left
 
         //Setting a bit to 1
         int num = 5; // 0101 in binary
+        int pos = 3;
         //Set the bit at position 3
-        int result = num | (1 << 3);; // 1101 in binary (13 in decimal)
+        int result = num | (1 << pos); // 1101 in binary (13 in decimal)
+
 
         // Clearing a bit to 0
         num = 13; // 1101 in binary
         // Clear the bit at position 3
-        result = num & ~(1 << 3); // 0101 in binary (5 in decimal)
-
+        pos = 3;
+        result = num & ~(1 << pos); // 0101 in binary (5 in decimal)
+        //Shorthand form of reassigning num
+        num &= ~(1 << pos);
 
 
         // Flipping a bit
         num = 5; // 0101 in binary
         // Flip the bit at position 2
         result = num ^ (1 << 2); // 0001 in binary (1 in decimal)
-
         // Flip the bit at position 0
         result = num ^ (1 << 0); // 0100 in binary (4 in decimal)
-
-
 
 
         // Checking a bit
         num = 5; // 0101 in binary
         // Check the bit at position 2
         boolean isSet = (num & (1 << 2)) != 0; // true, because the bit at position 2 is 1
-
         // Check the bit at position 1
         isSet = (num & (1 << 1)) != 0; // false, because the bit at position 1 is 0
-
-
-
-
-
-
 
     }
 
 
+
+    class Seed {
+        int x;
+        int y;
+        static int totalSeedCount = 0;
+        List<Seed> next = new ArrayList<>();
+
+        public Seed(int x, int y) {
+            this.x = x;
+            this.y = y;
+            totalSeedCount++;
+        }
+
+        @Override
+        public String toString() {
+            return "Seed{" +
+                    "x=" + x +
+                    ", y=" + y;
+        }
+    }
+
+    enum Key {
+        RESET, UP, DOWN, RIGHT, LEFT, S, L;
+    }
 
 }
 
