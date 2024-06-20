@@ -2229,6 +2229,83 @@ public class Practice4 {
     }
 
 
+
+    public long minSum(int[] nums1, int[] nums2) {
+        long aSum = 0;
+        long aCount = 0;
+        long bSum = 0;
+        long bCount = 0;
+        for (int i : nums1) {
+            aSum += i;
+            if (i == 0) aCount++;
+        }
+        for (int i : nums2) {
+            bSum += i;
+            if (i == 0) bCount++;
+        }
+        if (aCount == 0 && bCount == 0) {
+            return (aSum == bSum) ? aSum : -1;
+        }
+        long aMin = aSum + aCount;
+        long bMin = bSum = bCount;
+        if (aMin == bMin) return aMin;
+        if (aCount == 0 && aMin < bMin) return -1;
+        if (bCount == 0 && bMin < aMin) return -1;
+        return Math.min(aMin, bMin);
+    }
+
+    public int maxNonDecreasingLength(int[] nums1, int[] nums2) {
+        int aLength = 1; // Length of non-decreasing subarray ending in nums1
+        int bLength = 1; // Length of non-decreasing subarray ending in nums2
+        int n = nums1.length;
+        int output = 1;  // Maximum length of non-decreasing subarray found
+        for (int i = 1; i < n; i++) {
+            int newALength = 1; // Length if taking nums1[i]
+            int newBLength = 1; // Length if taking nums2[i]
+            if (nums1[i-1] <= nums1[i]) {
+                newALength = Math.max(newALength, aLength + 1);
+            }
+            if (nums2[i-1] <= nums1[i]) {
+                newALength = Math.max(newALength, bLength + 1);
+            }
+            if (nums1[i-1] <= nums2[i]) {
+                newBLength = Math.max(newBLength, aLength + 1);
+            }
+            if (nums2[i-1] <= nums2[i]) {
+                newBLength = Math.max(newBLength, bLength + 1);
+            }
+            aLength = newALength;
+            bLength = newBLength;
+            output = Math.max(output, Math.max(aLength, bLength));
+        }
+        return output;
+    }
+
+
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+        char[] cArray = s.toCharArray();
+        Deque<Character> dq = new ArrayDeque<>();
+        HashMap<Character, Integer> hm = new HashMap<>();
+        int output = 0;
+        for (Character c : cArray) {
+            hm.merge(c, 1 , Integer::sum);
+            dq.addLast(c);
+            if (hm.keySet().size() > 2) {
+                while (hm.keySet().size() > 2) {
+                    Character removeC = dq.pollFirst();
+                    hm.merge(removeC, -1, Integer::sum);
+                    if (hm.get(removeC) == 0) hm.remove(removeC);
+                }
+            }
+            output = Math.max(output, dq.size());
+        }
+        return output;
+    }
+
+
+
+
+
     public static void main(String[] args) {
 
         int[] nums = {3, 5, 0, 3, 4};
