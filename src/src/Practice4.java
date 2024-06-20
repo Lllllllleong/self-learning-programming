@@ -2322,6 +2322,24 @@ public class Practice4 {
         return output;
     }
 
+    public int findMaxConsecutiveOnes(int[] nums) {
+        int priorCount = 0;
+        int currentCount = 0;
+        int output = 0;
+        for (int i : nums) {
+            if (i == 1) {
+                priorCount++;
+                currentCount++;
+            } else {
+                output = Math.max(output, priorCount);
+                priorCount = ++currentCount;
+                currentCount = 0;
+            }
+        }
+        output = Math.max(output, Math.max(priorCount, currentCount));
+        return output;
+    }
+
 
 
 
