@@ -2566,6 +2566,19 @@ public class Practice4 {
         return (int) (output % mod);
     }
 
+    public int numWays(int n, int k) {
+        if (n == 0) return 0;
+        if (n == 1) return k;
+        if (k == 1) return (n <= 2) ? 1 : 0;
+        int special = k;
+        int normal = k * (k - 1);
+        for (int i = 3; i <= n; i++) {
+            int priorSpecial = special;
+            special = normal;
+            normal = (priorSpecial + normal) * (k - 1);
+        }
+        return normal + special;
+    }
 
 
 
