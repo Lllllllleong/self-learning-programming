@@ -2549,6 +2549,25 @@ public class Practice4 {
 
 
 
+    public int countVowelPermutation(int n) {
+        long[] dp = new long[]{1,1,1,1,1};
+        long mod = (long) (1e9 + 7);
+        for (int i = 1; i < n; i++) {
+            long[] dpNext = new long[5];
+            dpNext[0] = (dp[1] + dp[2] + dp[4]) % mod;
+            dpNext[1] = (dp[0] + dp[2]) % mod;
+            dpNext[2] = (dp[1] + dp[3]) % mod;
+            dpNext[3] = (dp[2]) % mod;
+            dpNext[4] = (dp[2] + dp[3]) % mod;
+            dp = dpNext;
+        }
+        long output = 0;
+        for (long l : dp) output += l;
+        return (int) (output % mod);
+    }
+
+
+
 
 
 
