@@ -2582,6 +2582,21 @@ public class Practice4 {
 
 
 
+    public int numberOfWays(int numPeople) {
+        int mod = (int) 1e9 + 7;
+        int[] dp = new int[numPeople / 2 + 1];
+        dp[0] = 1;
+        for (int i = 1; i <= numPeople / 2; i++) {
+            dp[i] = 0;
+            for (int j = 0; j < i; j++) {
+                dp[i] = (int) ((dp[i] + (long) dp[j] * dp[i - 1 - j]) % mod);
+            }
+        }
+        return dp[numPeople / 2];
+    }
+
+
+
 
 
 
