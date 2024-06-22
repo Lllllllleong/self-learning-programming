@@ -2754,6 +2754,28 @@ public class Practice4 {
         return;
     }
 
+    public int findCircleNum(int[][] isConnected) {
+        int n = isConnected.length;
+        int[] mask = new int[1];
+        int counter = 0;
+        for (int i = 0; i < n; i++) {
+            if ((mask[0] & (1 << i)) != 0) {
+                counter++;
+                provinceDFS(isConnected, mask,i);
+            }
+
+        }
+        return counter;
+    }
+
+    public void provinceDFS(int[][] graph, int[] mask, int currentPos) {
+        mask[0] = (mask[0] | (1 << currentPos));
+        int[] currentNode = graph[currentPos];
+        for (int i = 0; i < currentNode.length; i++) {
+            if (currentNode[i] == 1 && (mask[0] & (1 << i)) != 0)  provinceDFS(graph, mask, i);
+        }
+    }
+
 
 
 
