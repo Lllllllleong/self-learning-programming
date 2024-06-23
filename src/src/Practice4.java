@@ -2937,7 +2937,13 @@ public class Practice4 {
 //        }
 //    }
 
-
+//    class Solution {
+//        public void printLinkedListInReverse(ImmutableListNode head) {
+//            if (head == null) return;
+//            printLinkedListInReverse(head.getNext());
+//            head.printValue();
+//        }
+//    }
 
 
     public static void main(String[] args) {
