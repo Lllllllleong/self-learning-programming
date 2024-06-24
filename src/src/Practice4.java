@@ -3008,6 +3008,60 @@ public class Practice4 {
         return Arrays.stream(dp).sum();
     }
 
+    int minPaintCost;
+    public int paintWalls(int[] cost, int[] time) {
+        int n = cost.length;
+        if (n == 1) {
+            return cost[0];
+        }
+        int totalTime = 0;
+        int[][] jobs = new int[n][];
+        for (int i = 0; i < n; i++) {
+            jobs[i] = new int[]{time[i], cost[i]};
+            totalTime += time[i];
+        }
+        Arrays.sort(jobs, Comparator.comparingInt(a -> a[0]));
+        int maxTime = n >> 1;
+        if ((maxTime & 1) == 1) maxTime++;
+        minPaintCost = Integer.MAX_VALUE;
+        paintWalls(jobs, 0, 0, maxTime, 0);
+        return minPaintCost;
+    }
+    public void paintWalls(int[][] jobs, int jobIndex, int currentTime, int maxTime, int currentCost) {
+        if (jobIndex == jobs.length) return;
+        if (currentCost > minPaintCost) return;
+        if (currentTime >= maxTime) {
+            minPaintCost = Math.min(minPaintCost, currentCost);
+            return;
+        }
+        for (int i = jobIndex; i < jobs.length; i++) {
+            int[] job = jobs[i];
+            paintWalls(jobs, jobIndex+1, currentTime + job[0], maxTime, currentCost + job[1]);
+        }
+        return;
+    }
+
+
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode a = head;
+        ListNode b = head.next;
+        while (b != null) {
+            if (a.val == b.val) {
+                b = b.next;
+                a.next = b;
+            } else {
+                a = b;
+                b = a.next;
+            }
+        }
+        return head;
+    }
+
+
+
+
+
 
     public static void main(String[] args) {
         int[][] workers = {{0,0},{2,1}};
