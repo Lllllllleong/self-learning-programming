@@ -3209,6 +3209,34 @@ public class Practice4 {
     }
 
 
+    public boolean isValidPalindrome(String s, int k) {
+        int n = s.length();
+        char[] sChar = s.toCharArray();
+        if (n == 1) return true;
+        if (n == 2) {
+            if (sChar[0] == sChar[1]) return true;
+            if (k >= 1) return true;
+            return false;
+        }
+        int[][] dp = new int[n+1][n+1];
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = i+1; j < n; j++) {
+                boolean match = sChar[i] == sChar[j];
+                if (j == (i+1)) {
+                    if (match) dp[i][j] = 0;
+                    else dp[i][j] = 1;
+                } else {
+                    if (match) dp[i][j] = dp[i+1][j-1];
+                    else {
+                        dp[i][j] = Math.min(dp[i+1][j]+1, dp[i][j-1]+1);
+                    }
+                }
+            }
+        }
+        return (dp[0][n-1] <= k) ? true : false;
+    }
+
+
 
 
     public static void main(String[] args) {
