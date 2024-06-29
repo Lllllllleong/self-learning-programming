@@ -3085,6 +3085,42 @@ public class Practice4 {
         return output;
     }
 
+    public static int maxSubarrayLength(int[] nums) {
+        int n = nums.length;
+        if (n < 2) return 0;
+        if (n == 2) {
+            if (nums[0] > nums[1]) return 2;
+            return 0;
+        }
+        int output = 0;
+        int min = Integer.MAX_VALUE;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            hm.put(nums[i], i);
+            min = Math.min(min, nums[i]);
+        }
+        List<Integer> keyList = new ArrayList<>(hm.keySet());
+        Collections.sort(keyList);
+        Integer prior = hm.get(keyList.get(0));
+        for (int i = 1; i < keyList.size(); i++) {
+            Integer currentKey = keyList.get(i);
+            prior = Math.max(prior, hm.get(currentKey));
+            hm.put(currentKey, prior);
+        }
+        for (int i = 0; i < n; i++) {
+            if ((n-i) <= output) break;
+            if (nums[i] == min) continue;
+            Integer value = --nums[i];
+            while (!hm.containsKey(value)) {
+                value--;
+            }
+            if (hm.get(value) < i) continue;
+            int length = hm.get(value) - i + 1;
+            output = Math.max(output, length);
+        }
+        return output;
+    }
+
 
 
 
@@ -3093,9 +3129,7 @@ public class Practice4 {
     public static void main(String[] args) {
         int[][] workers = {{0,0},{2,1}};
         int[][] bikes = {{1,2},{3,3}};
-
-        TreeNode tn = buildTree(new Integer[]{3,9,8,4,0,1,7,null,null,null,2,5});
-        var v = verticalOrder(tn);
+        int i = maxSubarrayLength(new int[]{57,55,50,60,61,58,63,59,64,60,63});
     }
 
 
