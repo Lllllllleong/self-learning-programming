@@ -3059,6 +3059,33 @@ public class Practice4 {
     }
 
 
+    public int maxJumps(int[] arr, int d) {
+        int n = arr.length;
+        Integer[] dp = new Integer[n];
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        for (int i = 0; i < n; i++) {
+            pq.offer(new int[]{arr[i], i});
+        }
+        int output = -1;
+        while (!pq.isEmpty()) {
+            int[] current = pq.poll();
+            int currentIndex = current[1];
+            int currentHeight = current[0];
+            dp[currentIndex] = 1;
+            for (int i = 1; i <= d; i++) {
+                if (i >= n || dp[currentIndex + i] == null || arr[currentIndex + i] >= arr[currentIndex]) break;
+                dp[currentIndex] = Math.max(dp[currentIndex], dp[currentIndex + i] + 1);
+            }
+            for (int i = 1; i <= d; i++) {
+                if (i >= 0 || dp[currentIndex - i] == null || arr[currentIndex + i] >= arr[currentIndex]) break;
+                dp[currentIndex] = Math.max(dp[currentIndex], dp[currentIndex - i] + 1);
+            }
+            output = Math.max(output, dp[currentIndex]);
+        }
+        return output;
+    }
+
+
 
 
 
