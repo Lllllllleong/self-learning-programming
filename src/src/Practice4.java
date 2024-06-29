@@ -3164,6 +3164,32 @@ public class Practice4 {
     }
 
 
+    public int maximalRectangle(char[][] matrix) {
+        if (matrix.length == 0) return 0;
+        int yMax = matrix.length;
+        int xMax = matrix[0].length;
+        int[][][] dp = new int[yMax + 1][xMax + 1][2];
+        int output = 0;
+
+        for (int y = 0; y < yMax; y++) {
+            for (int x = 0; x < xMax; x++) {
+                if (matrix[y][x] == '1') {
+                    dp[y + 1][x + 1][0] = dp[y][x + 1][0] + 1;
+                    dp[y + 1][x + 1][1] = dp[y + 1][x][1] + 1;
+                    int minHeight = dp[y + 1][x + 1][0];
+                    for (int k = 0; k < dp[y + 1][x + 1][1]; k++) {
+                        minHeight = Math.min(minHeight, dp[y + 1][x + 1 - k][0]);
+                        int area = minHeight * (k + 1);
+                        output = Math.max(output, area);
+                    }
+                }
+            }
+        }
+
+        return output;
+    }
+
+
 
 
     public static void main(String[] args) {
