@@ -3167,24 +3167,46 @@ public class Practice4 {
 
     public static int numSquares(int n) {
         if (n <= 0) return 0;
-
-        // dp[i] will be the minimum number of perfect squares that sum up to i
         int[] dp = new int[n + 1];
-
-        // Initialize dp array
         Arrays.fill(dp, Integer.MAX_VALUE);
         dp[0] = 0;
-
-        // Fill the dp array
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j * j <= i; j++) {
                 dp[i] = Math.min(dp[i], dp[i - j * j] + 1);
             }
         }
-
         return dp[n];
     }
 
+    public int countSubstrings(String s) {
+        int n = s.length();
+        char[] sChar = s.toCharArray();
+        if (n == 1) return 1;
+        if (n == 2) {
+            if (sChar[0] == sChar[1]) return 3;
+            return 2;
+        }
+        boolean[][] dp = new boolean[n + 1][n + 1];
+        int output = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i; j < n; j++) {
+                if (sChar[i] == sChar[j]) {
+                    if (i == j || (i + 1) == j) {
+                        dp[i][j] = true;
+                        output++;
+                    } else {
+                        if (dp[i + 1][j - 1]) {
+                            dp[i][j] = true;
+                            output++;
+                        } else {
+                            dp[i][j] = false;
+                        }
+                    }
+                }
+            }
+        }
+        return output;
+    }
 
 
 
