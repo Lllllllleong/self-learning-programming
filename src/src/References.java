@@ -27,7 +27,7 @@ import java.io.IOException;
     Highlight text
     Press replace
 
- private final int mod = (int) 1e9 + 7;
+  output %= 1_000_000_007;
 
 
 

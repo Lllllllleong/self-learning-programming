@@ -3236,6 +3236,38 @@ public class Practice4 {
         return (dp[0][n-1] <= k) ? true : false;
     }
 
+    public int numberWays(List<List<Integer>> hats) {
+        int n = hats.size();
+        int maxHats = 40;
+        long[] dp = new long[1 << n];
+        dp[0] = 1;
+        List<List<Integer>> hatToPeople = new ArrayList<>();
+        for (int i = 0; i <= maxHats; i++) {
+            hatToPeople.add(new ArrayList<>());
+        }
+        for (int i = 0; i < n; i++) {
+            for (int hat : hats.get(i)) {
+                hatToPeople.get(hat).add(i);
+            }
+        }
+        for (int hat = 1; hat <= maxHats; hat++) {
+            long[] newDp = dp.clone();
+            for (int mask = 0; mask < (1 << n); mask++) {
+                if (dp[mask] > 0) {
+                    for (int person : hatToPeople.get(hat)) {
+                        if ((mask & (1 << person)) == 0) {
+                            newDp[mask | (1 << person)] = (newDp[mask | (1 << person)] + dp[mask]) % 1_000_000_007;
+                        }
+                    }
+                }
+            }
+            dp = newDp;
+        }
+        return (int) dp[(1 << n) - 1];
+    }
+
+
+
 
 
 
@@ -3243,6 +3275,53 @@ public class Practice4 {
         int[][] workers = {{0,0},{2,1}};
         int[][] bikes = {{1,2},{3,3}};
         int i = maxSubarrayLength(new int[]{7,6,5,4,3,2,1,6,10,11});
+        int[] zArray = computeZArray("AABZAABZCAABZAABZA");
+        int[][] hats = stringToArray2D("[[3,4],[4,5],[5]]");
+        List<List<Integer>> hatList = new ArrayList<>();
+        for (int[] hat : hats) {
+            List<Integer> l = new ArrayList<>();
+            for (int h : hat) l.add(h);
+            hatList.add(l);
+        }
+
+
+
+
+    }
+
+
+
+
+    public static int[] stringToArray1D(String input) {
+        String[] numberStrings = input.substring(1, input.length() - 1).split(",");
+        int[] numbers = new int[numberStrings.length];
+        for (int i = 0; i < numberStrings.length; i++) {
+            numbers[i] = Integer.parseInt(numberStrings[i]);
+        }
+        return numbers;
+    }
+
+    // Method for 2D array
+    public static int[][] stringToArray2D(String input) {
+        // Remove outer brackets and split into individual array strings
+        String[] arrayStrings = input.substring(1, input.length() - 1).split("(?<=\\]),\\[");
+        // Prepare a list to hold the final arrays
+        List<int[]> arraysList = new ArrayList<>();
+        for (String arrayString : arrayStrings) {
+            // Remove brackets from each array string and split by comma
+            String[] numberStrings = arrayString.replaceAll("[\\[\\]]", "").split(",");
+            int[] numbers = new int[numberStrings.length];
+            for (int i = 0; i < numberStrings.length; i++) {
+                numbers[i] = Integer.parseInt(numberStrings[i]);
+            }
+            arraysList.add(numbers);
+        }
+        // Convert list to array
+        int[][] result = new int[arraysList.size()][];
+        for (int i = 0; i < arraysList.size(); i++) {
+            result[i] = arraysList.get(i);
+        }
+        return result;
     }
 
 
