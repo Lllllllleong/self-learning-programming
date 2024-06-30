@@ -1,6 +1,7 @@
 import java.math.*;
 import java.sql.*;
 import java.util.*;
+
 public class Practice4 {
 
     public static List<Integer> maxSubarray(List<Integer> arr) {
@@ -1787,14 +1788,13 @@ public class Practice4 {
     }
 
 
-
     public static int minEatingSpeed(int[] piles, int h) {
         long max = Arrays.stream(piles).max().getAsInt();
         long low = 1;
         long high = max;
         long output = max;
         while (low <= high) {
-            long mid = low + (high - low)/ 2;
+            long mid = low + (high - low) / 2;
             long hours = 0;
             for (int pile : piles) {
                 hours += (pile + mid - 1) / mid;
@@ -1808,9 +1808,6 @@ public class Practice4 {
         }
         return (int) output;
     }
-
-
-
 
 
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
@@ -1841,7 +1838,6 @@ public class Practice4 {
         }
         return -1d;
     }
-
 
 
     public int visibleMountains(int[][] peaks) {
@@ -1902,33 +1898,34 @@ public class Practice4 {
         int yMax = grid.length;
         int xMax = grid[0].length;
         int maxDifference = yMax + xMax - 1;
-        int rangeDifference = (maxDifference*2) + 1;
+        int rangeDifference = (maxDifference * 2) + 1;
         int zeroDifferenceIndex = maxDifference;
-        boolean[][][] dp = new boolean[yMax+1][xMax+1][rangeDifference];
-        dp[yMax][xMax-1][zeroDifferenceIndex] = true;
-        dp[yMax+1][xMax][zeroDifferenceIndex] = true;
+        boolean[][][] dp = new boolean[yMax + 1][xMax + 1][rangeDifference];
+        dp[yMax][xMax - 1][zeroDifferenceIndex] = true;
+        dp[yMax + 1][xMax][zeroDifferenceIndex] = true;
         for (int y = yMax - 1; y >= 0; y--) {
             for (int x = xMax - 1; x >= 0; x--) {
                 int i = grid[y][x];
                 if (i == 0) i = -1;
-                boolean[] right = dp[y][x+1];
-                boolean[] down = dp[y+1][x];
+                boolean[] right = dp[y][x + 1];
+                boolean[] down = dp[y + 1][x];
                 for (int j = 0; j < rangeDifference; j++) {
                     boolean d = down[j];
-                    if (d) dp[y][x][j+i] = true;
+                    if (d) dp[y][x][j + i] = true;
                     boolean u = right[j];
-                    if (u) dp[y][x][j+i] = true;
+                    if (u) dp[y][x][j + i] = true;
                 }
             }
         }
         return dp[0][0][zeroDifferenceIndex];
     }
+
     public boolean pathDFS(int[][] grid, int y, int x, int count, int yMax, int xMax) {
         if (grid[y][x] == 1) count++;
-        else count --;
+        else count--;
         if (y == yMax && x == xMax) return (count == 0);
-        boolean a = (y != yMax) && pathDFS(grid, y+1, x, count, yMax, xMax);
-        boolean b = (x != xMax) && pathDFS(grid, y, x+1, count, yMax, xMax);
+        boolean a = (y != yMax) && pathDFS(grid, y + 1, x, count, yMax, xMax);
+        boolean b = (x != xMax) && pathDFS(grid, y, x + 1, count, yMax, xMax);
         return (a || b);
     }
 
@@ -1936,6 +1933,7 @@ public class Practice4 {
         Set<String> set;
         Integer currentTime;
         Deque<Message> messageQueue;
+
         public Logger() {
             set = new HashSet<>();
             currentTime = 0;
@@ -1956,7 +1954,7 @@ public class Practice4 {
             return output;
         }
 
-        class Message{
+        class Message {
             public String message;
             public Integer timeStamp;
 
@@ -2004,8 +2002,8 @@ public class Practice4 {
         if (n < 10) return output;
         Set<String> set = new HashSet<>();
         Set<String> repeatedSet = new HashSet<>();
-        for (int i = 0; i < n-9; i++) {
-            String sub = s.substring(i, i+10);
+        for (int i = 0; i < n - 9; i++) {
+            String sub = s.substring(i, i + 10);
             if (set.contains(sub)) repeatedSet.add(sub);
             set.add(sub);
         }
@@ -2014,7 +2012,6 @@ public class Practice4 {
         }
         return output;
     }
-
 
 
     public int tribonacci(int n) {
@@ -2032,7 +2029,6 @@ public class Practice4 {
 
         return dp[n];
     }
-
 
 
     public int maximumScore(int[] nums, int[] multipliers) {
@@ -2076,6 +2072,7 @@ public class Practice4 {
     }
 
     List<TreeNode> tnList = new ArrayList<>();
+
     public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
         tnList = new ArrayList<>();
         Set<Integer> set = new HashSet<>(Arrays.stream(to_delete).boxed().toList());
@@ -2083,6 +2080,7 @@ public class Practice4 {
         delNodesBFS(root, set);
         return tnList;
     }
+
     public void delNodesBFS(TreeNode root, Set<Integer> set) {
         if (root == null) return;
         int val = root.val;
@@ -2095,6 +2093,7 @@ public class Practice4 {
             tnList.add(root);
         }
     }
+
     public TreeNode delNodesBFS2(TreeNode root, Set<Integer> set) {
         if (root == null) return null;
         int val = root.val;
@@ -2110,13 +2109,13 @@ public class Practice4 {
     }
 
 
-
     class StockPrice {
         PriorityQueue<int[]> minQueue = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
         PriorityQueue<int[]> maxQueue = new PriorityQueue<>(Comparator.comparingInt(a -> -a[0]));
         HashMap<Integer, Integer> hm = new HashMap<>();
         int currentTime;
         int currentPrice;
+
         public StockPrice() {
             currentTime = 0;
             currentPrice = 0;
@@ -2157,10 +2156,6 @@ public class Practice4 {
     }
 
 
-
-
-
-
     public int[][] highFive(int[][] items) {
         Arrays.sort(items, Comparator.comparing((int[] a) -> a[0]).thenComparingInt(a -> -a[1]));
         List<int[]> list = new ArrayList<>();
@@ -2186,8 +2181,6 @@ public class Practice4 {
         }
         return output;
     }
-
-
 
 
     public static int minKnightMoves(int x, int y) {
@@ -2230,7 +2223,6 @@ public class Practice4 {
     }
 
 
-
     public long minSum(int[] nums1, int[] nums2) {
         long aSum = 0;
         long aCount = 0;
@@ -2263,16 +2255,16 @@ public class Practice4 {
         for (int i = 1; i < n; i++) {
             int newALength = 1; // Length if taking nums1[i]
             int newBLength = 1; // Length if taking nums2[i]
-            if (nums1[i-1] <= nums1[i]) {
+            if (nums1[i - 1] <= nums1[i]) {
                 newALength = Math.max(newALength, aLength + 1);
             }
-            if (nums2[i-1] <= nums1[i]) {
+            if (nums2[i - 1] <= nums1[i]) {
                 newALength = Math.max(newALength, bLength + 1);
             }
-            if (nums1[i-1] <= nums2[i]) {
+            if (nums1[i - 1] <= nums2[i]) {
                 newBLength = Math.max(newBLength, aLength + 1);
             }
-            if (nums2[i-1] <= nums2[i]) {
+            if (nums2[i - 1] <= nums2[i]) {
                 newBLength = Math.max(newBLength, bLength + 1);
             }
             aLength = newALength;
@@ -2289,7 +2281,7 @@ public class Practice4 {
         HashMap<Character, Integer> hm = new HashMap<>();
         int output = 0;
         for (Character c : cArray) {
-            hm.merge(c, 1 , Integer::sum);
+            hm.merge(c, 1, Integer::sum);
             dq.addLast(c);
             if (hm.keySet().size() > 2) {
                 while (hm.keySet().size() > 2) {
@@ -2309,7 +2301,7 @@ public class Practice4 {
         HashMap<Character, Integer> hm = new HashMap<>();
         int output = 0;
         for (Character c : cArray) {
-            hm.merge(c, 1 , Integer::sum);
+            hm.merge(c, 1, Integer::sum);
             dq.addLast(c);
             if (hm.keySet().size() > k) {
                 while (hm.keySet().size() > k) {
@@ -2343,15 +2335,15 @@ public class Practice4 {
 
     public static double probabilityOfHeads(double[] prob, int target) {
         int n = prob.length;
-        double[][] dp = new double[n+1][target+1];
+        double[][] dp = new double[n + 1][target + 1];
         dp[n][0] = 1;
         for (int y = n - 1; y >= 0; y--) {
             double currentProb = prob[y];
             for (int x = 0; x <= target; x++) {
                 if (x == 0) {
-                    dp[y][x] = (1 - currentProb) * dp[y+1][0];
+                    dp[y][x] = (1 - currentProb) * dp[y + 1][0];
                 } else {
-                    dp[y][x] = currentProb * dp[y+1][x-1] + (1-currentProb) * dp[y+1][x];
+                    dp[y][x] = currentProb * dp[y + 1][x - 1] + (1 - currentProb) * dp[y + 1][x];
                 }
             }
         }
@@ -2359,10 +2351,17 @@ public class Practice4 {
     }
 
 
+    public int setMask(int number, int position) {
+        return (number | (1 << position));
+    }
 
-    public int setMask(int number, int position) {return (number | (1 << position));}
-    public boolean checkMask(int number, int position) {return (number & (1 << position)) != 0;}
-    public int manhattanDistance(int[] p1, int[] p2) {return Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);}
+    public boolean checkMask(int number, int position) {
+        return (number & (1 << position)) != 0;
+    }
+
+    public int manhattanDistance(int[] p1, int[] p2) {
+        return Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);
+    }
 
 
     public int assignBikes(int[][] workers, int[][] bikes) {
@@ -2371,8 +2370,9 @@ public class Practice4 {
         // Number of permutation of bike selections is 2^numBikes
         int bikePermutations = 1 << numBikes;
         Integer[][] dpMatrix = new Integer[numWorkers][bikePermutations];
-        return assignBikes(workers, bikes, dpMatrix, 0,0);
+        return assignBikes(workers, bikes, dpMatrix, 0, 0);
     }
+
     public int assignBikes(int[][] workers, int[][] bikes, Integer[][] dpMatrix, int workerIndex, int bikeMask) {
         //Base case
         if (workerIndex == workers.length) return 0;
@@ -2385,7 +2385,7 @@ public class Practice4 {
             if (!checkMask(bikeMask, i)) {
                 int distance = manhattanDistance(workers[workerIndex], bikes[i]);
                 int nextMask = setMask(bikeMask, i);
-                int remainingDistances = assignBikes(workers, bikes, dpMatrix, workerIndex+1, nextMask);
+                int remainingDistances = assignBikes(workers, bikes, dpMatrix, workerIndex + 1, nextMask);
                 minDistances = Math.min(minDistances, distance + remainingDistances);
             }
         }
@@ -2394,21 +2394,22 @@ public class Practice4 {
 
 
     public int maxA(int n) {
-        int[] dp = new int[n+1];
-        int[] ctrlA = new int[n+1];
-        int[] ctrlC = new int[n+1];
-        int[] ctrlV =  new int[n+1];
+        int[] dp = new int[n + 1];
+        int[] ctrlA = new int[n + 1];
+        int[] ctrlC = new int[n + 1];
+        int[] ctrlV = new int[n + 1];
         for (int i = 1; i < n; i++) {
-            ctrlA[i] = dp[i-1];
-            ctrlC[i] = ctrlA[i-1];
-            ctrlV[i] = ctrlC[i-1];
-            int currentCount = Math.max(dp[i-1]+1, dp[i-1] + ctrlV[i]);
+            ctrlA[i] = dp[i - 1];
+            ctrlC[i] = ctrlA[i - 1];
+            ctrlV[i] = ctrlC[i - 1];
+            int currentCount = Math.max(dp[i - 1] + 1, dp[i - 1] + ctrlV[i]);
             dp[i] = currentCount;
         }
         return dp[n];
     }
 
     int maxRequest;
+
     public int maximumRequests(int n, int[][] requests) {
         maxRequest = Integer.MIN_VALUE;
         List<int[]> requestList = new ArrayList<>();
@@ -2424,6 +2425,7 @@ public class Practice4 {
         maximumRequests(requestList, 0, 0, buildingBalance);
         return maxRequest + nonTransfer;
     }
+
     public void maximumRequests(List<int[]> requestList, int requestIndex, int currentCount, int[] buildingBalance) {
         int n = requestList.size();
         if (requestIndex == n) {
@@ -2438,10 +2440,10 @@ public class Practice4 {
         int[] currentRequest = requestList.get(requestIndex);
         buildingBalance[currentRequest[0]]--;
         buildingBalance[currentRequest[1]]++;
-        maximumRequests(requestList, requestIndex+1, currentCount+1, buildingBalance);
+        maximumRequests(requestList, requestIndex + 1, currentCount + 1, buildingBalance);
         buildingBalance[currentRequest[0]]++;
         buildingBalance[currentRequest[1]]--;
-        maximumRequests(requestList, requestIndex+1, currentCount, buildingBalance);
+        maximumRequests(requestList, requestIndex + 1, currentCount, buildingBalance);
     }
 
     public static Integer safeMax(Integer a, Integer b) {
@@ -2455,6 +2457,7 @@ public class Practice4 {
             return Math.max(a, b);
         }
     }
+
     public static int tallestBillboard(int[] rods) {
         int n = rods.length;
         int maxOffset = 2500;
@@ -2484,7 +2487,6 @@ public class Practice4 {
     }
 
 
-
     public static int minimumDifference(int[] nums) {
         int n = nums.length;
         int totalSum = 0;
@@ -2512,17 +2514,16 @@ public class Practice4 {
     }
 
 
-
     public int minCost(int[][] costs) {
         int n = costs.length;
         int[][] dp = new int[n][3];
-        dp[n-1][0] = costs[n-1][0];
-        dp[n-1][1] = costs[n-1][1];
-        dp[n-1][2] = costs[n-1][2];
+        dp[n - 1][0] = costs[n - 1][0];
+        dp[n - 1][1] = costs[n - 1][1];
+        dp[n - 1][2] = costs[n - 1][2];
         for (int i = n - 2; i >= 0; i--) {
-            dp[i][0] = costs[i][0] + Math.min(dp[i+1][1], dp[i+1][2]);
-            dp[i][1] = costs[i][1] + Math.min(dp[i+1][0], dp[i+1][2]);
-            dp[i][2] = costs[i][2] + Math.min(dp[i+1][0], dp[i+1][1]);
+            dp[i][0] = costs[i][0] + Math.min(dp[i + 1][1], dp[i + 1][2]);
+            dp[i][1] = costs[i][1] + Math.min(dp[i + 1][0], dp[i + 1][2]);
+            dp[i][2] = costs[i][2] + Math.min(dp[i + 1][0], dp[i + 1][1]);
         }
         int output = Math.min(dp[0][0], Math.min(dp[0][1], dp[0][2]));
         return output;
@@ -2537,7 +2538,7 @@ public class Practice4 {
                 int minCost = Integer.MAX_VALUE;
                 for (int k = 0; k < n; k++) {
                     if (j == k) continue;
-                    minCost = Math.min(minCost, currentCost + costs[i+1][k]);
+                    minCost = Math.min(minCost, currentCost + costs[i + 1][k]);
                 }
                 costs[i][j] = minCost;
             }
@@ -2550,9 +2551,8 @@ public class Practice4 {
     }
 
 
-
     public int countVowelPermutation(int n) {
-        long[] dp = new long[]{1,1,1,1,1};
+        long[] dp = new long[]{1, 1, 1, 1, 1};
         long mod = (long) (1e9 + 7);
         for (int i = 1; i < n; i++) {
             long[] dpNext = new long[5];
@@ -2581,7 +2581,6 @@ public class Practice4 {
         }
         return normal + special;
     }
-
 
 
     public int numberOfWays(int numPeople) {
@@ -2677,7 +2676,7 @@ public class Practice4 {
     public int longestPalindromeSubseq(String s) {
         int n = s.length();
         char[] sChar = s.toCharArray();
-        int[][] dp = new int[n+1][n+1];
+        int[][] dp = new int[n + 1][n + 1];
         for (int i = n - 1; i >= 0; i--) {
             for (int j = i; j < n; j++) {
                 if (i == j) {
@@ -2685,13 +2684,13 @@ public class Practice4 {
                 } else {
                     boolean match = sChar[i] == sChar[j];
                     if (match) {
-                        dp[i][j] = dp[i+1][j-1] + 2;
+                        dp[i][j] = dp[i + 1][j - 1] + 2;
                     }
-                    dp[i][j] = Math.max(dp[i][j], Math.max(dp[i][j-1], dp[i+1][j]));
+                    dp[i][j] = Math.max(dp[i][j], Math.max(dp[i][j - 1], dp[i + 1][j]));
                 }
             }
         }
-        return dp[0][n-1];
+        return dp[0][n - 1];
     }
 
     public static long maximumBooks(int[] books) {
@@ -2707,7 +2706,7 @@ public class Practice4 {
             long priorBook = q.peekLast();
             if (priorBook == book) continue;
             if (priorBook < book) {
-                dp[i] = dp[i-1] + book;
+                dp[i] = dp[i - 1] + book;
             } else {
                 dp[i] = book;
                 while (!q.isEmpty()) {
@@ -2762,7 +2761,7 @@ public class Practice4 {
         for (int i = 0; i < n; i++) {
             if ((mask[0] & (1 << i)) != 0) {
                 counter++;
-                provinceDFS(isConnected, mask,i);
+                provinceDFS(isConnected, mask, i);
             }
 
         }
@@ -2773,7 +2772,7 @@ public class Practice4 {
         mask[0] = (mask[0] | (1 << currentPos));
         int[] currentNode = graph[currentPos];
         for (int i = 0; i < currentNode.length; i++) {
-            if (currentNode[i] == 1 && (mask[0] & (1 << i)) != 0)  provinceDFS(graph, mask, i);
+            if (currentNode[i] == 1 && (mask[0] & (1 << i)) != 0) provinceDFS(graph, mask, i);
         }
     }
 
@@ -2822,13 +2821,14 @@ public class Practice4 {
         }
         return output;
     }
-    public static void verticalOrder(TreeNode root,  HashMap<Integer, List<Integer>> hm, int index) {
+
+    public static void verticalOrder(TreeNode root, HashMap<Integer, List<Integer>> hm, int index) {
         if (root == null) return;
         int value = root.val;
         System.out.println(value);
         hm.computeIfAbsent(index, k -> new ArrayList<>()).add(value);
-        verticalOrder(root.left, hm, index-1);
-        verticalOrder(root.right, hm, index+1);
+        verticalOrder(root.left, hm, index - 1);
+        verticalOrder(root.right, hm, index + 1);
 
     }
 
@@ -2864,6 +2864,7 @@ public class Practice4 {
 
     class SparseVector {
         List<int[]> sv;
+
         SparseVector(int[] nums) {
             sv = new ArrayList<>();
             for (int i = 0; i < nums.length; i++) {
@@ -2872,6 +2873,7 @@ public class Practice4 {
                 }
             }
         }
+
         // Return the dotProduct of two sparse vectors
         public int dotProduct(SparseVector vec) {
             int output = 0;
@@ -2915,9 +2917,6 @@ public class Practice4 {
     }
 
 
-
-
-
 //    public class Solution extends Relation {
 //        public int findCelebrity(int n) {
 //            if (n == 1) return 0;
@@ -2949,7 +2948,7 @@ public class Practice4 {
     public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
         int n = startTime.length;
         if (n == 1) return profit[0];
-        int[][] dp = new int[n+1][];
+        int[][] dp = new int[n + 1][];
         dp[n] = new int[]{Integer.MAX_VALUE, Integer.MAX_VALUE, 0};
         for (int i = 0; i < n; i++) {
             dp[i] = new int[]{startTime[i], endTime[i], profit[i]};
@@ -2960,10 +2959,10 @@ public class Practice4 {
             int end = job[1];
             //Binary search
             int maxProfit = -1;
-            int left = i+1;
+            int left = i + 1;
             int right = n;
             while (left <= right) {
-                int middle = left + (right-left)/2;
+                int middle = left + (right - left) / 2;
                 int middleJobStart = dp[middle][0];
                 if (middleJobStart < end) {
                     left = middle + 1;
@@ -2973,7 +2972,7 @@ public class Practice4 {
                 }
             }
             job[2] += maxProfit;
-            job[2] = Math.max(job[2], dp[i+1][2]);
+            job[2] = Math.max(job[2], dp[i + 1][2]);
         }
         return dp[0][2];
     }
@@ -2999,17 +2998,18 @@ public class Practice4 {
         int[] differences = new int[n];
         for (int i = n - 3; i >= 0; i--) {
             int a = nums[i];
-            int b = nums[i+1];
+            int b = nums[i + 1];
             int difference = b - a;
             differences[i] = difference;
-            if (differences[i+1] == difference) {
-                dp[i] = dp[i+1] + 1;
+            if (differences[i + 1] == difference) {
+                dp[i] = dp[i + 1] + 1;
             }
         }
         return Arrays.stream(dp).sum();
     }
 
     int minPaintCost;
+
     public int paintWalls(int[] cost, int[] time) {
         int n = cost.length;
         if (n == 1) {
@@ -3028,6 +3028,7 @@ public class Practice4 {
         paintWalls(jobs, 0, 0, maxTime, 0);
         return minPaintCost;
     }
+
     public void paintWalls(int[][] jobs, int jobIndex, int currentTime, int maxTime, int currentCost) {
         if (jobIndex == jobs.length) return;
         if (currentCost > minPaintCost) return;
@@ -3037,7 +3038,7 @@ public class Practice4 {
         }
         for (int i = jobIndex; i < jobs.length; i++) {
             int[] job = jobs[i];
-            paintWalls(jobs, jobIndex+1, currentTime + job[0], maxTime, currentCost + job[1]);
+            paintWalls(jobs, jobIndex + 1, currentTime + job[0], maxTime, currentCost + job[1]);
         }
         return;
     }
@@ -3095,9 +3096,9 @@ public class Practice4 {
         }
         int output = 0;
         int[] minFromRight = new int[n];
-        minFromRight[n-1] = nums[n-1];
+        minFromRight[n - 1] = nums[n - 1];
         for (int i = n - 2; i >= 0; i--) {
-            minFromRight[i] = Math.min(minFromRight[i+1], nums[i]);
+            minFromRight[i] = Math.min(minFromRight[i + 1], nums[i]);
         }
         int j = 0;
         for (int i = 0; i < n && j < n; i++) {
@@ -3147,23 +3148,23 @@ public class Practice4 {
 
     public boolean canMeasureWater(int x, int y, int target) {
         if (x + y < target) return false;
-        Boolean[][] dp = new Boolean[x+1][y+1];
-        return waterDFS(0,0, x, y, target, dp);
-    }
-    public boolean waterDFS(int x, int y, int xMax, int yMax, int target, Boolean[][] dp) {
-        if (x == target || y == target || (x+y) == target) return true;
-        if (x > xMax) return waterDFS(xMax, y, xMax, yMax, target, dp);
-        if (y > yMax) return waterDFS(x, yMax, xMax, yMax, target, dp);
-        if (dp[x][y] != null) return dp[x][y];
-        dp[x][y] = dp[x][y] || waterDFS(xMax, y, xMax, yMax, target, dp);
-        dp[x][y] = dp[x][y] || waterDFS(x, yMax, xMax, yMax, target, dp);
-        dp[x][y] = dp[x][y] || waterDFS(0, y, xMax, yMax, target, dp);
-        dp[x][y] = dp[x][y] || waterDFS(x, 0, xMax, yMax, target, dp);
-        dp[x][y] = dp[x][y] || waterDFS(x+y, Math.max(0, y - (xMax-x)), xMax, yMax, target, dp);
-        dp[x][y] = dp[x][y] || waterDFS(Math.max(0, x-(yMax-y)), x+y, xMax, yMax, target, dp);
-        return dp[x][y];
+        Boolean[][] dp = new Boolean[x + 1][y + 1];
+        return waterMeasureDFS(0, 0, x, y, target, dp);
     }
 
+    public boolean waterMeasureDFS(int x, int y, int xMax, int yMax, int target, Boolean[][] dp) {
+        if (x == target || y == target || (x + y) == target) return true;
+        if (x > xMax) return waterMeasureDFS(xMax, y, xMax, yMax, target, dp);
+        if (y > yMax) return waterMeasureDFS(x, yMax, xMax, yMax, target, dp);
+        if (dp[x][y] != null) return dp[x][y];
+        dp[x][y] = dp[x][y] || waterMeasureDFS(xMax, y, xMax, yMax, target, dp);
+        dp[x][y] = dp[x][y] || waterMeasureDFS(x, yMax, xMax, yMax, target, dp);
+        dp[x][y] = dp[x][y] || waterMeasureDFS(0, y, xMax, yMax, target, dp);
+        dp[x][y] = dp[x][y] || waterMeasureDFS(x, 0, xMax, yMax, target, dp);
+        dp[x][y] = dp[x][y] || waterMeasureDFS(x + y, Math.max(0, y - (xMax - x)), xMax, yMax, target, dp);
+        dp[x][y] = dp[x][y] || waterMeasureDFS(Math.max(0, x - (yMax - y)), x + y, xMax, yMax, target, dp);
+        return dp[x][y];
+    }
 
 
     public static int numSquares(int n) {
@@ -3219,22 +3220,22 @@ public class Practice4 {
             if (k >= 1) return true;
             return false;
         }
-        int[][] dp = new int[n+1][n+1];
+        int[][] dp = new int[n + 1][n + 1];
         for (int i = n - 2; i >= 0; i--) {
-            for (int j = i+1; j < n; j++) {
+            for (int j = i + 1; j < n; j++) {
                 boolean match = sChar[i] == sChar[j];
-                if (j == (i+1)) {
+                if (j == (i + 1)) {
                     if (match) dp[i][j] = 0;
                     else dp[i][j] = 1;
                 } else {
-                    if (match) dp[i][j] = dp[i+1][j-1];
+                    if (match) dp[i][j] = dp[i + 1][j - 1];
                     else {
-                        dp[i][j] = Math.min(dp[i+1][j]+1, dp[i][j-1]+1);
+                        dp[i][j] = Math.min(dp[i + 1][j] + 1, dp[i][j - 1] + 1);
                     }
                 }
             }
         }
-        return (dp[0][n-1] <= k) ? true : false;
+        return (dp[0][n - 1] <= k) ? true : false;
     }
 
     public int numberWays(List<List<Integer>> hats) {
@@ -3285,11 +3286,10 @@ public class Practice4 {
     }
 
 
-
     public boolean predictTheWinner(int[] nums) {
         int n = nums.length;
         if (n <= 2) return true;
-        int[][] dp = new int[n+1][n+1];
+        int[][] dp = new int[n + 1][n + 1];
         for (int i = 0; i < n; i++) {
             for (int j = i; j < n; j++) {
                 if (i == j) dp[i][j] = nums[i];
@@ -3297,16 +3297,16 @@ public class Practice4 {
                     int a = nums[i];
                     int b = nums[j];
                     int res;
-                    if (i+1 == j) {
-                        res = Math.abs(a-b);
+                    if (i + 1 == j) {
+                        res = Math.abs(a - b);
                     } else {
-                        res = Math.max(a - dp[i+1][j], b - dp[i][j-1]);
+                        res = Math.max(a - dp[i + 1][j], b - dp[i][j - 1]);
                     }
                     dp[i][j] = res;
                 }
             }
         }
-        return (dp[0][n-1] >= 0);
+        return (dp[0][n - 1] >= 0);
     }
 
     public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
@@ -3360,11 +3360,13 @@ public class Practice4 {
     }
 
     int minPrice;
+
     public int shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs) {
         minPrice = Integer.MAX_VALUE;
         shoppingOffers(price, special, needs, 0, 0);
         return minPrice;
     }
+
     public void shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs, int specialIndex, int currentPrice) {
         if (currentPrice >= minPrice) return;
         int n = price.size();
@@ -3421,11 +3423,47 @@ public class Practice4 {
     }
 
 
+    int islandCounter;
+    int yMax;
+    int xMax;
+    char[][] islandGrid;
+    boolean[][] visited;
+
+    public int numIslands(char[][] grid) {
+        islandGrid = grid;
+        islandCounter = 0;
+        visited = new boolean[yMax+1][xMax+1];
+        yMax = grid.length;
+        xMax = grid[0].length;
+        for (int y = 0; y < yMax; y++) {
+            for (int x = 0; x < xMax; x++) {
+                if (visited[y][x]) continue;
+                if (islandGrid[y][x] == '1') {
+                    islandDFS(y, x);
+                }
+                visited[y][x] = true;
+            }
+        }
+        return islandCounter;
+    }
+
+    public void islandDFS(int y, int x) {
+        if (y < 0 || x < 0 || y == yMax || x == xMax) return;
+        if (visited[y][x]) return;
+        visited[y][x] = true;
+        if (islandGrid[y][x] == '1') {
+            islandDFS(y+1,x);
+            islandDFS(y,x+1);
+            islandDFS(y-1,x);
+            islandDFS(y,x-1);
+        }
+    }
+
 
     public static void main(String[] args) {
-        int[][] workers = {{0,0},{2,1}};
-        int[][] bikes = {{1,2},{3,3}};
-        int i = maxSubarrayLength(new int[]{7,6,5,4,3,2,1,6,10,11});
+        int[][] workers = {{0, 0}, {2, 1}};
+        int[][] bikes = {{1, 2}, {3, 3}};
+        int i = maxSubarrayLength(new int[]{7, 6, 5, 4, 3, 2, 1, 6, 10, 11});
         int[] zArray = computeZArray("aabqwertycqwertydaab");
         int[][] hats = stringToArray2D("[[3,4],[4,5],[5]]");
         List<List<Integer>> hatList = new ArrayList<>();
@@ -3436,11 +3474,7 @@ public class Practice4 {
         }
 
 
-
-
     }
-
-
 
 
     public static int[] stringToArray1D(String input) {
@@ -3474,7 +3508,6 @@ public class Practice4 {
         }
         return result;
     }
-
 
 
     class Interval {
