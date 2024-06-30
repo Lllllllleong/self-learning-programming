@@ -3423,40 +3423,65 @@ public class Practice4 {
     }
 
 
-    int islandCounter;
-    int yMax;
-    int xMax;
-    char[][] islandGrid;
-    boolean[][] visited;
+//    int islandCounter;
+//    int yMax;
+//    int xMax;
+//    char[][] islandGrid;
+//    boolean[][] visited;
+//
+//    public int numIslands(char[][] grid) {
+//        islandGrid = grid;
+//        islandCounter = 0;
+//        visited = new boolean[yMax+1][xMax+1];
+//        yMax = grid.length;
+//        xMax = grid[0].length;
+//        for (int y = 0; y < yMax; y++) {
+//            for (int x = 0; x < xMax; x++) {
+//                if (visited[y][x]) continue;
+//                if (islandGrid[y][x] == '1') {
+//                    islandDFS(y, x);
+//                }
+//                visited[y][x] = true;
+//            }
+//        }
+//        return islandCounter;
+//    }
+//
+//    public void islandDFS(int y, int x) {
+//        if (y < 0 || x < 0 || y == yMax || x == xMax) return;
+//        if (visited[y][x]) return;
+//        visited[y][x] = true;
+//        if (islandGrid[y][x] == '1') {
+//            islandDFS(y+1,x);
+//            islandDFS(y,x+1);
+//            islandDFS(y-1,x);
+//            islandDFS(y,x-1);
+//        }
+//    }
 
-    public int numIslands(char[][] grid) {
-        islandGrid = grid;
-        islandCounter = 0;
-        visited = new boolean[yMax+1][xMax+1];
-        yMax = grid.length;
-        xMax = grid[0].length;
-        for (int y = 0; y < yMax; y++) {
-            for (int x = 0; x < xMax; x++) {
-                if (visited[y][x]) continue;
-                if (islandGrid[y][x] == '1') {
-                    islandDFS(y, x);
+
+    public int minimumDeleteSum(String s1, String s2) {
+        int iMax = s1.length();
+        int jMax = s2.length();
+        char[] c1 = s1.toCharArray();
+        char[] c2 = s2.toCharArray();
+        int[][] dp = new int[iMax+1][jMax+1];
+        for (int i = iMax - 1; i >= 0; i--) {
+            dp[i][jMax] = (int) c1[i] + dp[i+1][jMax];
+        }
+        for (int j = jMax - 1; j >= 0; j--) {
+            dp[iMax][j] = (int) c2[j] + dp[iMax][j+1];
+        }
+        for (int i = iMax - 1; i >= 0; i--) {
+            for (int j = jMax - 1; j >= 0; j--) {
+                if (c1[i] != c2[j]) {
+                    dp[i][j] = Math.min((int) c1[i] + dp[i+1][j], (int) c2[j] + dp[i][j+1]);
+                } else {
+                    dp[i][j] = dp[i+1][j+1];
                 }
-                visited[y][x] = true;
             }
         }
-        return islandCounter;
-    }
-
-    public void islandDFS(int y, int x) {
-        if (y < 0 || x < 0 || y == yMax || x == xMax) return;
-        if (visited[y][x]) return;
-        visited[y][x] = true;
-        if (islandGrid[y][x] == '1') {
-            islandDFS(y+1,x);
-            islandDFS(y,x+1);
-            islandDFS(y-1,x);
-            islandDFS(y,x-1);
-        }
+        return dp[0][0];
     }
 
 
