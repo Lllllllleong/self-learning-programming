@@ -3754,6 +3754,42 @@ public class Practice4 {
 
 
 
+    public int minimumTime(int n, int[][] relations, int[] time) {
+        Set<Integer> withPrereq = new HashSet<>();
+        HashMap<Integer, List<Integer>> graph = new HashMap<>();
+        int[] cumLength = new int[n+1];
+        for (int[] relation : relations) {
+            int a = relation[0];
+            int b = relation[1];
+            graph.computeIfAbsent(a, k -> new ArrayList<>()).add(b);
+            withPrereq.add(b);
+        }
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> -a[1]));
+        for (int i = 1; i <= n; i++) {
+            if (withPrereq.contains(i)) continue;
+            int length = time[i-1];
+            pq.offer(new int[]{i, length});
+        }
+        //DJ
+        while (!pq.isEmpty()) {
+            int[] currentCourse = pq.poll();
+            int course = currentCourse[0];
+            int length = currentCourse[1];
+            if (cumLength[course] >= length) continue;
+            cumLength[course] = length;
+            if (graph.containsKey(course)) {
+                var nextCourses = graph.get(course);
+                for (Integer nextCourse : nextCourses) {
+                    if (cumLength[nextCourse] < length + time[nextCourse-1]) {
+                        pq.offer(new int[]{nextCourse, length + time[nextCourse-1]});
+                    }
+                }
+            }
+        }
+        return Arrays.stream(cumLength).max().getAsInt();
+    }
+
+
 
 
 
