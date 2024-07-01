@@ -3783,6 +3783,73 @@ public class Practice4 {
         return output;
     }
 
+    long pCount = 0;
+    char[] treeChars = null;
+    List<Integer> maskList = null;
+    public long countPalindromePaths(List<Integer> parent, String s) {
+        pCount = 0;
+        treeChars = s.toCharArray();
+        maskList = new ArrayList<>();
+        charTreeDFS(parent, 0);
+        long output = 0;
+        for (Integer mask : maskList) {
+            if (Integer.bitCount(mask) <= 1) output++;
+        }
+        return output;
+    }
+    public List<Integer> charTreeDFS(List<Integer> parentList, int currentNode) {
+        List<Integer> localMaskList = new ArrayList<>();
+        int charValue = treeChars[currentNode] - 'a';
+        Integer currentMask = 0 | (1 << charValue);
+        localMaskList.add(currentMask);
+        for (int i = 0; i < parentList.size(); i++) {
+            if (parentList.get(i) == currentNode) {
+                List<Integer> nextMasks = charTreeDFS(parentList, i);
+                for (Integer nextMask : nextMasks) {
+                    for (Integer localMask : localMaskList) {
+                        maskList.add(nextMask & localMask);
+                    }
+                }
+                for (Integer nextMask : nextMasks) {
+                     localMaskList.add(nextMask & currentMask);
+                }
+            }
+        }
+        return localMaskList;
+    }
+
+
+
+
+    public String reorganizeString(String s) {
+        // Calculate the frequency of each character
+        int[] charFrequency = new int[26];
+        for (char c : s.toCharArray()) {
+            charFrequency[c - 'a']++;
+        }
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> b[1] - a[1]);
+        for (int i = 0; i < 26; i++) {
+            int charFreq = charFrequency[i];
+            if (charFreq > 0) pq.offer(new int[]{i, charFreq});
+        }
+
+        StringBuilder sb = new StringBuilder();
+        int[] prev = {-1, 0}; // To store the previous character and its remaining frequency
+        while (!pq.isEmpty()) {
+            int[] current = pq.poll();
+            sb.append((char) (current[0] + 'a'));
+            current[1]--;
+            if (prev[1] > 0) {
+                pq.offer(prev);
+            }
+            prev = current;
+        }
+        if (sb.length() != s.length()) {
+            return "";
+        }
+        return sb.toString();
+    }
+
 
 
 
