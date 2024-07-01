@@ -3727,6 +3727,33 @@ public class Practice4 {
 
 
 
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        Set<String> set = new HashSet<>(wordDict);
+        int n = s.length();
+        HashMap<Integer, List<StringBuilder>> dp = new HashMap<>();
+        dp.put(n, new ArrayList<>(Arrays.asList(new StringBuilder(""))));
+        for (int i = n - 1; i >= 0; i--) {
+            if (!dp.containsKey(i + 1)) continue;
+            List<StringBuilder> priorStringBuilders = dp.get(i + 1);
+            for (int j = i; j >= 0; j--) {
+                String subString = s.substring(j, i + 1);
+                if (set.contains(subString)) {
+                    for (StringBuilder priorStringBuilder : priorStringBuilders) {
+                        StringBuilder newStringBuilder = new StringBuilder(subString).append(" ").append(priorStringBuilder);
+                        dp.computeIfAbsent(j, k -> new ArrayList<>()).add(newStringBuilder);
+                    }
+                }
+            }
+        }
+        List<String> result = new ArrayList<>();
+        for (StringBuilder sb : dp.getOrDefault(0, new ArrayList<>())) {
+            result.add(sb.toString().trim());
+        }
+        return result;
+    }
+
+
+
 
 
 
