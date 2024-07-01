@@ -3547,6 +3547,39 @@ public class Practice4 {
         return count;
     }
 
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+        if (n == 1) return;
+        //Transpose
+        for (int i = 0; i < n; i++) {
+            for (int j = i+1; j < n; j++) {
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = tmp;
+            }
+        }
+        //Reverse each row
+        for (int[] row : matrix) {
+            int r = n-1;
+            int l = 0;
+            while (l < r) {
+                int tmp = row[l];
+                row[l] = row[r];
+                row[r] = tmp;
+                l++;
+                r--;
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
         int[][] workers = {{0, 0}, {2, 1}};
         int[][] bikes = {{1, 2}, {3, 3}};
