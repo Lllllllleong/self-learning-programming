@@ -92,7 +92,6 @@ public class Practice5 {
     }
 
 
-
     /**
      * Main Method
      */
@@ -145,6 +144,59 @@ public class Practice5 {
         }
         return result;
     }
+
+
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        List<Integer> output = new ArrayList<>();
+        List<Integer>[] graph = new List[n];
+        Arrays.fill(graph, new ArrayList<>());
+        int[] adjList = new int[n];
+        for (int[] edge : edges) {
+            int a = edge[0];
+            int b = edge[1];
+            graph[a].add(b);
+            graph[b].add(a);
+            adjList[a]++;
+            adjList[b]++;
+        }
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) if (adjList[i] == 1) dq.addLast(i);
+        while (!dq.isEmpty()) {
+            output = new ArrayList<>(dq);
+            int size = dq.size();
+            for (int i = 0; i < size; i++) {
+                int currentNode = dq.pollFirst();
+                var nextNodes = graph[currentNode];
+                for (Integer nextNode : nextNodes) {
+                    if (--adjList[nextNode] == 1) dq.addLast(nextNode);
+                }
+            }
+        }
+        return output;
+    }
+
+
+    public int fib(int n) {
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+        long[][] result = {{1, 0}, {0, 1}};
+        long[][] fibMatrix = {{1, 1}, {1, 0}};
+        n -= 1;
+        while (n > 0) {
+            if (n % 2 == 1) result = multiplyMatrices(result, fibMatrix);
+            fibMatrix = multiplyMatrices(fibMatrix, fibMatrix);
+            n /= 2;
+        }
+        return (int) result[0][0];
+    }
+
+    public long[][] multiplyMatrices(long[][] a, long[][] b) {
+        return new long[][]{
+                {a[0][0] * b[0][0] + a[0][1] * b[1][0], a[0][0] * b[0][1] + a[0][1] * b[1][1]},
+                {a[1][0] * b[0][0] + a[1][1] * b[1][0], a[1][0] * b[0][1] + a[1][1] * b[1][1]}
+        };
+    }
+
 
 
     class Interval {
