@@ -8,12 +8,15 @@ public class Practice5 {
 
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         int n = numCourses;
-        int[] childCount = new int[n];
-        boolean[][] graph = new boolean[n][n];
-        for (var prereq : prerequisites) {
+        List<Integer>[] graph = new List[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        int[] childCount = new int[numCourses];
+        for (int[] prereq : prerequisites) {
             int a = prereq[0];
             int b = prereq[1];
-            graph[b][a] = true;
+            graph[b].add(a);
             childCount[a]++;
         }
         Deque<Integer> dq = new ArrayDeque<>();
@@ -22,10 +25,8 @@ public class Practice5 {
         }
         while (!dq.isEmpty()) {
             int currentCourse = dq.pollFirst();
-            for (int i = 0; i < n; i++) {
-                if (graph[currentCourse][i]) {
-                    if (--childCount[i] == 0) dq.addLast(i);
-                }
+            for (Integer nextCourse : graph[currentCourse]) {
+                if (--childCount[nextCourse] == 0) dq.addLast(nextCourse);
             }
         }
         for (int child : childCount) if (child != 0) return false;
