@@ -68,25 +68,97 @@ public class Practice5 {
     }
 
 
+//    public List<String> findItinerary(List<List<String>> tickets) {
+//        HashMap<String, PriorityQueue<String>> graph = new HashMap<>();
+//        for (var ticket : tickets) {
+//            String from = ticket.get(0);
+//            String to = ticket.get(1);
+//            graph.computeIfAbsent(from, k -> new PriorityQueue<>()).add(to);
+//        }
+//        List<String> output = new ArrayList<>();
+//        flightDFS(graph, output, "JFK");
+//        return output;
+//    }
+//
+//    public void flightDFS(HashMap<String, PriorityQueue<String>> graph,
+//                          List<String> output,
+//                          String currentPos) {
+//        if (currentPos == null) return;
+//        var pq = graph.getOrDefault(currentPos, new PriorityQueue<>());
+//        while (!pq.isEmpty()) {
+//            flightDFS(graph, output, pq.poll());
+//        }
+//        output.add(0, currentPos);
+//    }
 
+
+    public static List<String> findItinerary(List<List<String>> tickets) {
+        return new AbstractList<String>() {
+
+            private LinkedList<String> resList;
+
+            private void onload() {
+                Map<String, PriorityQueue<String>> flights = new HashMap<String, PriorityQueue<String>>();
+                resList = new LinkedList<String>();
+                for (List<String> ticket : tickets) {
+                    final String source = ticket.get(0);
+                    final String destination = ticket.get(1);
+                    if (!flights.containsKey(source)) {
+                        flights.put(source, new PriorityQueue<String>());
+                    }
+                    flights.get(source).add(destination);
+                }
+                dfs("JFK", flights);
+            }
+
+            private void dfs(String departure, Map<String, PriorityQueue<String>> flights) {
+                PriorityQueue<String> arrivals = flights.get(departure);
+                while (null != arrivals && !arrivals.isEmpty()) {
+                    dfs(arrivals.poll(), flights);
+                }
+                resList.addFirst(departure);
+            }
+
+            private void init() {
+                if (null == resList) {
+                    onload();
+                    System.gc();
+                }
+            }
+
+            @Override
+            public String get(int index) {
+                init();
+                return resList.get(index);
+            }
+
+            @Override
+            public int size() {
+                init();
+                return resList.size();
+            }
+
+        };
+    }
 
     /**
      * Main Method
-     *
-     *
-     *
-     *
-     *
-     *
      */
     public static void main(String[] args) {
+        String[][] flights = {{"JFK", "KUL"}, {"JFK", "NRT"}, {"NRT", "JFK"}};
+        var flightList = convertToListOfLists(flights);
 
 
+    }
 
+    public static List<List<String>> convertToListOfLists(String[][] array) {
+        List<List<String>> listOfLists = new ArrayList<>();
 
+        for (String[] subArray : array) {
+            listOfLists.add(Arrays.asList(subArray));
+        }
 
-
-
+        return listOfLists;
     }
 
 
@@ -166,7 +238,6 @@ public class Practice5 {
             next = null;
         }
     }
-
 
 
 }
