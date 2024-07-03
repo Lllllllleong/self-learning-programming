@@ -397,16 +397,12 @@ public class Practice5 {
     public String longestPalindrome(String s) {
         int n = s.length();
         if (n == 0) return "";
-
         boolean[][] dp = new boolean[n][n];
         String output = "";
-
-        // Initialize the dp table
         for (int i = 0; i < n; i++) {
-            dp[i][i] = true; // Every single character is a palindrome
-            output = s.substring(i, i + 1); // At least one character palindrome
+            dp[i][i] = true;
+            output = s.substring(i, i + 1);
         }
-
         for (int i = n - 1; i >= 0; i--) {
             for (int j = i + 1; j < n; j++) {
                 if (s.charAt(i) == s.charAt(j)) {
@@ -419,7 +415,29 @@ public class Practice5 {
                 }
             }
         }
+        return output;
+    }
 
+    public int minimumSwaps(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return 0;
+        int minValue = Integer.MAX_VALUE;
+        int maxValue = Integer.MIN_VALUE;
+        int minIndex = -1;
+        int maxIndex = -1;
+        for (int i = 0; i < n; i++) {
+            int num = nums[i];
+            if (num >= maxValue) {
+                maxValue = num;
+                maxIndex = i;
+            }
+            if (num < minValue) {
+                minValue = num;
+                minIndex = i;
+            }
+        }
+        int output = ((n-1) - maxIndex) + (minIndex);
+        if (minIndex < maxIndex) output--;
         return output;
     }
 
