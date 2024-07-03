@@ -252,7 +252,6 @@ public class Practice5 {
     public int countComponents(int n, int[][] edges) {
         if (n == 1) return 1;
         int[] parent = new int[n];
-        int[] rank = new int[n];
         //Start off assuming all components are independent singleton
         for (int i = 0; i < n; i++) {
             parent[i] = i;
@@ -265,8 +264,9 @@ public class Practice5 {
             int parentB = findParent(parent, edge[1]);
             if (parentA != parentB) {
                 parent[parentB] = parentA;
+                output--;
             }
-            output--;
+
         }
         return output;
     }
@@ -275,6 +275,29 @@ public class Practice5 {
         int currentParent = parent[node];
         if (currentParent != node) return parent[node] = findParent(parent, currentParent);
         return currentParent;
+    }
+
+
+    public int[] findRedundantConnection(int[][] edges) {
+        int n = edges.length;
+        int[] parent = new int[n];
+        //Start off assuming all components are independent singleton
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
+        //Every time we connect a component to another, we reassign one of the parents.
+        //If they have the same parent -> they are already connected -> it is a redundant connection
+        int output = n;
+        for (int[] edge : edges) {
+            int parentA = findParent(parent, edge[0]);
+            int parentB = findParent(parent, edge[1]);
+            if (parentA != parentB) {
+                parent[parentB] = parentA;
+            } else {
+                return edge;
+            }
+        }
+        return null;
     }
 
 
