@@ -394,6 +394,36 @@ public class Practice5 {
     }
 
 
+    public String longestPalindrome(String s) {
+        int n = s.length();
+        if (n == 0) return "";
+
+        boolean[][] dp = new boolean[n][n];
+        String output = "";
+
+        // Initialize the dp table
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = true; // Every single character is a palindrome
+            output = s.substring(i, i + 1); // At least one character palindrome
+        }
+
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i + 1; j < n; j++) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    if (j - i == 1 || dp[i + 1][j - 1]) {
+                        dp[i][j] = true;
+                        if (j - i + 1 > output.length()) {
+                            output = s.substring(i, j + 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        return output;
+    }
+
+
 
 
 
