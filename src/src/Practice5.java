@@ -370,6 +370,33 @@ public class Practice5 {
         return (int) dp[0][n-1];
     }
 
+    public boolean isMatch(String s, String p) {
+        int sLength = s.length();
+        int pLength = p.length();
+        char[] sChar = s.toCharArray();
+        char[] pChar = p.toCharArray();
+        boolean[][] dp = new boolean[sLength + 1][pLength + 1];
+        dp[sLength][pLength] = true;
+        for (int i = sLength - 1; i >= 0; i--) {
+            char sC = sChar[i];
+            for (int j = 0; j < pLength; j++) {
+                char pC = pChar[j];
+                if (sC == pC || pC == '?') {
+                    dp[i][j] = dp[i + 1][j + 1];
+                } else if (pC == '*') {
+                    dp[i][j] = dp[i + 1][j] || dp[i][j + 1] || dp[i+1][j+1];
+                } else {
+                    dp[i][j] = false;
+                }
+            }
+        }
+        return dp[0][0];
+    }
+
+
+
+
+
 
 
     class Node {
