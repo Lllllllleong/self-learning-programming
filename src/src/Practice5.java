@@ -572,6 +572,60 @@ public class Practice5 {
         return Z;
     }
 
+    int MOD = 1_000_000_007;
+    public int checkRecord(int n) {
+        long[] piMatrix = new long[]{1, 1, 0, 1, 0, 0};
+        long[][] transitionMatrix = new long[][]{
+                {1, 1, 0, 1, 0, 0},
+                {1, 0, 1, 1, 0, 0},
+                {1, 0, 0, 1, 0, 0},
+                {0, 0, 0, 1, 1, 0},
+                {0, 0, 0, 1, 0, 1},
+                {0, 0, 0, 1, 0, 0}
+        };
+        transitionMatrix = matrixPower(transitionMatrix, n - 1);
+        long[] outputMatrix = new long[6];
+        for (int j = 0; j < 6; j++) {
+            for (int k = 0; k < 6; k++) {
+                outputMatrix[j] = (outputMatrix[j] + piMatrix[k] * transitionMatrix[k][j]) % MOD;
+            }
+        }
+        long output = 0;
+        for (long l : outputMatrix) output += l;
+        return (int) (output % MOD);
+    }
+
+    public long[][] multiply(long[][] a, long[][] b) {
+        int n = a.length;
+        long[][] result = new long[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    result[i][j] = (result[i][j] + a[i][k] * b[k][j]) % MOD;
+                }
+            }
+        }
+        return result;
+    }
+
+    public long[][] matrixPower(long[][] a, int n) {
+        int size = a.length;
+        long[][] result = new long[size][size];
+        for (int i = 0; i < size; i++) {
+            result[i][i] = 1;
+        }
+        long[][] base = a;
+        while (n > 0) {
+            if ((n & 1) == 1) {
+                result = multiply(result, base);
+            }
+            base = multiply(base, base);
+            n >>= 1;
+        }
+        return result;
+    }
+
+
     /**
      * Main Method
      *
