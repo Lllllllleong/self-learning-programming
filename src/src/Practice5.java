@@ -438,6 +438,19 @@ public class Practice5 {
         return copy;
     }
 
+    public int minOperations(int[] nums) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int i : nums) hm.merge(i, 1, Integer::sum);
+        int output = 0;
+        for (Integer value : hm.values()) {
+            if (value <= 1) return -1;
+            output += value / 3;
+            value = value % 3;
+            if (value > 0) output++;
+        }
+        return output;
+    }
+
 
 
 
