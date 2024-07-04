@@ -92,60 +92,6 @@ public class Practice5 {
     }
 
 
-    /**
-     * Main Method
-     */
-    public static void main(String[] args) {
-        String[][] flights = {{"JFK", "KUL"}, {"JFK", "NRT"}, {"NRT", "JFK"}};
-        var flightList = convertToListOfLists(flights);
-
-
-    }
-
-    public static List<List<String>> convertToListOfLists(String[][] array) {
-        List<List<String>> listOfLists = new ArrayList<>();
-
-        for (String[] subArray : array) {
-            listOfLists.add(Arrays.asList(subArray));
-        }
-
-        return listOfLists;
-    }
-
-
-    public static int[] stringToArray1D(String input) {
-        String[] numberStrings = input.substring(1, input.length() - 1).split(",");
-        int[] numbers = new int[numberStrings.length];
-        for (int i = 0; i < numberStrings.length; i++) {
-            numbers[i] = Integer.parseInt(numberStrings[i]);
-        }
-        return numbers;
-    }
-
-    // Method for 2D array
-    public static int[][] stringToArray2D(String input) {
-        // Remove outer brackets and split into individual array strings
-        String[] arrayStrings = input.substring(1, input.length() - 1).split("(?<=\\]),\\[");
-        // Prepare a list to hold the final arrays
-        List<int[]> arraysList = new ArrayList<>();
-        for (String arrayString : arrayStrings) {
-            // Remove brackets from each array string and split by comma
-            String[] numberStrings = arrayString.replaceAll("[\\[\\]]", "").split(",");
-            int[] numbers = new int[numberStrings.length];
-            for (int i = 0; i < numberStrings.length; i++) {
-                numbers[i] = Integer.parseInt(numberStrings[i]);
-            }
-            arraysList.add(numbers);
-        }
-        // Convert list to array
-        int[][] result = new int[arraysList.size()][];
-        for (int i = 0; i < arraysList.size(); i++) {
-            result[i] = arraysList.get(i);
-        }
-        return result;
-    }
-
-
     public List<Integer> findMinHeightTrees(int n, int[][] edges) {
         List<Integer> output = new ArrayList<>();
         List<Integer>[] graph = new List[n];
@@ -229,25 +175,25 @@ public class Practice5 {
     }
 
 
-    public Node cloneGraph(Node node) {
-        if (node == null) return null;
-        int root = node.val;
-        HashMap<Integer, Node> nodeGraph = new HashMap<>();
-        cloneGraph(nodeGraph, node);
-        return nodeGraph.get(root);
-    }
+//    public Node cloneGraph(Node node) {
+//        if (node == null) return null;
+//        int root = node.val;
+//        HashMap<Integer, Node> nodeGraph = new HashMap<>();
+//        cloneGraph(nodeGraph, node);
+//        return nodeGraph.get(root);
+//    }
 
-    public void cloneGraph(HashMap<Integer, Node> nodeGraph, Node node) {
-        if (node == null) return;
-        int value = node.val;
-        if (nodeGraph.containsKey(value)) return;
-        nodeGraph.put(value, new Node(value));
-        List<Node> neighbours = node.neighbors;
-        for (Node neighbour : neighbours) {
-            cloneGraph(nodeGraph, neighbour);
-            nodeGraph.get(value).neighbors.add(nodeGraph.get(neighbour.val));
-        }
-    }
+//    public void cloneGraph(HashMap<Integer, Node> nodeGraph, Node node) {
+//        if (node == null) return;
+//        int value = node.val;
+//        if (nodeGraph.containsKey(value)) return;
+//        nodeGraph.put(value, new Node(value));
+//        List<Node> neighbours = node.neighbors;
+//        for (Node neighbour : neighbours) {
+//            cloneGraph(nodeGraph, neighbour);
+//            nodeGraph.get(value).neighbors.add(nodeGraph.get(neighbour.val));
+//        }
+//    }
 
     public int countComponents(int n, int[][] edges) {
         if (n == 1) return 1;
@@ -301,13 +247,12 @@ public class Practice5 {
     }
 
 
-
     public int longestIncreasingPath(int[][] matrix) {
         int yMax = matrix.length;
         int xMax = matrix[0].length;
         int[][] dp = new int[yMax][xMax];
         int[][] parentCount = new int[yMax][xMax];
-        int[][] directions = {{-1,0},{0,1},{1,0},{0,-1}};
+        int[][] directions = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
         Deque<int[]> dq = new ArrayDeque<>();
         for (int y = 0; y < yMax; y++) {
             for (int x = 0; x < xMax; x++) {
@@ -319,7 +264,7 @@ public class Practice5 {
                     }
                 }
                 if (parentCount[y][x] == 0) {
-                    dq.addLast(new int[]{y,x});
+                    dq.addLast(new int[]{y, x});
                     dp[y][x] = 1;
                 }
             }
@@ -345,29 +290,28 @@ public class Practice5 {
     }
 
 
-
     public int maxCoins(int[] nums) {
         int n = nums.length;
         int[] balloons = new int[n + 2];
-        for(int i = 0; i < n; i++){
-            balloons[i+1] = nums[i];
+        for (int i = 0; i < n; i++) {
+            balloons[i + 1] = nums[i];
         }
         balloons[0] = 1;
-        balloons[n+1] =1;
-        n = n+2;
+        balloons[n + 1] = 1;
+        n = n + 2;
         long[][] dp = new long[n][n];
         for (int i = n - 3; i >= 0; i--) {
-            for (int j = i+2; j < n; j++) {
+            for (int j = i + 2; j < n; j++) {
                 long currentBase = balloons[i] * balloons[j];
                 long currentMax = 0;
-                for (int k = i+1; k < j; k++) {
+                for (int k = i + 1; k < j; k++) {
                     long currentScore = currentBase * balloons[k] + dp[i][k] + dp[k][j];
                     currentMax = Math.max(currentMax, currentScore);
                 }
                 dp[i][j] = currentMax;
             }
         }
-        return (int) dp[0][n-1];
+        return (int) dp[0][n - 1];
     }
 
     public boolean isMatch(String s, String p) {
@@ -384,7 +328,7 @@ public class Practice5 {
                 if (sC == pC || pC == '?') {
                     dp[i][j] = dp[i + 1][j + 1];
                 } else if (pC == '*') {
-                    dp[i][j] = dp[i + 1][j] || dp[i][j + 1] || dp[i+1][j+1];
+                    dp[i][j] = dp[i + 1][j] || dp[i][j + 1] || dp[i + 1][j + 1];
                 } else {
                     dp[i][j] = false;
                 }
@@ -436,9 +380,62 @@ public class Practice5 {
                 minIndex = i;
             }
         }
-        int output = ((n-1) - maxIndex) + (minIndex);
+        int output = ((n - 1) - maxIndex) + (minIndex);
         if (minIndex < maxIndex) output--;
         return output;
+    }
+
+
+    public List<String> mostVisitedPattern(String[] username, int[] timestamp, String[] website) {
+        int n = timestamp.length;
+        HashMap<String, Integer> hm = new HashMap<>();
+        HashMap<String, List<String>> userHistory = new HashMap<>();
+        int[][] data = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            int[] datum = new int[]{i, timestamp[i]};
+            data[i] = datum;
+        }
+        Arrays.sort(data, Comparator.comparingInt(a -> a[1]));
+        for (int[] datum : data) {
+            String userName = username[datum[0]];
+            String userWebsite = website[datum[0]];
+            userHistory.computeIfAbsent(userName, k -> new ArrayList<>()).add(userWebsite);
+            List<String> history = userHistory.getOrDefault(userName, new ArrayList<>());
+            history.add(userWebsite);
+            if (history.size() >= 3) {
+                String s = "";
+                for (int i = userHistory.size() - 4; i < userHistory.size(); i++) {
+                    s += userHistory.get(i) + " ";
+                }
+                s = s.trim();
+                hm.merge(s, 1, Integer::sum);
+            }
+            userHistory.put(userName, history);
+        }
+        for (String k : hm.keySet()) System.out.println(k);
+        String key = Collections.max(hm.entrySet(), Map.Entry.comparingByValue()).getKey();
+        String[] keySplit = key.split(" ");
+        List<String> output = new ArrayList<>();
+        for (String s : keySplit) output.add(s);
+        return output;
+    }
+
+
+    public NodeCopy copyRandomBinaryTree(Node root) {
+        if (root == null) return null;
+        HashMap<Node, NodeCopy> nodeMap = new HashMap<>();
+        return copyRandomBinaryTree(nodeMap, root);
+    }
+
+    private NodeCopy copyRandomBinaryTree(HashMap<Node, NodeCopy> nodeMap, Node root) {
+        if (root == null) return null;
+        if (nodeMap.containsKey(root)) return nodeMap.get(root);
+        NodeCopy copy = new NodeCopy(root.val);
+        nodeMap.put(root, copy);
+        copy.left = copyRandomBinaryTree(nodeMap, root.left);
+        copy.right = copyRandomBinaryTree(nodeMap, root.right);
+        copy.random = copyRandomBinaryTree(nodeMap, root.random);
+        return copy;
     }
 
 
@@ -447,23 +444,121 @@ public class Practice5 {
 
 
 
-    class Node {
-        public int val;
-        public List<Node> neighbors;
 
-        public Node() {
-            val = 0;
-            neighbors = new ArrayList<Node>();
+    /**
+     * Main Method
+     */
+    public static void main(String[] args) {
+        String[][] flights = {{"JFK", "KUL"}, {"JFK", "NRT"}, {"NRT", "JFK"}};
+        var flightList = convertToListOfLists(flights);
+        long startTime, endTime;
+
+        // Using the + operator
+        startTime = System.nanoTime();
+        for (int i = 0; i < 100000; i++) {
+            String result = "Hello" + "World" + "!";
+        }
+        endTime = System.nanoTime();
+        long durationPlus = endTime - startTime;
+
+        // Using StringBuilder.append
+        startTime = System.nanoTime();
+        for (int i = 0; i < 100000; i++) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Hello").append("World").append("!");
+            String result = sb.toString();
+        }
+        endTime = System.nanoTime();
+        long durationStringBuilder = endTime - startTime;
+
+        System.out.println("Time using + operator: " + durationPlus + " ns");
+        System.out.println("Time using StringBuilder.append: " + durationStringBuilder + " ns");
+
+    }
+
+    public static List<List<String>> convertToListOfLists(String[][] array) {
+        List<List<String>> listOfLists = new ArrayList<>();
+
+        for (String[] subArray : array) {
+            listOfLists.add(Arrays.asList(subArray));
         }
 
-        public Node(int _val) {
-            val = _val;
-            neighbors = new ArrayList<Node>();
+        return listOfLists;
+    }
+
+
+    public static int[] stringToArray1D(String input) {
+        String[] numberStrings = input.substring(1, input.length() - 1).split(",");
+        int[] numbers = new int[numberStrings.length];
+        for (int i = 0; i < numberStrings.length; i++) {
+            numbers[i] = Integer.parseInt(numberStrings[i]);
+        }
+        return numbers;
+    }
+
+    // Method for 2D array
+    public static int[][] stringToArray2D(String input) {
+        // Remove outer brackets and split into individual array strings
+        String[] arrayStrings = input.substring(1, input.length() - 1).split("(?<=\\]),\\[");
+        // Prepare a list to hold the final arrays
+        List<int[]> arraysList = new ArrayList<>();
+        for (String arrayString : arrayStrings) {
+            // Remove brackets from each array string and split by comma
+            String[] numberStrings = arrayString.replaceAll("[\\[\\]]", "").split(",");
+            int[] numbers = new int[numberStrings.length];
+            for (int i = 0; i < numberStrings.length; i++) {
+                numbers[i] = Integer.parseInt(numberStrings[i]);
+            }
+            arraysList.add(numbers);
+        }
+        // Convert list to array
+        int[][] result = new int[arraysList.size()][];
+        for (int i = 0; i < arraysList.size(); i++) {
+            result[i] = arraysList.get(i);
+        }
+        return result;
+    }
+
+
+    public class Node {
+        int val;
+        Node left;
+        Node right;
+        Node random;
+
+        Node() {
         }
 
-        public Node(int _val, ArrayList<Node> _neighbors) {
-            val = _val;
-            neighbors = _neighbors;
+        Node(int val) {
+            this.val = val;
+        }
+
+        Node(int val, Node left, Node right, Node random) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+            this.random = random;
+        }
+    }
+
+    public class NodeCopy {
+        int val;
+        NodeCopy left;
+        NodeCopy right;
+        NodeCopy random;
+
+        NodeCopy() {
+        }
+
+        NodeCopy(int val) {
+            this.val = val;
+        }
+
+        NodeCopy(int val, NodeCopy left, NodeCopy right, NodeCopy random) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+            this.random = random;
         }
     }
 
