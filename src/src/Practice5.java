@@ -920,6 +920,18 @@ public class Practice5 {
         return output;
     }
 
+    public long maximumImportance(int n, int[][] roads) {
+        long[] degree = new long[n];
+        for (int[] road : roads) {
+            degree[road[0]]++;
+            degree[road[1]]++;
+        }
+        Arrays.sort(degree);
+        long output = 0;
+        for (int i = 0; i < n; i++) output += (i+1) * degree[i];
+        return output;
+    }
+
 
 
 
