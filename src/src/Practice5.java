@@ -839,6 +839,56 @@ public class Practice5 {
     }
 
 
+    public List<Integer> findAllPeople(int n, int[][] meetings, int firstPerson) {
+        int[] parent = new int[n];
+        for (int i = 0; i < n; i++) parent[i] = i;
+        parent[firstPerson] = 0;
+        Arrays.sort(meetings, Comparator.comparingInt(a -> a[2]));
+        int index = 0;
+        int m = meetings.length;
+        while (index < m) {
+            int currentTime = meetings[index][2];
+            List<int[]> currentTimeMeetings = new ArrayList<>();
+            while (index < m && meetings[index][2] == currentTime) {
+                currentTimeMeetings.add(meetings[index]);
+                index++;
+            }
+            // Union for all the meetings in the current time
+            for (int[] meeting : currentTimeMeetings) {
+                unionMeeting(parent, meeting[0], meeting[1]);
+            }
+            // If the people do not connect to 0, or if there was a meeting with 0, and
+            // the people do not connect to the root of 0,
+            // then the meeting was essentially pointless.
+            // So we reverse it, and pretend it never happened
+            for (int[] meeting : currentTimeMeetings) {
+                if (findMeeting(parent, meeting[0]) != findMeeting(parent, 0)) {
+                    parent[meeting[0]] = meeting[0];
+                    parent[meeting[1]] = meeting[1];
+                }
+            }
+        }
+        List<Integer> output = new ArrayList<>();
+        for (int j = 0; j < n; j++) {
+            if (findMeeting(parent, j) == findMeeting(parent, 0)) {
+                output.add(j);
+            }
+        }
+
+        return output;
+    }
+
+    public int findMeeting(int[] parent, int node) {
+        if (node == parent[node]) return node;
+        return parent[node] = findMeeting(parent, parent[node]);
+    }
+    public void unionMeeting(int[] parent, int a, int b) {
+        int parentA = findMeeting(parent, a);
+        int parentB = findMeeting(parent, b);
+        if (parentA != parentB) {
+            parent[parentB] = parentA;
+        }
+    }
 
 
     /**
