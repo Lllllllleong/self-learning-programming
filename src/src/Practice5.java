@@ -784,7 +784,7 @@ public class Practice5 {
         return false;
     }
 
-
+    int maxCardinality = 0;
     public int minKBitFlips(int[] nums, int k) {
         int n = nums.length;
         BitSet mask = new BitSet(n+k+1);
@@ -801,6 +801,41 @@ public class Practice5 {
         int cardinality = mask.cardinality();
         if (cardinality == n) return count;
         return -1;
+    }
+
+    public int maxLength(List<String> arr) {
+        List<Integer> maskList = new ArrayList<>();
+        for (String s : arr) {
+            char[] sChar = s.toCharArray();
+            int mask = 0;
+            boolean add = true;
+            for (char c : sChar) {
+                int charInt = c - 'a';
+                if ((mask & (1 << charInt)) != 0) {
+                    add = false;
+                    break;
+                }
+                mask |= (1 << charInt);
+            }
+            if (add) maskList.add(mask);
+        }
+        maxLength(maskList, 0, 0);
+        return maxCardinality;
+    }
+
+    public void maxLength(List<Integer> words, int index, int mask) {
+        if (index == words.size()) {
+            maxCardinality = Math.max(maxCardinality, Integer.bitCount(mask));
+            return;
+        }
+        for (int i = index; i < words.size(); i++) {
+            int word = words.get(i);
+            if ((word & mask) == 0) {
+                int nextMask = word | mask;
+                maxLength(words, i + 1, nextMask);
+            }
+        }
+        maxCardinality = Math.max(maxCardinality, Integer.bitCount(mask));
     }
 
 
