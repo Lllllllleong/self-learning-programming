@@ -92,35 +92,6 @@ public class Practice5 {
     }
 
 
-    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
-        List<Integer> output = new ArrayList<>();
-        List<Integer>[] graph = new List[n];
-        Arrays.fill(graph, new ArrayList<>());
-        int[] adjList = new int[n];
-        for (int[] edge : edges) {
-            int a = edge[0];
-            int b = edge[1];
-            graph[a].add(b);
-            graph[b].add(a);
-            adjList[a]++;
-            adjList[b]++;
-        }
-        Deque<Integer> dq = new ArrayDeque<>();
-        for (int i = 0; i < n; i++) if (adjList[i] == 1) dq.addLast(i);
-        while (!dq.isEmpty()) {
-            output = new ArrayList<>(dq);
-            int size = dq.size();
-            for (int i = 0; i < size; i++) {
-                int currentNode = dq.pollFirst();
-                var nextNodes = graph[currentNode];
-                for (Integer nextNode : nextNodes) {
-                    if (--adjList[nextNode] == 1) dq.addLast(nextNode);
-                }
-            }
-        }
-        return output;
-    }
-
 
     public int fib(int n) {
         if (n == 0) return 0;
@@ -664,6 +635,47 @@ public class Practice5 {
         }
         return (int) output;
     }
+
+
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        List<Integer> output = new ArrayList<>();
+        if (n == 1) {
+            output.add(0);
+            return output;
+        }
+        List<Integer>[] graph = new List[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        int[] adjList = new int[n];
+        for (int[] edge : edges) {
+            int a = edge[0];
+            int b = edge[1];
+            graph[a].add(b);
+            graph[b].add(a);
+            adjList[a]++;
+            adjList[b]++;
+        }
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) if (adjList[i] == 1) dq.addLast(i);
+        while (!dq.isEmpty()) {
+            output = new ArrayList<>();
+            int size = dq.size();
+            for (int i = 0; i < size; i++) {
+                int currentNode = dq.pollFirst();
+                output.add(currentNode);
+                for (int neighbor : graph[currentNode]) {
+                    if (--adjList[neighbor] == 1) {
+                        dq.addLast(neighbor);
+                    }
+                }
+            }
+        }
+
+        return output;
+    }
+
 
 
 
