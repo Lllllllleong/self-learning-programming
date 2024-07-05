@@ -891,6 +891,40 @@ public class Practice5 {
     }
 
 
+    public List<String> findAllRecipes(String[] recipes,
+                                       List<List<String>> ingredients,
+                                       String[] supplies) {
+        HashMap<String, List<String>> graphHM = new HashMap<>();
+        HashMap<String, Integer> degreeHM = new HashMap<>();
+        List<String> output = new ArrayList<>();
+        Deque<String> dq = new ArrayDeque<>(Arrays.asList(supplies));
+        int n = recipes.length;
+        for (int i = 0; i < n; i++) {
+            String recipe = recipes[i];
+            var ingredientList = ingredients.get(i);
+            for (String ingredient : ingredientList) {
+                degreeHM.merge(recipe, 1, Integer::sum);
+                graphHM.computeIfAbsent(ingredient, k -> new ArrayList<>()).add(recipe);
+            }
+        }
+        while (!dq.isEmpty()) {
+            String currentFood = dq.pollFirst();
+            var nextFoods = graphHM.getOrDefault(currentFood, new ArrayList<>());
+            for (String nextFood : nextFoods) {
+                if (degreeHM.merge(nextFood, -1, Integer::sum) == 0) {
+                    dq.addLast(nextFood);
+                    output.add(nextFood);
+                }
+            }
+        }
+        return output;
+    }
+
+
+
+
+
+
     /**
      * Main Method
      *
