@@ -785,6 +785,23 @@ public class Practice5 {
     }
 
 
+    public int minKBitFlips(int[] nums, int k) {
+        int n = nums.length;
+        BitSet mask = new BitSet(n+k+1);
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] == 1) mask.set(i);
+        }
+        for (int i = 0; i < n; i++) {
+            if (!mask.get(i)) {
+                mask.flip(i, i+k);
+                count++;
+            }
+        }
+        int cardinality = mask.cardinality();
+        if (cardinality == n) return count;
+        return -1;
+    }
 
 
 
