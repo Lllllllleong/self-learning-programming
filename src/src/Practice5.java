@@ -962,6 +962,18 @@ public class Practice5 {
         return result.toArray(new String[0]);
     }
 
+    public String mostCommonWord(String paragraph, String[] banned) {
+        Set<String> set = new HashSet<>();
+        paragraph = paragraph.toLowerCase().trim().replaceAll("[\\\\p{Punct}]", "");
+        for (String s : banned) set.add(s);
+        HashMap<String, Integer> hm = new HashMap<>();
+        String[] words = paragraph.split(" ");
+        for (String word : words) {
+            if (!set.contains(word)) hm.merge(word, 1, Integer::sum);
+        }
+        return Collections.max(hm.entrySet(), Map.Entry.comparingByValue()).getKey();
+    }
+
 
 
     /**
