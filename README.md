@@ -6,8 +6,7 @@ around 4000 lines.
 
 
 06/24 Progress:
-<img src="src/src/res/Screenshot 2024-06-23 at 6.51.00 PM.png" width="400" height="180">
-
+![](src/src/res/Screenshot 2024-06-23 at 6.51.00 PM.png)
 
 05/24 Progress:
 

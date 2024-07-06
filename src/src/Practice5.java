@@ -1049,6 +1049,39 @@ public class Practice5 {
 
 
 
+    // Unique Paths II
+    int[][] gameGrid;
+    int xBound;
+    int yBound;
+    int[][] memo;
+
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        gameGrid = obstacleGrid;
+        xBound = gameGrid[0].length;
+        yBound = gameGrid.length;
+        memo = new int[yBound][xBound];
+        for (int i = 0; i < yBound; i++) {
+            for (int j = 0; j < xBound; j++) {
+                memo[i][j] = -1;
+            }
+        }
+        return uniquePath(0, 0);
+    }
+
+    public int uniquePath(int y, int x) {
+        if (x >= xBound || y >= yBound) return 0;
+        if (gameGrid[y][x] == 1) return 0;
+        if (x == xBound - 1 && y == yBound - 1) {
+            return 1;
+        }
+        if (memo[y][x] != -1) return memo[y][x];
+        int down = uniquePath(y + 1, x);
+        int right = uniquePath(y, x + 1);
+        memo[y][x] = down + right;
+        return memo[y][x];
+    }
+
+
     /**
      * Main Method
      *
