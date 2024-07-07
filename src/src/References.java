@@ -35,6 +35,7 @@ import java.io.IOException;
  **/
 
 public class References {
+    int MOD = 1_000_000_007;
 
     //Binary search
     public static int binarySearchExact(int[] arr, int target) {
