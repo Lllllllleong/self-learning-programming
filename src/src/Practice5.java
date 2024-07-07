@@ -1169,6 +1169,25 @@ public class Practice5 {
     }
 
 
+    public int findMaxLength(int[] nums) {
+        int n = nums.length;
+        int[] firstIndex = new int[2 * n + 1];
+        Arrays.fill(firstIndex, Integer.MIN_VALUE);
+        int output = 0;
+        int sum = n;
+        firstIndex[n] = -1;
+        for (int i = 0; i < n; i++) {
+            sum = sum + (nums[i] * 2 - 1);
+            if (firstIndex[sum] != Integer.MIN_VALUE) {
+                output = Math.max(output, i - firstIndex[sum]);
+            } else {
+                firstIndex[sum] = i;
+            }
+        }
+        return output;
+    }
+
+
     public class Node {
         int val;
         Node left;
