@@ -1049,7 +1049,6 @@ public class Practice5 {
 
 
 
-    // Unique Paths II
     int[][] gameGrid;
     int xBound;
     int yBound;
@@ -1079,6 +1078,48 @@ public class Practice5 {
         int right = uniquePath(y, x + 1);
         memo[y][x] = down + right;
         return memo[y][x];
+    }
+
+
+    public int findMaxLength(int[] nums) {
+        int n = nums.length;
+        int[] firstIndex = new int[2 * n + 1];
+        Arrays.fill(firstIndex, Integer.MIN_VALUE);
+        int output = 0;
+        int sum = n;
+        firstIndex[n] = -1;
+        for (int i = 0; i < n; i++) {
+            sum = sum + (nums[i] * 2 - 1);
+            if (firstIndex[sum] != Integer.MIN_VALUE) {
+                output = Math.max(output, i - firstIndex[sum]);
+            } else {
+                firstIndex[sum] = i;
+            }
+        }
+        return output;
+    }
+
+
+
+    public int numberOfWays(int startPos, int endPos, int k) {
+        int MOD = 1_000_000_007;
+        int distanceDifference = Math.abs(endPos - startPos);
+        int maxDistanceDifference = k;
+        if (distanceDifference > maxDistanceDifference) return 0;
+        long[][] dp = new long[k+1][maxDistanceDifference + 1];
+        dp[0][0] = 1;
+        for (int i = 1; i <= k; i++) {
+            for (int j = 0; j <= maxDistanceDifference; j++) {
+                if (j == 0) {
+                    dp[i][j] = (dp[i-1][j+1] * 2) % MOD;
+                } else if (j == maxDistanceDifference) {
+                    dp[i][j] = dp[i-1][j-1];
+                } else {
+                    dp[i][j] = (dp[i-1][j-1] + dp[i-1][j+1]) % MOD;
+                }
+            }
+        }
+        return (int) dp[k][distanceDifference];
     }
 
 
@@ -1169,46 +1210,7 @@ public class Practice5 {
     }
 
 
-    public int findMaxLength(int[] nums) {
-        int n = nums.length;
-        int[] firstIndex = new int[2 * n + 1];
-        Arrays.fill(firstIndex, Integer.MIN_VALUE);
-        int output = 0;
-        int sum = n;
-        firstIndex[n] = -1;
-        for (int i = 0; i < n; i++) {
-            sum = sum + (nums[i] * 2 - 1);
-            if (firstIndex[sum] != Integer.MIN_VALUE) {
-                output = Math.max(output, i - firstIndex[sum]);
-            } else {
-                firstIndex[sum] = i;
-            }
-        }
-        return output;
-    }
 
-
-
-    public int numberOfWays(int startPos, int endPos, int k) {
-        int MOD = 1_000_000_007;
-        int distanceDifference = Math.abs(endPos - startPos);
-        int maxDistanceDifference = k;
-        if (distanceDifference > maxDistanceDifference) return 0;
-        long[][] dp = new long[k+1][maxDistanceDifference + 1];
-        dp[0][0] = 1;
-        for (int i = 1; i <= k; i++) {
-            for (int j = 0; j <= maxDistanceDifference; j++) {
-                if (j == 0) {
-                    dp[i][j] = (dp[i-1][j+1] * 2) % MOD;
-                } else if (j == maxDistanceDifference) {
-                    dp[i][j] = dp[i-1][j-1];
-                } else {
-                    dp[i][j] = (dp[i-1][j-1] + dp[i-1][j+1]) % MOD;
-                }
-            }
-        }
-        return (int) dp[k][distanceDifference];
-    }
 
 
     public class Node {
