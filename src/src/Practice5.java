@@ -1159,14 +1159,18 @@ public class Practice5 {
 
 
     class ArrayReader {
-        int get(int i) {return i;};
+        int get(int i) {
+            return i;
+        }
+
+        ;
     }
 
     public int search(ArrayReader reader, int target) {
         int left = 0;
         int right = 10000;
         while (left <= right) {
-            int mid = left + (right - left)/2;
+            int mid = left + (right - left) / 2;
             if (reader.get(mid) == target) return mid;
             else if (reader.get(mid) < target) {
                 left = mid + 1;
@@ -1177,6 +1181,43 @@ public class Practice5 {
         return -1;
     }
 
+    int treeDiameter = 0;
+
+    public int diameterOfBinaryTree(TreeNode root) {
+        diameterOfTree(root);
+        return treeDiameter - 1;
+    }
+
+    public int diameterOfTree(TreeNode root) {
+        if (root == null) return 0;
+        int left = diameterOfTree(root.left);
+        int right = diameterOfTree(root.right);
+        treeDiameter = Math.max(treeDiameter, left + right + 1);
+        return Math.max(left + 1, right + 1);
+    }
+
+
+    public int maxNumberOfFamilies(int n, int[][] reservedSeats) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int[] reserved : reservedSeats) {
+            int row = reserved[0] - 1;
+            int col = reserved[1] - 1;
+            hm.put(row, (hm.getOrDefault(row, 0) | (1 << col)));
+        }
+        int output = 0;
+        int leftMask = Integer.parseInt("0111100000", 2);
+        int middleMask = Integer.parseInt("0001111000", 2);
+        int rightMask = Integer.parseInt("0000011110", 2);
+        for (var entry : hm.entrySet()) {
+            int count = 0;
+            int mask = entry.getValue();
+            if ((leftMask & mask) == 0) count++;
+            if ((rightMask & mask) == 0) count++;
+            if (count == 0 && (middleMask & mask) == 0) count++;
+            output += count;
+        }
+        return (2 * (n - hm.size()) + output);
+    }
 
 
     /**
@@ -1184,8 +1225,8 @@ public class Practice5 {
      */
     public static void main(String[] args) {
         Practice5 practice5 = new Practice5();
-        int[] present = {5,4,6,2,3};
-        int[] future = {8,5,4,3,5};
+        int[] present = {5, 4, 6, 2, 3};
+        int[] future = {8, 5, 4, 3, 5};
         int i = practice5.maximumProfit(present, future, 10);
 
 
