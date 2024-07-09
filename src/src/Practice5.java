@@ -1132,6 +1132,30 @@ public class Practice5 {
         return Arrays.copyOfRange(heights, index + 1, heights.length);
     }
 
+    public int maximumProfit(int[] present, int[] future, int budget) {
+        int n = present.length;
+        List<int[]> stockList = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int currentPrice = present[i];
+            int futurePrice = future[i];
+            if (futurePrice > currentPrice) {
+                stockList.add(new int[]{currentPrice, futurePrice});
+            }
+        }
+        n = stockList.size();
+        if (n == 0) {
+            return 0;
+        }
+        int[] dp = new int[budget + 1];
+        for (int i = 0; i < n; i++) {
+            int cost = stockList.get(i)[0];
+            int profit = stockList.get(i)[1] - cost;
+            for (int j = budget; j >= cost; j--) {
+                dp[j] = Math.max(dp[j], dp[j - cost] + profit);
+            }
+        }
+        return dp[budget];
+    }
 
 
 
@@ -1141,31 +1165,10 @@ public class Practice5 {
      * Main Method
      */
     public static void main(String[] args) {
-
-        String[][] flights = {{"JFK", "KUL"}, {"JFK", "NRT"}, {"NRT", "JFK"}};
-        var flightList = convertToListOfLists(flights);
-        long startTime, endTime;
-
-        // Using the + operator
-        startTime = System.nanoTime();
-        for (int i = 0; i < 100000; i++) {
-            String result = "Hello" + "World" + "!";
-        }
-        endTime = System.nanoTime();
-        long durationPlus = endTime - startTime;
-
-        // Using StringBuilder.append
-        startTime = System.nanoTime();
-        for (int i = 0; i < 100000; i++) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Hello").append("World").append("!");
-            String result = sb.toString();
-        }
-        endTime = System.nanoTime();
-        long durationStringBuilder = endTime - startTime;
-
-        System.out.println("Time using + operator: " + durationPlus + " ns");
-        System.out.println("Time using StringBuilder.append: " + durationStringBuilder + " ns");
+        Practice5 practice5 = new Practice5();
+        int[] present = {5,4,6,2,3};
+        int[] future = {8,5,4,3,5};
+        int i = practice5.maximumProfit(present, future, 10);
 
 
         int e;
