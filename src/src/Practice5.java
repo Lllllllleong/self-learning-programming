@@ -1220,6 +1220,27 @@ public class Practice5 {
     }
 
 
+    public int oddEvenJumps(int[] arr) {
+        // boolean[] = {Even, Odd}
+        TreeMap<Integer, boolean[]> tm = new TreeMap<>();
+        int n = arr.length;
+        int last = arr[n-1];
+        tm.put(last, new boolean[]{true, true});
+        int output = 1;
+        for (int i = n - 2; i >= 0; i--) {
+            int currentPosition = arr[i];
+            boolean even = false;
+            boolean odd = false;
+            Integer ceilingKey = tm.ceilingKey(currentPosition);
+            Integer floorKey = tm.floorKey(currentPosition);
+            if (ceilingKey != null) odd = tm.get(ceilingKey)[0];
+            if (floorKey != null) even = tm.get(floorKey)[1];
+            if (odd) output++;
+            tm.put(currentPosition, new boolean[]{even, odd});
+        }
+        return output;
+    }
+
     /**
      * Main Method
      */
