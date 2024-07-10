@@ -1266,6 +1266,26 @@ public class Practice5 {
         return dp[0][n - 1];
     }
 
+
+
+    public long wonderfulSubstrings(String word) {
+        Map<Integer, Integer> prefixMasks = new HashMap<>();
+        prefixMasks.put(0, 1);
+        long wSubstrings = 0;
+        int currentMask = 0;
+        for (char c : word.toCharArray()) {
+            int charIndex = c - 'a';
+            currentMask ^= (1 << charIndex);
+            wSubstrings += prefixMasks.getOrDefault(currentMask, 0);
+            for (int i = 0; i < 10; i++) {
+                int maskWithOneBitFlipped = currentMask ^ (1 << i);
+                wSubstrings += prefixMasks.getOrDefault(maskWithOneBitFlipped, 0);
+            }
+            prefixMasks.put(currentMask, prefixMasks.getOrDefault(currentMask, 0) + 1);
+        }
+        return wSubstrings;
+    }
+
     /**
      * Main Method
      */
@@ -1275,6 +1295,8 @@ public class Practice5 {
         int[] future = {8, 5, 4, 3, 5};
         int i = practice5.maximumProfit(present, future, 10);
 
+
+        long l = practice5.wonderfulSubstrings("aba");
 
         int e;
     }
