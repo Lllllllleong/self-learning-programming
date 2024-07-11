@@ -1308,6 +1308,38 @@ public class Practice5 {
         return minDayMap.get(n);
     }
 
+    public int minimumCoins(int[] prices) {
+        int n = prices.length;
+        int[] dp = new int[n+2];
+        for (int i = n - 1; i >= 0; i--) {
+            int currentFruit = prices[i];
+            dp[i] = currentFruit + Math.min(dp[i+1], dp[i+2]);
+        }
+        return dp[0];
+    }
+
+
+
+    public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+        if (maxChoosableInteger >= desiredTotal) return true;
+        if ((maxChoosableInteger * (maxChoosableInteger + 1)) / 2 < desiredTotal) return false;
+        Boolean[] dp = new Boolean[1 << maxChoosableInteger];
+        return canIWin(dp, 0, maxChoosableInteger, desiredTotal);
+    }
+
+    private boolean canIWin(Boolean[] dp, int mask, int maxChoose, int currentSum) {
+        if (dp[mask] != null) return dp[mask];
+        for (int i = 1; i <= maxChoose; i++) {
+            if ((mask & (1 << (i - 1))) == 0) {
+                if (currentSum - i <= 0 || !canIWin(dp, mask | (1 << (i - 1)), maxChoose, currentSum - i)) {
+                    return dp[mask] = true;
+                }
+            }
+        }
+        return dp[mask] = false;
+    }
+
+
     /**
      * Main Method
      */
