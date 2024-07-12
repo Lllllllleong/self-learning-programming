@@ -1224,7 +1224,7 @@ public class Practice5 {
         // boolean[] = {Even, Odd}
         TreeMap<Integer, boolean[]> tm = new TreeMap<>();
         int n = arr.length;
-        int last = arr[n-1];
+        int last = arr[n - 1];
         tm.put(last, new boolean[]{true, true});
         int output = 1;
         for (int i = n - 2; i >= 0; i--) {
@@ -1267,7 +1267,6 @@ public class Practice5 {
     }
 
 
-
     public long wonderfulSubstrings(String word) {
         Map<Integer, Integer> prefixMasks = new HashMap<>();
         prefixMasks.put(0, 1);
@@ -1300,24 +1299,24 @@ public class Practice5 {
         return output;
     }
 
-    HashMap<Integer,Integer> minDayMap = new HashMap<>();
+    HashMap<Integer, Integer> minDayMap = new HashMap<>();
+
     public int minDays(int n) {
-        if(n <= 2) return n;
-        if(minDayMap.containsKey(n)) return minDayMap.get(n);
-        minDayMap.put(n, 1 + Math.min(n % 2 + minDays(n/2), n % 3 + minDays(n/3)));
+        if (n <= 2) return n;
+        if (minDayMap.containsKey(n)) return minDayMap.get(n);
+        minDayMap.put(n, 1 + Math.min(n % 2 + minDays(n / 2), n % 3 + minDays(n / 3)));
         return minDayMap.get(n);
     }
 
     public int minimumCoins(int[] prices) {
         int n = prices.length;
-        int[] dp = new int[n+2];
+        int[] dp = new int[n + 2];
         for (int i = n - 1; i >= 0; i--) {
             int currentFruit = prices[i];
-            dp[i] = currentFruit + Math.min(dp[i+1], dp[i+2]);
+            dp[i] = currentFruit + Math.min(dp[i + 1], dp[i + 2]);
         }
         return dp[0];
     }
-
 
 
     public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
@@ -1380,6 +1379,37 @@ public class Practice5 {
             right--;
         }
     }
+
+
+    public int strangePrinter(String s) {
+        if (s.length() == 1) return 1;
+        StringBuilder sb = new StringBuilder();
+        char prior = '.';
+        for (char c : s.toCharArray()) {
+            if (c != prior) sb.append(c);
+            prior = c;
+        }
+        char[] sChar = sb.toString().toCharArray();
+        int n = sChar.length;
+        int[][] dp = new int[n][n];
+        for (int i = 0; i < n; i++) dp[i][i] = 1;
+        for (int length = 2; length <= n; length++) {
+            for (int i = 0; i <= n - length; i++) {
+                int j = i + length - 1;
+                dp[i][j] = length;
+                for (int k = i; k < j; k++) {
+                    int currentSplit = dp[i][k] + dp[k + 1][j];
+                    if (sChar[k] == sChar[j]) {
+                        currentSplit--;
+                    }
+                    dp[i][j] = Math.min(dp[i][j], currentSplit);
+                }
+            }
+        }
+        return dp[0][n - 1];
+    }
+
+
     /**
      * Main Method
      */
@@ -1388,10 +1418,18 @@ public class Practice5 {
         int[] present = {5, 4, 6, 2, 3};
         int[] future = {8, 5, 4, 3, 5};
         int i = practice5.maximumProfit(present, future, 10);
-
-
+        String printString = "ccdaccacbbdbacdccdbadacbbcbbaadacbadadbbcbdbaacdb";
+        System.out.println("strangeprinter");
+        i = practice5.strangePrinter(printString);
+        System.out.println("strnage printer" + i);
         long l = practice5.wonderfulSubstrings("aba");
 
+
+        int bit = 0b1000;
+        String bitString = Integer.toBinaryString(bit);
+        System.out.println(bitString);
+        System.out.println(Integer.parseInt(bitString, 2));
+        System.out.println(Integer.numberOfTrailingZeros((Integer.highestOneBit(bit))));
         int e;
     }
 
