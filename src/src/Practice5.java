@@ -1421,6 +1421,32 @@ public class Practice5 {
         return dp[n];
     }
 
+    public int longestValidParentheses(String s) {
+        int n = s.length();
+        char[] sChar = s.toCharArray();
+        int output = 0;
+        Integer[] indexDP = new Integer[n];
+        int currentCount = 0;
+        for (int i = 0; i < n; i++) {
+            char c = sChar[i];
+            if (c == '(') {
+                if (indexDP[currentCount] == null) {
+                    indexDP[currentCount] = i;
+                }
+                currentCount++;
+            } else {
+                indexDP[currentCount] = null;
+                currentCount--;
+                if (currentCount >= 0) {
+                    int length = i - indexDP[currentCount] + 1;
+                    output = Math.max(output, length);
+                } else {
+                    currentCount = 0;
+                }
+            }
+        }
+        return output;
+    }
 
     /**
      * Main Method
