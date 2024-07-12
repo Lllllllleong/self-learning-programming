@@ -1409,6 +1409,18 @@ public class Practice5 {
         return dp[0][n - 1];
     }
 
+    public int maxA(int n) {
+        int[] dp = new int[n + 1 + 5];
+        for (int i = 0; i < n; i++) {
+            dp[i] = Math.max(dp[i], dp[i - 1] + 1);
+            int current = dp[i];
+            dp[i + 3] = Math.max(dp[i + 3], current * 2);
+            dp[i + 4] = Math.max(dp[i + 4], current * 3);
+            dp[i + 5] = Math.max(dp[i + 5], current * 4);
+        }
+        return dp[n];
+    }
+
 
     /**
      * Main Method
