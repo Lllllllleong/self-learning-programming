@@ -1466,6 +1466,32 @@ public class Practice5 {
 
         return (int) dp[0];
     }
+
+    public boolean winnerSquareGame(int n) {
+        // dp[i] == Can a player win, starting at position i
+        // DP: From position i, can I force a player into a position where they cannot win?
+        boolean[] dp = new boolean[n+1];
+        for (int i = 1; i < n; i++) {
+            boolean flag = false;
+            int k = 1;
+            int position = i - (k * k);
+            while (position >= 0) {
+                if (dp[position] == false) {
+                    flag = true;
+                    break;
+                }
+                k++;
+                position = i - (k * k);
+            }
+            dp[i] = flag;
+        }
+        return dp[n];
+    }
+    
+    
+    
+    
+    
     /**
      * Main Method
      */
