@@ -1553,6 +1553,76 @@ public class Practice5 {
         return (int) dp[0];
     }
 
+    public boolean checkRecord(String s) {
+        int aCount = 0;
+        int lCount = 0;
+        for (char c : s.toCharArray()) {
+            if (c == 'P') {
+                lCount = 0;
+            } else if (c == 'A') {
+                aCount++;
+                lCount = 0;
+                if (aCount == 2) return false;
+            } else {
+                lCount++;
+                if (lCount == 3) return false;
+            }
+        }
+        return true;
+    }
+    public boolean checkRecord2(String s) {
+        int aCount = 0;
+        int lCount = 0;
+        for (char c : s.toCharArray()) {
+            if (c == 'P') {
+                lCount = 0;
+            } else if (c == 'A') {
+                aCount++;
+                lCount = 0;
+                if (aCount == 2) return false;
+            } else {
+                lCount++;
+                if (lCount == 3) return false;
+            }
+        }
+        return true;
+    }
+
+    public int networkDelayTime(int[][] times, int n, int k) {
+        int[][] graph = new int[n][n];
+        for (int[] g : graph) Arrays.fill(g, -1);
+        for (int[] time : times) {
+            int a = time[0] - 1;
+            int b = time[1] - 1;
+            int c = time[2];
+            graph[a][b] = c;
+        }
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+        pq.offer(new int[]{k-1, 0});
+        int[] minTime = new int[n];
+        Arrays.fill(minTime, Integer.MAX_VALUE);
+        while (!pq.isEmpty()) {
+            int[] current = pq.poll();
+            int to = current[0];
+            int time = current[1];
+            if (minTime[to] <= time) continue;
+            minTime[to] = time;
+            int[] nextTo = graph[to];
+            for (int i = 0; i < n; i++) {
+                int next = nextTo[i];
+                if (next != -1 && minTime[i] > time + next) {
+                    pq.offer(new int[]{i, next});
+                }
+            }
+        }
+        int output = Integer.MIN_VALUE;
+        for (int i : minTime) {
+            if (i == Integer.MIN_VALUE) return -1;
+            output = Math.max(output, i);
+        }
+        return output;
+    }
+
 
     
     
