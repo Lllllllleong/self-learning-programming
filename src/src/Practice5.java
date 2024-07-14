@@ -1588,6 +1588,7 @@ public class Practice5 {
         return true;
     }
 
+
     public int networkDelayTime(int[][] times, int n, int k) {
         int[][] graph = new int[n][n];
         for (int[] g : graph) Arrays.fill(g, -1);
