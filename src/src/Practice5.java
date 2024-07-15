@@ -1710,6 +1710,62 @@ public class Practice5 {
         return dp[0][0][cherryXMax - 1];
     }
 
+    int maxTeamScore = 0;
+
+    public int bestTeamScore(int[] scores, int[] ages) {
+        int n = scores.length;
+        int[][] players = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            players[i][0] = scores[i];
+            players[i][1] = ages[i];
+        }
+        Arrays.sort(players, Comparator.comparingInt((int[] a) -> a[1]).thenComparingInt(a -> a[0]));
+        int[] dp = new int[n];
+        int result = 0;
+        for (int i = 0; i < n; i++) {
+            dp[i] = players[i][0];
+            for (int j = 0; j < i; j++) {
+                if (players[j][0] <= players[i][0]) {
+                    dp[i] = Math.max(dp[i], dp[j] + players[i][0]);
+                }
+            }
+            result = Math.max(result, dp[i]);
+        }
+        return result;
+    }
+
+    public int maximizeSweetness(int[] sweetness, int k) {
+        int left = Arrays.stream(sweetness).min().getAsInt();
+        int right = Arrays.stream(sweetness).sum();
+        int output = 0;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int splitResult = canSplit(sweetness, mid);
+            if (splitResult >= k + 1) {
+                output = mid; // valid split, try for larger minimum sweetness
+                left = mid + 1;
+            } else {
+                right = mid - 1; // not enough splits, reduce the sweetness floor
+            }
+        }
+
+        return output; // the maximum minimum sweetness
+    }
+
+    public int canSplit(int[] sweetness, int sweetFloor) {
+        int splitCounter = 0;
+        int sweetCounter = 0;
+        for (int i : sweetness) {
+            sweetCounter += i;
+            if (sweetCounter >= sweetFloor) {
+                sweetCounter = 0;
+                splitCounter++;
+            }
+        }
+        return splitCounter;
+    }
+
 
 
 
