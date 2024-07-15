@@ -1680,8 +1680,48 @@ public class Practice5 {
     }
 
 
+
+    private int cherryDPGet(int y, int x1, int x2, int[][][] dp) {
+        int cherryYMax = dp.length;
+        int cherryXMax = dp[0].length;
+        if (y >= cherryYMax) return 0;
+        if (y < 0 || x1 < 0 || x2 < 0 || x1 >= cherryXMax || x2 >= cherryXMax) return Integer.MIN_VALUE;
+        return dp[y][x1][x2];
+    }
+
+    public int cherryPickup(int[][] grid) {
+        int cherryYMax = grid.length;
+        int cherryXMax = grid[0].length;
+        int[][][] dp = new int[cherryYMax][cherryXMax][cherryXMax];
+        for (int y = cherryYMax - 1; y >= 0; y--) {
+            for (int x1 = 0; x1 < cherryXMax; x1++) {
+                for (int x2 = x1; x2 < cherryXMax; x2++) {
+                    dp[y][x1][x2] = grid[y][x1] + (x1 == x2 ? 0 : grid[y][x2]);
+                    int nextMax = 0;
+                    for (int i = x1 - 1; i <= x1 + 1; i++) {
+                        for (int j = Math.max(x2 - 1, i); j <= x2 + 1; j++) {
+                            nextMax = Math.max(nextMax, cherryDPGet(y + 1, i, j, dp));
+                        }
+                    }
+                    dp[y][x1][x2] += nextMax;
+                }
+            }
+        }
+        return dp[0][0][cherryXMax - 1];
+    }
+
+
+
+
+
+
     /**
      * Main Method
+     *
+     *
+     *
+     *
+     *
      */
     public static void main(String[] args) {
         Practice5 practice5 = new Practice5();
