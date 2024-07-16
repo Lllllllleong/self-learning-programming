@@ -1793,6 +1793,63 @@ public class Practice5 {
     }
 
 
+    public int minCost(int[] houses, int[][] cost, int m, int n, int target) {
+        if (n == 1 && target != 1) return -1;
+        for (int i = 0; i < m; i++) {
+            int houseColour = houses[i] - 1;
+            if (houseColour == -1) continue;
+            cost[i][houseColour] = 0;
+        }
+        int[][] dp = new int[target + 1][n];
+        for (int[] d :dp) Arrays.fill(d, -1);
+        dp[1] = cost[0];
+        for (int i = 1; i < m; i++) {
+            // i is house index, current house is i + 1;
+            int maxSections = Math.min(i + 1, target);
+            for (int j = maxSections; j > 0; j--) {
+                // j is the number of sections
+                for (int k = 0; k < n; k++) {
+                    // k is the colour
+                    int costToPaintCurrentHouse = cost[i][k];
+                    int minCost = Integer.MAX_VALUE;
+                    // Iterate through all colours of smaller sections, and same section for current colour
+                    for (int l = 0; l < n; l++) {
+                        System.out.println(j);
+                        System.out.println(l);
+                        int priorCost = (k == l) ? dp[j][l] : dp[j-1][l];
+                        if (priorCost != -1) minCost = Math.min(minCost, priorCost);
+                    }
+                    if (minCost != Integer.MAX_VALUE) {
+                        minCost += costToPaintCurrentHouse;
+                        dp[j][k] = minCost;
+                    }
+                }
+            }
+        }
+        for (var v : dp) System.out.println(Arrays.toString(v));
+        int output = Integer.MAX_VALUE;
+        int[] targetDP = dp[target];
+        for (int i : targetDP) {
+            if (i != -1) output = Math.min(output, i);
+        }
+        return (output == Integer.MAX_VALUE) ? -1 : output;
+    }
+
+    public int countVowelStrings(int n) {
+        int[] dp = new int[5];
+        Arrays.fill(dp, 1);
+        while (n > 1) {
+            n--;
+            for (int i = 3; i >= 0; i--) {
+                dp[i] += dp[i+1];
+            }
+        }
+        int sum = 0;
+        for (int i : dp) sum += i;
+        return sum;
+    }
+
+
 
 
 
@@ -1808,6 +1865,11 @@ public class Practice5 {
     public static void main(String[] args) {
         Practice5 practice5 = new Practice5();
         var v = practice5.findStrobogrammatic(2);
+
+
+        int[] houses = {0,2,1,2,0};
+        int[][] cost = stringToArray2D("[[1,10],[10,1],[10,1],[1,10],[5,1]]");
+        int i = practice5.minCost(houses, cost, 5, 2, 3);
     }
 
     public static List<List<String>> convertToListOfLists(String[][] array) {
