@@ -22,10 +22,16 @@ import java.io.IOException;
     Hold down option and select with cursor
 
  Find and Replace
-    Command + R
+    Cmd + R
     Fill in search and replace query
     Highlight text
     Press replace
+
+ Push
+    Cmd + Shift + K
+
+
+
 
   output %= 1_000_000_007;
 

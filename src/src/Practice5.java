@@ -2017,6 +2017,50 @@ public class Practice5 {
         return output;
     }
 
+    public long maximumTotalDamage(int[] power) {
+        HashMap<Integer, Long> hm = new HashMap<>();
+        for (int i : power) hm.merge(i, (long) i, Long::sum);
+        List<Integer> keyList = new ArrayList<>(hm.keySet());
+        Collections.sort(keyList);
+        int n = keyList.size();
+        long[] dp = new long[n];
+        long output = 0;
+        for (int i = 0; i < n; i++) {
+            Integer key = keyList.get(i);
+            dp[i] = hm.get(key);
+            int j = i;
+            while (j >= 0 && keyList.get(j) >= key-2) {
+                j--;
+            }
+            if (j != -1) dp[i] += dp[j];
+            output = Math.max(output, dp[i]);
+            dp[i] = output;
+        }
+        return output;
+    }
+
+
+    public boolean canReach(String s, int minJump, int maxJump) {
+        int n = s.length();
+        char[] sChar = s.toCharArray();
+        if (sChar[n - 1] == '1') return false;
+        if (n == 2) {
+            return (s.charAt(0) == '0' && minJump >= 1);
+        }
+        boolean[] dp = new boolean[n];
+        dp[n - 1] = true;
+        int checked = n-1;
+        for (int i = n - 1; i >= 0; i--) {
+            if (dp[i]) {
+                for (int j = Math.min(checked, i - minJump); j >= Math.max(i - maxJump, 0); j--) {
+                    if (sChar[j] == '0') dp[j] = true;
+                    checked = Math.min(checked, j);
+                }
+            }
+        }
+        return dp[0];
+    }
+
 
 
     /**
