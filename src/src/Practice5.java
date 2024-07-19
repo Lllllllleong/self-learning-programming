@@ -1680,7 +1680,6 @@ public class Practice5 {
     }
 
 
-
     private int cherryDPGet(int y, int x1, int x2, int[][][] dp) {
         int cherryYMax = dp.length;
         int cherryXMax = dp[0].length;
@@ -1801,7 +1800,7 @@ public class Practice5 {
             cost[i][houseColour] = 0;
         }
         int[][] dp = new int[target + 1][n];
-        for (int[] d :dp) Arrays.fill(d, -1);
+        for (int[] d : dp) Arrays.fill(d, -1);
         dp[1] = cost[0];
         for (int i = 1; i < m; i++) {
             // i is house index, current house is i + 1;
@@ -1816,7 +1815,7 @@ public class Practice5 {
                     for (int l = 0; l < n; l++) {
                         System.out.println(j);
                         System.out.println(l);
-                        int priorCost = (k == l) ? dp[j][l] : dp[j-1][l];
+                        int priorCost = (k == l) ? dp[j][l] : dp[j - 1][l];
                         if (priorCost != -1) minCost = Math.min(minCost, priorCost);
                     }
                     if (minCost != Integer.MAX_VALUE) {
@@ -1841,7 +1840,7 @@ public class Practice5 {
         while (n > 1) {
             n--;
             for (int i = 3; i >= 0; i--) {
-                dp[i] += dp[i+1];
+                dp[i] += dp[i + 1];
             }
         }
         int sum = 0;
@@ -1874,31 +1873,31 @@ public class Practice5 {
         int[] leftToRight = new int[n];
         int[] rightToLeft = new int[n];
         leftToRight[0] = 1;
-        rightToLeft[n-1] = 1;
+        rightToLeft[n - 1] = 1;
         charFrequency[sChar[0] - 'a'] = 1;
         for (int i = 1; i < n; i++) {
             char c = sChar[i];
             if (charFrequency[c - 'a'] == 0) {
-                leftToRight[i] = leftToRight[i-1] + 1;
+                leftToRight[i] = leftToRight[i - 1] + 1;
             } else {
-                leftToRight[i] = leftToRight[i-1];
+                leftToRight[i] = leftToRight[i - 1];
             }
             charFrequency[c - 'a'] = 1;
         }
         Arrays.fill(charFrequency, 0);
-        charFrequency[sChar[n-1] - 'a'] = 1;
-        for (int i = n-2; i >= 0; i--) {
+        charFrequency[sChar[n - 1] - 'a'] = 1;
+        for (int i = n - 2; i >= 0; i--) {
             char c = sChar[i];
             if (charFrequency[c - 'a'] == 0) {
-                rightToLeft[i] = rightToLeft[i+1] + 1;
+                rightToLeft[i] = rightToLeft[i + 1] + 1;
             } else {
-                rightToLeft[i] = rightToLeft[i+1];
+                rightToLeft[i] = rightToLeft[i + 1];
             }
             charFrequency[c - 'a'] = 1;
         }
         int output = 0;
         for (int i = 1; i < n; i++) {
-            if (leftToRight[i-1] == rightToLeft[i]) {
+            if (leftToRight[i - 1] == rightToLeft[i]) {
                 output++;
             }
         }
@@ -1938,6 +1937,7 @@ public class Practice5 {
     }
 
     int cardHouseCount = 0;
+
     public int houseOfCards(int n) {
         cardHouse(n, Integer.MAX_VALUE, 0);
         return cardHouseCount;
@@ -1954,7 +1954,7 @@ public class Practice5 {
             cardHouse(cardsRemaining - 2, maxWidth, currentWidth + 1);
         } else {
             cardHouse(cardsRemaining - 3, maxWidth, currentWidth + 1);
-            cardHouse(cardsRemaining, currentWidth-1, 0);
+            cardHouse(cardsRemaining, currentWidth - 1, 0);
         }
     }
 
@@ -1962,12 +1962,12 @@ public class Practice5 {
         char[] sChar = s.toCharArray();
         int n = s.length();
         for (int i = 1; i < n; i++) {
-            int a = sChar[i-1] - '0';
+            int a = sChar[i - 1] - '0';
             int b = sChar[i] - '0';
-            if ((a%2 == 0) == (b%2 == 0)) {
+            if ((a % 2 == 0) == (b % 2 == 0)) {
                 if (a > b) {
-                    char c = sChar[i-1];
-                    sChar[i-1] = sChar[i];
+                    char c = sChar[i - 1];
+                    sChar[i - 1] = sChar[i];
                     sChar[i] = c;
                     break;
                 }
@@ -1976,20 +1976,33 @@ public class Practice5 {
         return String.valueOf(sChar);
     }
 
+    public ListNode modifiedList(int[] nums, ListNode head) {
+        boolean[] exists = new boolean[100001];
+        for (int i : nums) exists[i] = true;
+        while (head != null && exists[head.val]) {
+            head = head.next;
+        }
+        if (head == null) return null;
+        ListNode output = head;
+        while (head.next != null) {
+            if (exists[head.next.val]) {
+                head.next = head.next.next;
+            } else {
+                head = head.next;
+            }
+        }
+        return output;
+    }
+
     /**
      * Main Method
-     *
-     *
-     *
-     *
-     *
      */
     public static void main(String[] args) {
         Practice5 practice5 = new Practice5();
         var v = practice5.findStrobogrammatic(2);
 
 
-        int[] houses = {0,2,1,2,0};
+        int[] houses = {0, 2, 1, 2, 0};
         int[][] cost = stringToArray2D("[[1,10],[10,1],[10,1],[1,10],[5,1]]");
         int i = practice5.minCost(houses, cost, 5, 2, 3);
     }
@@ -2119,9 +2132,16 @@ public class Practice5 {
         int val;
         ListNode next;
 
-        ListNode(int x) {
-            val = x;
-            next = null;
+        ListNode() {
+        }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
         }
     }
 
