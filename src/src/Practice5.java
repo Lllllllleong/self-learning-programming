@@ -1937,9 +1937,44 @@ public class Practice5 {
         return output;
     }
 
+    int cardHouseCount = 0;
+    public int houseOfCards(int n) {
+        cardHouse(n, Integer.MAX_VALUE, 0);
+        return cardHouseCount;
+    }
 
+    public void cardHouse(int cardsRemaining, int maxWidth, int currentWidth) {
+        if (currentWidth > maxWidth || maxWidth == 0) return;
+        if (cardsRemaining < 0) return;
+        if (cardsRemaining == 0) {
+            cardHouseCount++;
+            return;
+        }
+        if (currentWidth == 0) {
+            cardHouse(cardsRemaining - 2, maxWidth, currentWidth + 1);
+        } else {
+            cardHouse(cardsRemaining - 3, maxWidth, currentWidth + 1);
+            cardHouse(cardsRemaining, currentWidth-1, 0);
+        }
+    }
 
-
+    public String getSmallestString(String s) {
+        char[] sChar = s.toCharArray();
+        int n = s.length();
+        for (int i = 1; i < n; i++) {
+            int a = sChar[i-1] - '0';
+            int b = sChar[i] - '0';
+            if ((a%2 == 0) == (b%2 == 0)) {
+                if (a > b) {
+                    char c = sChar[i-1];
+                    sChar[i-1] = sChar[i];
+                    sChar[i] = c;
+                    break;
+                }
+            }
+        }
+        return String.valueOf(sChar);
+    }
 
     /**
      * Main Method
