@@ -2105,6 +2105,20 @@ public class Practice5 {
         return (output > n) ? -1 : output;
     }
 
+    public int stoneGameVII(int[] stones) {
+        int n = stones.length;
+        int[] dp = new int[n];
+        for (int i = n - 1; i >= 0; i--) {
+            int sum = stones[i];
+            for (int j = i+1; j < n; j++) {
+                int right = stones[j];
+                sum += right;
+                dp[j] = Math.max(sum - stones[i] - dp[j], sum - stones[j] - dp[j-1]);
+            }
+        }
+        return dp[n-1];
+    }
+
 
     /**
      * Main Method
