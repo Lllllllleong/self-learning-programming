@@ -2061,6 +2061,26 @@ public class Practice5 {
         return dp[0];
     }
 
+    public int numComponents(ListNode head, int[] nums) {
+        boolean[] contains = new boolean[10001];
+        for (int i : nums) contains[i] = true;
+        boolean flag = false;
+        int output = 0;
+        while (head != null) {
+            int i = head.val;
+            if (contains[i]) {
+                if (!flag) {
+                    flag = true;
+                    output++;
+                }
+            } else {
+                flag = false;
+            }
+            head = head.next;
+        }
+        return output;
+    }
+
 
 
     /**
