@@ -2081,6 +2081,29 @@ public class Practice5 {
         return output;
     }
 
+    public int minSumOfLengths(int[] arr, int target) {
+        int n = arr.length;
+        int[] dp = new int[n+1];
+        Arrays.fill(dp, n);
+        int output = Integer.MAX_VALUE;
+        int left = n;
+        int right = n-1;
+        int windowSum = 0;
+        while (--left >= 0) {
+            windowSum += arr[left];
+            while (right > left && windowSum > target) {
+                windowSum -= arr[right];
+                dp[right] = Math.min(dp[right], dp[right+1]);
+                right--;
+            }
+            if (windowSum == target) {
+                int currentLength = right - left + 1;
+                output = Math.min(output, currentLength + dp[right+1]);
+                dp[left] = currentLength;
+            }
+        }
+        return (output > n) ? -1 : output;
+    }
 
 
     /**
@@ -2094,6 +2117,8 @@ public class Practice5 {
         int[] houses = {0, 2, 1, 2, 0};
         int[][] cost = stringToArray2D("[[1,10],[10,1],[10,1],[1,10],[5,1]]");
         int i = practice5.minCost(houses, cost, 5, 2, 3);
+        int[] arr = {1,6,1};
+        i = practice5.minSumOfLengths(arr, 7);
     }
 
     public static List<List<String>> convertToListOfLists(String[][] array) {
