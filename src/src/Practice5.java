@@ -2119,6 +2119,67 @@ public class Practice5 {
         return dp[n-1];
     }
 
+    public int buildWall(int height, int width, int[] bricks) {
+        Arrays.sort(bricks);
+        List<Integer> maskList = new ArrayList<>();
+        buildWallPermutations(0, width, 0, bricks, maskList);
+        int n = maskList.size();
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+        while (--height > 0) {
+            int[] nextDP = new int[n];
+            for (int i = 0; i < n; i++) {
+                Integer mask = maskList.get(i);
+                for (int j = 0; j < n; j++) {
+                    if (i == j) continue;
+                    Integer currentMask = maskList.get(j);
+                    if ((mask & currentMask) == 0) {
+                        nextDP[i] += dp[j];
+                    }
+                }
+            }
+            dp = nextDP;
+        }
+        int output = 0;
+        for (int i : dp) output += i;
+        return output;
+    }
+
+    public void buildWallPermutations(int currentStart,
+                                      int maxWidth,
+                                      int currentMask,
+                                      int[] bricks,
+                                      List<Integer> maskList) {
+        if (currentStart > maxWidth) return;
+        int n = bricks.length;
+        int remainingLength = maxWidth - currentStart;
+        for (int i = n - 1; i >= 0; i--) {
+            int brick = bricks[i];
+            if (brick > remainingLength) continue;
+            if (brick == remainingLength) {
+                maskList.add(currentMask);
+                return;
+            }
+            int nextMask = currentMask;
+            int nextStart = currentStart + brick;
+            nextMask |= (1 << (nextStart));
+            buildWallPermutations(nextStart, maxWidth, nextMask, bricks, maskList);
+        }
+    }
+
+    public int maximumJumps(int[] nums, int target) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, -1);
+        dp[0] = 0;
+        for (int i = 0; i < n; i++) {
+            if (dp[i] == -1) continue;
+            for (int j = i+1; j < n; j++) {
+                if (Math.abs(nums[j]-nums[i]) <= target) dp[j] = Math.max(dp[j], dp[i] + 1);
+            }
+        }
+        return dp[n-1];
+    }
 
     /**
      * Main Method
