@@ -2381,6 +2381,32 @@ public class Practice5 {
         return (int) dp[n][n];
     }
 
+    public int minimumCost(String target, String[] words, int[] costs) {
+        int n = target.length();
+        int[] dp = new int[n+1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[n] = 0;
+        HashMap<String, Integer> hm = new HashMap<>();
+        int w = words.length;
+        for (int i = 0; i < w; i++) {
+            if (hm.containsKey(words[i])) {
+                hm.put(words[i], Math.min(hm.get(words[i]), costs[i]));
+            } else {
+                hm.put(words[i], costs[i]);
+            }
+        }
+        for (int i = n; i >= 0; i--) {
+            if (dp[i] == Integer.MAX_VALUE) continue;
+            for (int j = i-1; j >= 0; j--) {
+                String subString = target.substring(i, j);
+                if (hm.containsKey(subString)) {
+                    dp[j] = Math.min(dp[j], dp[i] + hm.get(subString));
+                }
+            }
+        }
+        return (dp[0] == Integer.MAX_VALUE) ? -1 : dp[0];
+    }
+
 
     /**
      * Main Method
