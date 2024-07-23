@@ -2274,6 +2274,22 @@ public class Practice5 {
         return output;
     }
 
+    public int maximizeTheProfit(int n, List<List<Integer>> offers) {
+        int[] dp = new int[n + 1];
+        Collections.sort(offers, Comparator.comparingInt(a -> a.get(0)));
+        int index = 0;
+        for (var offer : offers) {
+            int from = offer.get(0);
+            int to = offer.get(1);
+            int price = offer.get(2);
+            while (index < from) dp[++index] = Math.max(dp[index], dp[index - 1]);
+            int prior = (from == 0) ? 0 : dp[from - 1];
+            dp[to] = Math.max(dp[to], prior + price);
+        }
+        while (index < n) dp[++index] = Math.max(dp[index], dp[index - 1]);
+        return dp[n];
+    }
+
     /**
      * Main Method
      */
