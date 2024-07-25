@@ -2484,6 +2484,45 @@ public class Practice5 {
         return current.val;
     }
 
+    public int countCollisions(String directions) {
+        Deque<Character> dq = new ArrayDeque<>();
+        int output = 0;
+        for (char c : directions.toCharArray()) {
+            if (dq.isEmpty()) dq.addLast(c);
+            else {
+                switch (c) {
+                    case 'L' -> {
+                        switch (dq.peekLast()) {
+                            case 'L' -> dq.addLast(c);
+                            case 'R' -> {
+                                output += 2;
+                                dq.pollLast();
+                                while (!dq.isEmpty() && dq.peekLast() == 'R') {
+                                    dq.pollLast();
+                                    output++;
+                                }
+                                dq.addLast('S');
+                            }
+                            case 'S' -> {
+                                output += 1;
+                                dq.addLast('S');
+                            }
+                        }
+                    }
+                    case 'R' -> dq.addLast(c);
+                    case 'S' -> {
+                        while (!dq.isEmpty() && dq.peekLast() == 'R') {
+                            dq.pollLast();
+                            output++;
+                        }
+                        dq.addLast(c);
+                    }
+                }
+            }
+        }
+        return output;
+    }
+
 
     /**
      * Main Method
