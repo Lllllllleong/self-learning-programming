@@ -2524,6 +2524,22 @@ public class Practice5 {
     }
 
 
+
+    public int minOperations(int[] nums, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for (int num : nums) if (num < k) pq.offer(num);
+        int output = 0;
+        while (pq.size() >= 2 && pq.peek() < k) {
+            output++;
+            int a = pq.poll();
+            int b = pq.poll();
+            int result = Math.min(a,b) * 2 + Math.max(a,b);
+            if (result < k && result >= 0) pq.offer(result);
+        }
+        if (pq.size() > 0) return ++output;
+        return output;
+    }
+
     /**
      * Main Method
      */
