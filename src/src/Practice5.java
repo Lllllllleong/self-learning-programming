@@ -2656,6 +2656,26 @@ public class Practice5 {
         return output;
     }
 
+    public boolean isOneEditDistance(String s, String t) {
+        int sLength = s.length();
+        int tLength = t.length();
+        if (Math.abs(sLength - tLength) > 1) return false;
+        for (int i = 0; i < Math.min(sLength, tLength); i++) {
+            if (s.charAt(i) != t.charAt(i)) {
+                if (sLength == tLength) {
+                    return s.substring(i + 1).equals(t.substring(i + 1));
+                }
+                else if (sLength > tLength) {
+                    return s.substring(i + 1).equals(t.substring(i));
+                }
+                else {
+                    return s.substring(i).equals(t.substring(i + 1));
+                }
+            }
+        }
+        return Math.abs(sLength - tLength) == 1;
+    }
+
     /**
      * Main Method
      */
