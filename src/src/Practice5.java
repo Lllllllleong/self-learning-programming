@@ -2630,6 +2630,32 @@ public class Practice5 {
         }
     }
 
+
+    public int shortestWay(String source, String target) {
+        char[] s = source.toCharArray();
+        char[] t = target.toCharArray();
+        int n = source.length();
+        int m = target.length();
+        int output = 0;
+        int sIndex = 0;
+        int tIndex = 0;
+        while (tIndex < m) {
+            int prevTIndex = tIndex;
+            while (sIndex < n && tIndex < m) {
+                if (s[sIndex] == t[tIndex]) {
+                    tIndex++;
+                }
+                sIndex++;
+            }
+            if (tIndex == prevTIndex) {
+                return -1;
+            }
+            output++;
+            sIndex = 0;
+        }
+        return output;
+    }
+
     /**
      * Main Method
      */
