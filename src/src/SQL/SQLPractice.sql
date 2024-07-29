@@ -28,3 +28,6 @@ from Views
 where author_id = viewer_id
 order by id;
 
+select tweet_id
+from Tweets
+where char_length(content) > 15;
