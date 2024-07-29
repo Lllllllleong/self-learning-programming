@@ -38,3 +38,11 @@ where char_length(content) > 15;
 select unique_id, name
 from Employees left join EmployeeUNI on Employees.id = EmployeeUNI.id;
 
+select product_name, year, price
+from Sales left join Product on Sales.product_id = Product.product_id;
+
+
+select customer_id, count(*) as count_no_trans
+from Visits left join Transactions on Visits.visit_id = Transactions.visit_id
+where Transactions.visit_id is null
+GROUP BY customer_id
