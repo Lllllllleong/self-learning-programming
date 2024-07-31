@@ -2828,7 +2828,52 @@ public class Practice5 {
         return sum;
     }
 
+    long operationCount = 0;
+    public long minimumOperations(int[] nums, int[] target) {
+        operationCount = 0;
+        int n = nums.length;
+        long[] longArray = new long[n];
+        for (int i = 0; i < n; i++) {
+            longArray[i] = nums[i] - target[i];
+        }
+        int startIndex = 0;
+        int flagValue;
+        while ((flagValue = flagCheck(longArray, startIndex)) != n) {
+            minimumOperations2(longArray, flagValue);
+            startIndex = flagValue;
+        }
+        return operationCount;
+    }
 
+    public int flagCheck(long[] nums, int startIndex) {
+        int n = nums.length;
+        for (int i = startIndex; i < n; i++) {
+            if (nums[i] != 0) return i;
+        }
+        return n;
+    }
+
+    public void minimumOperations2(long[] longArray, int index) {
+        int n = longArray.length;
+        int maxIndex = index;
+        long minDifference = longArray[index];
+        boolean positive = (minDifference > 0);
+        for (int i = index + 1; i < n; i++) {
+            long l = longArray[i];
+            boolean currentPositive = (l > 0);
+            if (positive != currentPositive || l == 0) break;
+            else {
+                maxIndex = i;
+                minDifference = (positive) ? Math.min(minDifference, l) : Math.max(minDifference, l);
+            }
+        }
+
+        long difference = Math.abs(minDifference);
+        operationCount += difference;
+        for (int i = index; i <= maxIndex; i++) {
+            longArray[i] -= (positive) ? difference : -difference;
+        }
+    }
 
 
 
