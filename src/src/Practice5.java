@@ -2876,6 +2876,18 @@ public class Practice5 {
     }
 
 
+    public int countSeniors(String[] details) {
+        int output = 0;
+        for (String s : details) {
+            int a = Character.digit(s.charAt(11), 10);
+            int b = Character.digit(s.charAt(12), 10);
+            int age = (a * 10) + b;
+            if (age > 60) output++;
+        }
+        return output;
+    }
+
+
 
 
     /**
