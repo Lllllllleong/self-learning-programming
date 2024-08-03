@@ -3032,6 +3032,25 @@ public class Practice5 {
         return maxLen;
     }
 
+    public int[] occurrencesOfElement(int[] nums, int[] queries, int x) {
+        int q = queries.length;
+        int[] output = new int[q];
+        int n = nums.length;
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int num = nums[i];
+            if (num == x) list.add(i);
+        }
+        for (int i = 0; i < q; i++) {
+            int query = queries[i] - 1;
+            if (query < list.size()) {
+                output[i] = list.get(i);
+            } else {
+                output[i] = -1;
+            }
+        }
+        return output;
+    }
 
 
 
