@@ -80,3 +80,12 @@ WHERE
     AND a.activity_type = 'start'
     AND b.activity_type = 'end'
 GROUP BY machine_id;
+
+
+SELECT
+    name,
+    bonus
+FROM
+    Employee LEFT JOIN Bonus on Employee.empId = Bonus.empId
+WHERE
+    bonus IS NULL OR bonus < 1000;
