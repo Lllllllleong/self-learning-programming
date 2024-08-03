@@ -3053,6 +3053,37 @@ public class Practice5 {
     }
 
 
+    public boolean[] isArraySpecial(int[] nums, int[][] queries) {
+        int n = nums.length;
+        int q = queries.length;
+        int[] intervalToTheLeft = new int[n];
+        for (int i = 0; i < n; i++) intervalToTheLeft[i] = i;
+        for (int i = 0; i < n-1; i++) {
+            int right = i+1;
+            int a = nums[i];
+            int b = nums[right];
+            boolean aEven = a % 2 == 0;
+            boolean bEven = b % 2 == 0;
+            if (aEven == bEven) continue;
+            intervalToTheLeft[right] = i;
+            while ((right + 1) < n && (nums[right + 1] % 2 == 0) != bEven) {
+                right++;
+                intervalToTheLeft[right] = i;
+                bEven = nums[right] % 2 == 0;
+            }
+            i = right;
+        }
+        boolean[] output = new boolean[q];
+        for (int i = 0; i < q; i++) {
+            int[] query = queries[i];
+            int a = query[0];
+            int b = query[1];
+            if (a < intervalToTheLeft[b]) output[i] = false;
+            else output[i] = true;
+        }
+        return output;
+    }
+
 
     /**
      * Main Method
