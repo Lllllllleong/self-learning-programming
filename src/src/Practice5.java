@@ -3098,6 +3098,40 @@ public class Practice5 {
     }
 
 
+    public int minimumAddedInteger(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        int n = nums1.length;
+        int m = nums2.length;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < 3; j++) {
+                hm.merge(nums2[i] - nums1[i+j], 1, Integer::sum);
+            }
+        }
+        int output = Integer.MAX_VALUE;
+        for (var entry : hm.entrySet()) {
+            if (entry.getValue() == m) output = Math.min(output, entry.getKey());
+        }
+        return output;
+    }
+
+    public int numberOfWays(int n) {
+        int MOD = 1_000_000_007;
+        int[] dp = new int[Math.max(9, n+1)];
+        int[] coins = new int[]{6,2,1};
+        dp[4] = 1;
+        dp[8] = 1;
+        dp[0] = 1;
+        for (int coin : coins) {
+            int max = n - coin;
+            for (int i = 0; i <= max; i++) {
+                dp[i + coin] = (dp[i + coin] + dp[i]) % MOD;
+            }
+        }
+        return dp[n];
+    }
+
     /**
      * Main Method
      *
