@@ -14,6 +14,7 @@ public class Practice5 {
 
         return listOfLists;
     }
+
     public static int[] stringToArray1D(String input) {
         String[] numberStrings = input.substring(1, input.length() - 1).split(",");
         int[] numbers = new int[numberStrings.length];
@@ -22,6 +23,7 @@ public class Practice5 {
         }
         return numbers;
     }
+
     // Method for 2D array
     public static int[][] stringToArray2D(String input) {
         // Remove outer brackets and split into individual array strings
@@ -44,6 +46,7 @@ public class Practice5 {
         }
         return result;
     }
+
     public class Node {
         int val;
         Node left;
@@ -64,6 +67,7 @@ public class Practice5 {
             this.random = random;
         }
     }
+
     public class NodeCopy {
         int val;
         NodeCopy left;
@@ -84,6 +88,7 @@ public class Practice5 {
             this.random = random;
         }
     }
+
     class Interval {
         public int start;
         public int end;
@@ -96,6 +101,7 @@ public class Practice5 {
             end = _end;
         }
     }
+
     public static class TreeNode {
         int val;
         TreeNode left;
@@ -114,6 +120,7 @@ public class Practice5 {
             this.right = right;
         }
     }
+
     public class ListNode {
         int val;
         ListNode next;
@@ -141,7 +148,7 @@ public class Practice5 {
         char[] sChar = s.toCharArray();
         Set<String> set = new HashSet<>();
         Collections.addAll(set, dictionary);
-        int[] dp = new int[n+1];
+        int[] dp = new int[n + 1];
         Arrays.fill(dp, Integer.MAX_VALUE);
         dp[n] = 0;
         for (int i = n - 1; i >= 0; i--) {
@@ -152,24 +159,74 @@ public class Practice5 {
                     dp[i] = Math.min(dp[i], dp[j + 1]);
                 }
             }
-            dp[i] = Math.min(dp[i], dp[i+1] + 1);
+            dp[i] = Math.min(dp[i], dp[i + 1] + 1);
         }
         return dp[0];
     }
 
+    public long minimumCost(String s) {
+        int n = s.length();
+        if (n == 1) return 0;
+        if (n == 2) {
+            return (s.charAt(0) == s.charAt(1)) ? 0 : 1;
+        }
+        char[] sChar = s.toCharArray();
+        int leftMax = (n / 2) + (n % 2) - 1;
+        long zeroL = 0;
+        long oneL = 0;
+        int rightMax = leftMax + 1;
+        long zeroR = 0;
+        long oneR = 0;
+        for (int i = 0; i <= leftMax; i++) {
+            long priorZeroL = zeroL;
+            long priorOneL = oneL;
+            switch (sChar[i]) {
+                case '1' -> {
+                    oneL = Math.min(priorOneL, priorZeroL + i);
+                    zeroL = priorOneL + i + 1;
+                }
+                case '0' -> {
+                    oneL = priorZeroL + i + 1;
+                    zeroL = Math.min(priorZeroL, priorOneL + i);
+                }
+            }
+            System.out.println("i is " + i);
+            System.out.println(zeroL);
+            System.out.println(oneL);
+        }
+        for (int i = n - 1; i >= rightMax; i--) {
+            long priorZeroR = zeroR;
+            long priorOneR = oneR;
+            switch (sChar[i]) {
+                case '1' -> {
+                    oneR = Math.min(priorOneR, priorZeroR + n - i - 1);
+                    zeroR = priorOneR + n - i;
+                }
+                case '0' -> {
+                    oneR = priorZeroR + n - i;
+                    zeroR = Math.min(priorZeroR, priorOneR + n - i - 1);
+                }
+            }
+            System.out.println("i is " + i);
+            System.out.println(zeroR);
+            System.out.println(oneR);
+
+        }
+        return Math.min(zeroL + zeroR, oneL + oneR);
+    }
 
 
     public int maximumCostSubstring(String s, String chars, int[] vals) {
         int[] charValue = new int[26];
-        for (int i = 0; i < 26; i++) charValue[i] = i+1;
+        for (int i = 0; i < 26; i++) charValue[i] = i + 1;
         int v = vals.length;
         char[] sChars = s.toCharArray();
         char[] cChars = chars.toCharArray();
-        for (int i = 0; i < v; i++) charValue[cChars[i]-'a'] = vals[i];
+        for (int i = 0; i < v; i++) charValue[cChars[i] - 'a'] = vals[i];
         int currentScore = 0;
         int max = 0;
         for (char c : sChars) {
-            currentScore += charValue[c-'a'];
+            currentScore += charValue[c - 'a'];
             if (currentScore < 0) {
                 currentScore = 0;
             } else {
@@ -178,7 +235,6 @@ public class Practice5 {
         }
         return max;
     }
-
 
 
     public boolean canFinish(int numCourses, int[][] prerequisites) {
@@ -2478,9 +2534,9 @@ public class Practice5 {
         for (int i = n - 1; i >= 0; i--) {
             int cInt = sChar[i] - '0';
             if (cInt == 0) continue;
-            dp[i] = dp[i+1];
-            if (cInt == 1 && i+2 <= n) dp[i] += dp[i+2];
-            if (cInt == 2 && i+1 < n && sChar[i+1] - '0' <= 6) dp[i] += dp[i+2];
+            dp[i] = dp[i + 1];
+            if (cInt == 1 && i + 2 <= n) dp[i] += dp[i + 2];
+            if (cInt == 2 && i + 1 < n && sChar[i + 1] - '0' <= 6) dp[i] += dp[i + 2];
         }
 
         return dp[0];
@@ -2519,7 +2575,6 @@ public class Practice5 {
     }
 
 
-
     public long[] minimumCosts(int[] regular, int[] express, int expressCost) {
         int n = regular.length;
         long[] output = new long[n];
@@ -2527,7 +2582,7 @@ public class Practice5 {
         long e = expressCost;
         for (int i = 0; i < n; i++) {
             r += regular[i];
-            r = Math.min(r,e + express[i]);
+            r = Math.min(r, e + express[i]);
             e = Math.min(e + express[i], r + expressCost);
             output[i] = Math.min(r, e);
         }
@@ -2537,17 +2592,18 @@ public class Practice5 {
     public int countOrders(int n) {
         if (n == 1) return 1;
         int MOD = 1_000_000_007;
-        long[][] dp = new long[n+1][n+1];
+        long[][] dp = new long[n + 1][n + 1];
         dp[0][0] = 1;
         for (int i = 0; i <= n; i++) {
             for (int j = Math.max(i, 1); j <= n; j++) {
                 if (i == 0) {
-                    dp[i][j] = (j * dp[i][j-1]) % MOD;;
+                    dp[i][j] = (j * dp[i][j - 1]) % MOD;
+                    ;
                 } else {
                     if (i == j) {
-                        dp[i][j] = (i * dp[i-1][j])  % MOD ;
+                        dp[i][j] = (i * dp[i - 1][j]) % MOD;
                     } else {
-                        dp[i][j] = (i * dp[i-1][j] + (j-i) * dp[i][j-1]) % MOD;
+                        dp[i][j] = (i * dp[i - 1][j] + (j - i) * dp[i][j - 1]) % MOD;
                     }
                 }
             }
@@ -2558,7 +2614,7 @@ public class Practice5 {
 
     public int minimumCost(String target, String[] words, int[] costs) {
         int n = target.length();
-        int[] dp = new int[n+1];
+        int[] dp = new int[n + 1];
         Arrays.fill(dp, Integer.MAX_VALUE);
         dp[n] = 0;
         HashMap<String, Integer> hm = new HashMap<>();
@@ -2572,7 +2628,7 @@ public class Practice5 {
         }
         for (int i = n; i >= 0; i--) {
             if (dp[i] == Integer.MAX_VALUE) continue;
-            for (int j = i-1; j >= 0; j--) {
+            for (int j = i - 1; j >= 0; j--) {
                 String subString = target.substring(i, j);
                 if (hm.containsKey(subString)) {
                     dp[j] = Math.min(dp[j], dp[i] + hm.get(subString));
@@ -2586,13 +2642,13 @@ public class Practice5 {
         int n = possible.length;
         int a = 0;
         int[] bPrefixSum = new int[n];
-        bPrefixSum[n-1] = (possible[n-1] == 1) ? 1 : -1;
+        bPrefixSum[n - 1] = (possible[n - 1] == 1) ? 1 : -1;
         for (int i = n - 2; i > 0; i--) {
-            bPrefixSum[i] = bPrefixSum[i+1] + ((possible[i] == 1) ? 1 : -1);
+            bPrefixSum[i] = bPrefixSum[i + 1] + ((possible[i] == 1) ? 1 : -1);
         }
-        for (int i = 0; i < n-1; i++) {
+        for (int i = 0; i < n - 1; i++) {
             a += (possible[i] == 1) ? 1 : -1;
-            if (a > bPrefixSum[i+1]) return i+1;
+            if (a > bPrefixSum[i + 1]) return i + 1;
         }
         return -1;
     }
@@ -2601,29 +2657,29 @@ public class Practice5 {
         int n = s1.length();
         char[] aChar = s1.toCharArray();
         char[] bChar = s2.toCharArray();
-        int[][] dp = new int[n+1][2];
+        int[][] dp = new int[n + 1][2];
         dp[n][0] = 0;
         dp[n][1] = -1;
-        if (aChar[n-1] == bChar[n-1]) {
-            dp[n-1][0] = 0;
-            dp[n-1][1] = -1;
+        if (aChar[n - 1] == bChar[n - 1]) {
+            dp[n - 1][0] = 0;
+            dp[n - 1][1] = -1;
         } else {
-            dp[n-1][0] = -1;
-            dp[n-1][1] = x;
+            dp[n - 1][0] = -1;
+            dp[n - 1][1] = x;
         }
         for (int i = n - 2; i >= 0; i--) {
             boolean match = (aChar[i] == bChar[i]);
             if (match) {
-                dp[i][0] = dp[i+1][0];
-                dp[i][1] = dp[i+1][1];
+                dp[i][0] = dp[i + 1][0];
+                dp[i][1] = dp[i + 1][1];
             } else {
-                boolean previousMatch = (aChar[i+1] == bChar[i+1]);
+                boolean previousMatch = (aChar[i + 1] == bChar[i + 1]);
                 int zeroFree = Integer.MAX_VALUE;
                 int oneFree = Integer.MAX_VALUE;
-                if (dp[i+1][1] != -1) zeroFree = dp[i+1][1];
-                if (dp[i+1][0] != -1) oneFree = dp[i+1][0] + x;
-                if (previousMatch && dp[i+2][0] != -1) zeroFree = Math.min(zeroFree, dp[i+1][0] + 1);
-                if (previousMatch && dp[i+2][1] != -1) oneFree = Math.min(oneFree, dp[i+1][1] + 1);
+                if (dp[i + 1][1] != -1) zeroFree = dp[i + 1][1];
+                if (dp[i + 1][0] != -1) oneFree = dp[i + 1][0] + x;
+                if (previousMatch && dp[i + 2][0] != -1) zeroFree = Math.min(zeroFree, dp[i + 1][0] + 1);
+                if (previousMatch && dp[i + 2][1] != -1) oneFree = Math.min(oneFree, dp[i + 1][1] + 1);
                 dp[i][0] = (zeroFree == Integer.MAX_VALUE) ? -1 : zeroFree;
                 dp[i][1] = (oneFree == Integer.MAX_VALUE) ? -1 : oneFree;
             }
@@ -2699,7 +2755,6 @@ public class Practice5 {
     }
 
 
-
     public int minOperations(int[] nums, int k) {
         PriorityQueue<Integer> pq = new PriorityQueue<>();
         for (int num : nums) if (num < k) pq.offer(num);
@@ -2708,7 +2763,7 @@ public class Practice5 {
             output++;
             int a = pq.poll();
             int b = pq.poll();
-            int result = Math.min(a,b) * 2 + Math.max(a,b);
+            int result = Math.min(a, b) * 2 + Math.max(a, b);
             if (result < k && result >= 0) pq.offer(result);
         }
         if (pq.size() > 0) return ++output;
@@ -2750,18 +2805,18 @@ public class Practice5 {
             windowSum += nums[right++];
             windowSums[left] = windowSum;
         }
-        int[][] indexOfMax = new int[4][n+1];
-        long[][] sumOfMax = new long[4][n+1];
+        int[][] indexOfMax = new int[4][n + 1];
+        long[][] sumOfMax = new long[4][n + 1];
         for (int i = 1; i <= 3; i++) {
             int jStart = n - (i * k);
             for (int j = jStart; j >= 0; j--) {
-                long sum = windowSums[j] + sumOfMax[i-1][j+k];
-                if (sum >= sumOfMax[i][j+1]) {
+                long sum = windowSums[j] + sumOfMax[i - 1][j + k];
+                if (sum >= sumOfMax[i][j + 1]) {
                     indexOfMax[i][j] = j;
                     sumOfMax[i][j] = sum;
                 } else {
-                    indexOfMax[i][j] = indexOfMax[i][j+1];
-                    sumOfMax[i][j] = sumOfMax[i][j+1];
+                    indexOfMax[i][j] = indexOfMax[i][j + 1];
+                    sumOfMax[i][j] = sumOfMax[i][j + 1];
                 }
             }
         }
@@ -2777,28 +2832,30 @@ public class Practice5 {
     }
 
     int consecMax = 1;
+
     public int longestConsecutive(TreeNode root) {
         if (root == null) return 0;
         consecMax = 0;
         findConsec(root, 1);
         return consecMax;
     }
+
     public void findConsec(TreeNode root, int i) {
         if (root == null) return;
         consecMax = Math.max(consecMax, i);
         int val = root.val;
         if (root.left != null) {
-            int lVal= root.left.val;
+            int lVal = root.left.val;
             if (val + 1 == lVal) {
-                findConsec(root.left, i+1);
+                findConsec(root.left, i + 1);
             } else {
                 findConsec(root.left, 1);
             }
         }
         if (root.right != null) {
-            int rVal= root.right.val;
+            int rVal = root.right.val;
             if (val + 1 == rVal) {
-                findConsec(root.right, i+1);
+                findConsec(root.right, i + 1);
             } else {
                 findConsec(root.right, 1);
             }
@@ -2839,17 +2896,16 @@ public class Practice5 {
             if (s.charAt(i) != t.charAt(i)) {
                 if (sLength == tLength) {
                     return s.substring(i + 1).equals(t.substring(i + 1));
-                }
-                else if (sLength > tLength) {
+                } else if (sLength > tLength) {
                     return s.substring(i + 1).equals(t.substring(i));
-                }
-                else {
+                } else {
                     return s.substring(i).equals(t.substring(i + 1));
                 }
             }
         }
         return Math.abs(sLength - tLength) == 1;
     }
+
     public int smallestCommonElement(int[][] mat) {
         int n = mat.length;
         int m = mat[0].length;
@@ -2958,6 +3014,7 @@ public class Practice5 {
         long validRange = (upper - lower) - maxDifference + 1;
         return (validRange <= 0) ? 0 : (int) validRange;
     }
+
     public List<List<String>> mostPopularCreator(String[] creators, String[] ids, int[] views) {
         HashMap<String, Long> totalViews = new HashMap<>();
         HashMap<String, Integer> maxVideo = new HashMap<>();
@@ -2965,7 +3022,7 @@ public class Practice5 {
         for (int i = 0; i < n; i++) {
             String creator = creators[i];
             int view = views[i];
-            totalViews.merge(creator,(long) view, Long::sum);
+            totalViews.merge(creator, (long) view, Long::sum);
             if (!maxVideo.containsKey(creator)) {
                 maxVideo.put(creator, i);
             } else {
@@ -2978,7 +3035,7 @@ public class Practice5 {
         }
         List<List<String>> output = new ArrayList<>();
         long max = 0;
-        for (long i  : totalViews.values()) max = Math.max(max, i);
+        for (long i : totalViews.values()) max = Math.max(max, i);
         for (var entry : totalViews.entrySet()) {
             String key = entry.getKey();
             Long value = entry.getValue();
@@ -3004,6 +3061,7 @@ public class Practice5 {
     }
 
     long operationCount = 0;
+
     public long minimumOperations(int[] nums, int[] target) {
         operationCount = 0;
         int n = nums.length;
@@ -3070,16 +3128,16 @@ public class Practice5 {
         int index = 0;
         for (int i = m - 1; i >= 0; i--) {
             int q = queries[i];
-            if (!flags[q-1]) {
-                flags[q-1] = true;
+            if (!flags[q - 1]) {
+                flags[q - 1] = true;
                 output[index] = q;
                 index++;
             }
         }
         for (int i = 0; i < n; i++) {
             int w = windows[i];
-            if (!flags[w-1]) {
-                flags[w-1] = true;
+            if (!flags[w - 1]) {
+                flags[w - 1] = true;
                 output[index] = w;
                 index++;
             }
@@ -3096,7 +3154,7 @@ public class Practice5 {
             char c = sChar[i];
             if (c == '1') counter++;
             else {
-                while (i + 1 < n && sChar[i+1] == '0') i++;
+                while (i + 1 < n && sChar[i + 1] == '0') i++;
                 output += counter;
             }
 
@@ -3108,10 +3166,10 @@ public class Practice5 {
         char[] sChar = s.toCharArray();
         for (char c : sChar) {
             if ((c == 'a')
-                || (c == 'e')
-                || (c == 'i')
-                || (c == 'o')
-                || (c == 'u')) {
+                    || (c == 'e')
+                    || (c == 'i')
+                    || (c == 'o')
+                    || (c == 'u')) {
                 return true;
             }
         }
@@ -3131,7 +3189,7 @@ public class Practice5 {
 
     public List<Integer> countOfPeaks(int[] nums, int[][] queries) {
         int n = nums.length;
-        int[] peakPrefix = new int[n+1];
+        int[] peakPrefix = new int[n + 1];
         updatePeaks(nums, peakPrefix, 0);
         List<Integer> output = new ArrayList<>();
         for (int[] query : queries) {
@@ -3144,22 +3202,22 @@ public class Practice5 {
             } else {
                 int newValue = b;
                 nums[a] = newValue;
-                if (a == 0 || a == n-1) {
+                if (a == 0 || a == n - 1) {
                     updatePeaks(nums, peakPrefix, 0);
                 } else {
-                    boolean wasPeak = (peakPrefix[a] != peakPrefix[a+1]);
-                    boolean isPeak = (nums[a-1] < nums[a] && nums[a] > nums[a+1]);
+                    boolean wasPeak = (peakPrefix[a] != peakPrefix[a + 1]);
+                    boolean isPeak = (nums[a - 1] < nums[a] && nums[a] > nums[a + 1]);
                     if (wasPeak != isPeak) {
-                        updatePeaks(nums, peakPrefix, a-2);
+                        updatePeaks(nums, peakPrefix, a - 2);
                     } else if (!wasPeak && isPeak) {
-                        boolean leftWasPeak = (peakPrefix[a-1] == peakPrefix[a]);
-                        boolean rightWasPeak = (peakPrefix[a+1] == peakPrefix[a+2]);
+                        boolean leftWasPeak = (peakPrefix[a - 1] == peakPrefix[a]);
+                        boolean rightWasPeak = (peakPrefix[a + 1] == peakPrefix[a + 2]);
                         if (leftWasPeak && !rightWasPeak) {
                             peakPrefix[a]--;
                         } else if (!leftWasPeak && rightWasPeak) {
-                            peakPrefix[a+1]++;
+                            peakPrefix[a + 1]++;
                         } else {
-                            updatePeaks(nums, peakPrefix, a-2);
+                            updatePeaks(nums, peakPrefix, a - 2);
                         }
                     }
                 }
@@ -3170,19 +3228,19 @@ public class Practice5 {
 
     public void updatePeaks(int[] nums, int[] peakPrefix, int startIndex) {
         int n = nums.length;
-        startIndex = Math.min(startIndex, n-3);
+        startIndex = Math.min(startIndex, n - 3);
         startIndex = Math.max(startIndex, 0);
         for (int i = (startIndex + 2); i < n; i++) {
-            int a = nums[i-2];
-            int b = nums[i-1];
+            int a = nums[i - 2];
+            int b = nums[i - 1];
             int c = nums[i];
             if (a < b && b > c) {
-                peakPrefix[i] = peakPrefix[i-1] + 1;
+                peakPrefix[i] = peakPrefix[i - 1] + 1;
             } else {
-                peakPrefix[i] = peakPrefix[i-1];
+                peakPrefix[i] = peakPrefix[i - 1];
             }
         }
-        peakPrefix[n] = peakPrefix[n-1];
+        peakPrefix[n] = peakPrefix[n - 1];
     }
 
 
@@ -3233,8 +3291,8 @@ public class Practice5 {
         int q = queries.length;
         int[] intervalToTheLeft = new int[n];
         for (int i = 0; i < n; i++) intervalToTheLeft[i] = i;
-        for (int i = 0; i < n-1; i++) {
-            int right = i+1;
+        for (int i = 0; i < n - 1; i++) {
+            int right = i + 1;
             int a = nums[i];
             int b = nums[right];
             boolean aEven = a % 2 == 0;
@@ -3281,7 +3339,7 @@ public class Practice5 {
         HashMap<Integer, Integer> hm = new HashMap<>();
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < 3; j++) {
-                hm.merge(nums2[i] - nums1[i+j], 1, Integer::sum);
+                hm.merge(nums2[i] - nums1[i + j], 1, Integer::sum);
             }
         }
         int output = Integer.MAX_VALUE;
@@ -3293,8 +3351,8 @@ public class Practice5 {
 
     public int numberOfWays(int n) {
         int MOD = 1_000_000_007;
-        int[] dp = new int[Math.max(9, n+1)];
-        int[] coins = new int[]{6,2,1};
+        int[] dp = new int[Math.max(9, n + 1)];
+        int[] coins = new int[]{6, 2, 1};
         dp[4] = 1;
         dp[8] = 1;
         dp[0] = 1;
@@ -3310,21 +3368,20 @@ public class Practice5 {
 
     public boolean validPartition(int[] nums) {
         int n = nums.length;
-        boolean[] dp = new boolean[n+2];
+        boolean[] dp = new boolean[n + 2];
         dp[n] = true;
         for (int i = n - 2; i >= 0; i--) {
             int a = nums[i];
-            int b = nums[i+1];
+            int b = nums[i + 1];
             if (dp[i + 2] && a == b) dp[i] = true;
-            if (!dp[i] && dp[i+3]) {
-                int c = nums[i+2];
+            if (!dp[i] && dp[i + 3]) {
+                int c = nums[i + 2];
                 if ((a == b && b == c)
                         || (b - a == 1 && c - b == 1)) dp[i] = true;
             }
         }
         return dp[0];
     }
-
 
 
 }
