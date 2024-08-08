@@ -143,6 +143,30 @@ public class Practice5 {
 
     }
 
+
+
+
+
+
+
+
+
+
+    public int maximumLength(int[] nums) {
+        int n = nums.length;
+        int evenE = 0, evenO = 0, oddE = 0, oddO = 0;
+        for (int i : nums) {
+            if (i % 2 == 0) {
+                evenE++;
+                oddE = Math.max(oddE, oddO + 1);
+            } else {
+                evenO++;
+                oddO = Math.max(oddO, oddE + 1);
+            }
+        }
+        return Math.max(evenE, Math.max(evenO, Math.max(oddE, oddO)));
+    }
+
     public int minExtraChar(String s, String[] dictionary) {
         int n = s.length();
         char[] sChar = s.toCharArray();
