@@ -143,6 +143,23 @@ public class Practice5 {
 
     }
 
+    public int subsequenceCount(int[] nums) {
+        int mod = 1000000007;
+        int odd = 0;
+        int even = 0;
+        for (int i : nums) {
+            if (i % 2 == 0) {
+                even = ((even * 2) + 1) % mod;
+                odd = (odd * 2) % mod;
+            } else {
+                int e = even;
+                even = ((even + odd) % mod);
+                odd = ((odd + e) + 1) % mod;
+            }
+        }
+        return odd;
+    }
+
     public int minimumLength(String s) {
          int n = s.length();
          char[] sChar = s.toCharArray();
