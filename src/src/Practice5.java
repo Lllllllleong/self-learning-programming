@@ -143,6 +143,30 @@ public class Practice5 {
 
     }
 
+    public int minimumLength(String s) {
+         int n = s.length();
+         char[] sChar = s.toCharArray();
+         int[] frequency = new int[26];
+         for (char c : sChar) frequency[c-'a']++;
+         int output = 0;
+         for (int i : frequency) {
+             if (i == 0) continue;
+             if (i <= 2) {
+                 output += i;
+             } else {
+                 i = i % 2;
+                 output += (i == 0) ? 2 : 1;
+             }
+         }
+         return output;
+    }
+
+
+
+
+
+
+
     public int maximumLength(int[] nums, int k) {
         int n = nums.length;
         if (n == 1) return 1;
