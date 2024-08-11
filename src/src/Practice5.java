@@ -143,6 +143,39 @@ public class Practice5 {
 
     }
 
+    public int minAbsDifference(int[] nums, int goal) {
+        int n = nums.length;
+        if (n == 1) {
+            return Math.abs(nums[0] - goal);
+        }
+        int output = Integer.MAX_VALUE;
+        int half = n / 2;
+        int[] a = Arrays.copyOfRange(nums, 0, half);
+        int[] b = Arrays.copyOfRange(nums, half, n);
+        List<Integer> psA = new ArrayList<>();
+        List<Integer> psB = new ArrayList<>();
+        powerSetSum(a, psA, 0, 0);
+        powerSetSum(b, psB, 0, 0);
+        Collections.sort(psB);
+        System.out.println(psA);
+        System.out.println(psB);
+        for (Integer sumA : psA) {
+            Integer requiredB = goal - sumA;
+            int indexB = Collections.binarySearch(psB, requiredB);
+            if (indexB >= 0) return 0;
+            indexB = - (indexB + 1);
+            if (indexB > 0) output = Math.min(output, Math.abs((sumA + psB.get(indexB-1)) - goal));
+            if (indexB < psB.size()) output = Math.min(output, Math.abs((sumA + psB.get(indexB)) - goal));
+        }
+        return output;
+    }
+    public static void powerSetSum(int[] numbers, List<Integer> powerset, int index, int sum) {
+        powerset.add(sum);
+        for (int i = index; i < numbers.length; i++) {
+            powerSetSum(numbers, powerset, i + 1, sum + numbers[i]);
+        }
+    }
+
 
     public int numMatchingSubseq(String s, String[] words) {
         List<char[]>[] dictionary = new List[26];
