@@ -143,6 +143,30 @@ public class Practice5 {
 
     }
 
+
+    public int numMatchingSubseq(String s, String[] words) {
+        List<char[]>[] dictionary = new List[26];
+        for (int i = 0; i < 26; i++) dictionary[i] = new ArrayList<>();
+        for (String word : words) {
+            char[] charArr = word.toCharArray();
+            dictionary[charArr[0] - 'a'].add(charArr);
+        }
+        int output = 0;
+        for (char c : s.toCharArray()) {
+            if (dictionary[c - 'a'].isEmpty()) continue;
+            List<char[]> charList = new ArrayList<>(dictionary[c - 'a']);
+            dictionary[c - 'a'].clear();
+            for (char[] charArr : charList) {
+                if (charArr.length == 1) {
+                    output++;
+                } else {
+                    char[] subCharArr = Arrays.copyOfRange(charArr, 1, charArr.length);
+                    dictionary[subCharArr[0] - 'a'].add(subCharArr);
+                }
+            }
+        }
+        return output;
+    }
     public int subsequenceCount(int[] nums) {
         int mod = 1000000007;
         int odd = 0;
