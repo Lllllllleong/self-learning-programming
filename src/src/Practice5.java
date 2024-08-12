@@ -143,6 +143,37 @@ public class Practice5 {
 
     }
 
+    public boolean checkPartitioning(String s) {
+        int sLength = s.length();
+        if (sLength <= 3) return true;
+        boolean[][] dp = new boolean[sLength+1][3];
+        boolean[][] palindromeDP = new boolean[sLength][sLength];
+        char[] sChar = s.toCharArray();
+        for (int i = sLength - 1; i >= 0; i--) {
+            char start = sChar[i];
+            for (int j = i; j < sLength; j++) {
+                char end = sChar[j];
+                if (i == j) palindromeDP[i][j] = true;
+                else if (i == j-1) palindromeDP[i][j] = (start == end);
+                else if (start == end && palindromeDP[i+1][j-1]) {
+                    palindromeDP[i][j] = true;
+                }
+            }
+        }
+        for (int i = sLength - 1; i >= 0; i--) {
+            dp[i][0] = palindromeDP[i][sLength-1];
+            for (int j = sLength - 1; j >= 0; j--) {
+                if (palindromeDP[i][j]) {
+                    if (dp[j+1][0]) dp[i][1] = true;
+                    if (dp[j+1][1]) dp[i][2] = true;
+                }
+            }
+        }
+        return dp[0][2];
+    }
+
+
+
     public int minAbsDifference(int[] nums, int goal) {
         int n = nums.length;
         if (n == 1) {
