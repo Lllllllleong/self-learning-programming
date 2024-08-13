@@ -143,6 +143,7 @@ public class Practice5 {
 
     }
 
+
     public int countPalindromes(String s) {
         int MOD = 1000000007;
         long output = 0;
