@@ -140,6 +140,27 @@ public class Practice6 {
 
     }
 
+    public int minOperations(int n) {
+        int output = 0;
+        char[] binaryString = Integer.toBinaryString(n).toCharArray();
+        int bsLength = binaryString.length;
+        char[] bsChar = new char[bsLength+1];
+        bsChar[0] = '0';
+        for (int i = 0; i < bsLength; i++) {
+            bsChar[i+1] = binaryString[i];
+        }
+        for (int i = bsChar.length - 1; i >= 0; i--) {
+            if (bsChar[i] == '1') {
+                output++;
+                if (i - 1 >= 0 && bsChar[i-1] == '1') {
+                    while (i - 1 >= 0 && bsChar[i-1] == '1') i--;
+                    bsChar[i-1] = '1';
+                }
+            }
+        }
+        return output;
+    }
+
     public int maxPalindromes(String s, int k) {
         int n = s.length();
         char[] sChar = s.toCharArray();
