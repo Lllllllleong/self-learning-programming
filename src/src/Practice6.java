@@ -139,38 +139,62 @@ public class Practice6 {
         Practice5 practice5 = new Practice5();
 
     }
-    class Solution {
-        public int minOperations(int[] nums) {
-            int n = nums.length;
-            int zero = 0;
-            int one = 0;
-            for (int i = n - 1; i >= 0; i--) {
-                int num = nums[i];
-                if (num == 1) {
-                    zero = Math.min(zero + 2, one + 1);
-                } else {
-                    one = Math.min(one + 2, zero + 1);
+
+    public int maxTotalReward(int[] rewardValues) {
+        int n = rewardValues.length;
+        if (n == 1) return rewardValues[0];
+        Arrays.sort(rewardValues);
+        int max = rewardValues[n-1];
+        boolean[] dp = new boolean[max + 1];
+        dp[0] = true;
+        int prior = -1;
+        int output = 0;
+        for (int i : rewardValues) {
+            if (i == prior) continue;
+            prior = i;
+            for (int j = i-1; j >= 0; j--) {
+                if (dp[j]) {
+                    int next = j + i;
+                    if (next < max) dp[next] = true;
+                    else output = Math.max(output, next);
                 }
+
             }
-            one = Math.min(one, zero + 1);
-            return one;
         }
+        return output;
+    }
+
+    public int minOperations(int[] nums) {
+        int n = nums.length;
+        int zero = 0;
+        int one = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            int num = nums[i];
+            if (num == 1) {
+                zero = Math.min(zero + 2, one + 1);
+            } else {
+                one = Math.min(one + 2, zero + 1);
+            }
+        }
+        one = Math.min(one, zero + 1);
+        return one;
+    }
 
     public int minOperations(int n) {
         int output = 0;
         char[] binaryString = Integer.toBinaryString(n).toCharArray();
         int bsLength = binaryString.length;
-        char[] bsChar = new char[bsLength+1];
+        char[] bsChar = new char[bsLength + 1];
         bsChar[0] = '0';
         for (int i = 0; i < bsLength; i++) {
-            bsChar[i+1] = binaryString[i];
+            bsChar[i + 1] = binaryString[i];
         }
         for (int i = bsChar.length - 1; i >= 0; i--) {
             if (bsChar[i] == '1') {
                 output++;
-                if (i - 1 >= 0 && bsChar[i-1] == '1') {
-                    while (i - 1 >= 0 && bsChar[i-1] == '1') i--;
-                    bsChar[i-1] = '1';
+                if (i - 1 >= 0 && bsChar[i - 1] == '1') {
+                    while (i - 1 >= 0 && bsChar[i - 1] == '1') i--;
+                    bsChar[i - 1] = '1';
                 }
             }
         }
@@ -181,25 +205,23 @@ public class Practice6 {
         int n = s.length();
         char[] sChar = s.toCharArray();
         boolean[] palindromeDP = new boolean[n];
-        int[] dp = new int[n+1];
+        int[] dp = new int[n + 1];
         for (int i = n - 1; i >= 0; i--) {
             char c = sChar[i];
             for (int j = n - 1; j >= i; j--) {
                 char d = sChar[j];
-                boolean flag = (j - i <= 2) ? true : palindromeDP[j-1];
+                boolean flag = (j - i <= 2) ? true : palindromeDP[j - 1];
                 if (c == d && flag) {
                     palindromeDP[j] = true;
-                    if (j - i + 1 >= k) dp[i] = Math.max(dp[i], dp [j+1] + 1);
+                    if (j - i + 1 >= k) dp[i] = Math.max(dp[i], dp[j + 1] + 1);
                 } else {
                     palindromeDP[j] = false;
                 }
             }
-            dp[i] = Math.max(dp[i], dp[i+1]);
+            dp[i] = Math.max(dp[i], dp[i + 1]);
         }
         return dp[0];
     }
-
-
 
 
     public int countGoodStrings(int low, int high, int zero, int one) {
@@ -213,11 +235,11 @@ public class Practice6 {
             if (l == 0) continue;
             if (i + zero <= high) {
                 dp[i + zero] += l;
-                dp[i+zero] %= mod;
+                dp[i + zero] %= mod;
             }
             if (i + one <= high) {
                 dp[i + one] += l;
-                dp[i+one] %= mod;
+                dp[i + one] %= mod;
             }
             if (i >= low) output = (output + dp[i]) % mod;
         }
@@ -227,7 +249,7 @@ public class Practice6 {
     public List<Integer> goodIndices(int[] nums, int k) {
         int n = nums.length;
         List<Integer> output = new ArrayList<>();
-        boolean[] dp = new boolean[n+2];
+        boolean[] dp = new boolean[n + 2];
         int prior = Integer.MAX_VALUE;
         int consecCounter = 0;
         for (int i = n - 1; i >= 0; i--) {
@@ -249,12 +271,12 @@ public class Practice6 {
             } else {
                 consecCounter++;
             }
-            if (consecCounter >= k && dp[i+2]) output.add(i+1);
+            if (consecCounter >= k && dp[i + 2]) output.add(i + 1);
             prior = num;
         }
         return output;
     }
-
-
-
 }
+
+
+
