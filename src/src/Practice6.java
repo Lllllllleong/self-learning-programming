@@ -139,6 +139,22 @@ public class Practice6 {
         Practice5 practice5 = new Practice5();
 
     }
+    class Solution {
+        public int minOperations(int[] nums) {
+            int n = nums.length;
+            int zero = 0;
+            int one = 0;
+            for (int i = n - 1; i >= 0; i--) {
+                int num = nums[i];
+                if (num == 1) {
+                    zero = Math.min(zero + 2, one + 1);
+                } else {
+                    one = Math.min(one + 2, zero + 1);
+                }
+            }
+            one = Math.min(one, zero + 1);
+            return one;
+        }
 
     public int minOperations(int n) {
         int output = 0;
