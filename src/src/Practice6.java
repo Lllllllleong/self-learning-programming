@@ -140,6 +140,22 @@ public class Practice6 {
 
     }
 
+    public int removeAlmostEqualCharacters(String word) {
+        int n = word.length();
+        char[] chars = word.toCharArray();
+        int output = 0;
+        for (int i = 1; i < n; i++) {
+            int aChar = chars[i-1] - 'a';
+            int bChar = chars[i] - 'a';
+            int diff = Math.abs(aChar - bChar);
+            if (diff <= 1 || diff == 26) {
+                i++;
+                output++;
+            }
+        }
+        return output;
+    }
+
     public List<Integer> shortestDistanceColor(int[] colors, int[][] queries) {
         List<Integer> output = new ArrayList<>();
         int n = colors.length;
