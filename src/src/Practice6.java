@@ -140,12 +140,32 @@ public class Practice6 {
 
     }
 
+    public int maximumSum(int[] arr) {
+        int n = arr.length;
+        if (n == 1) return arr[0];
+        int[] cache = new int[2];
+        int output = Integer.MIN_VALUE;
+        for (int i = 0; i < n; i++) {
+            int num = arr[i];
+            cache[0] += num;
+            cache[1] += num;
+            if (cache[0] != num) {
+                cache[1] = Math.max(cache[1], cache[0] - num);
+            }
+            output = Math.max(output, Math.max(cache[0], cache[1]));
+            cache[0] = Math.max(cache[0], 0);
+            cache[1] = Math.max(cache[1], 0);
+        }
+        return output;
+    }
+
+
     public int removeAlmostEqualCharacters(String word) {
         int n = word.length();
         char[] chars = word.toCharArray();
         int output = 0;
         for (int i = 1; i < n; i++) {
-            int aChar = chars[i-1] - 'a';
+            int aChar = chars[i - 1] - 'a';
             int bChar = chars[i] - 'a';
             int diff = Math.abs(aChar - bChar);
             if (diff <= 1 || diff == 26) {
@@ -191,8 +211,6 @@ public class Practice6 {
         }
         return output;
     }
-
-
 
 
     public int minCost(int maxTime, int[][] edges, int[] passingFees) {
@@ -243,7 +261,7 @@ public class Practice6 {
         int n = rewardValues.length;
         if (n == 1) return rewardValues[0];
         Arrays.sort(rewardValues);
-        int max = rewardValues[n-1];
+        int max = rewardValues[n - 1];
         boolean[] dp = new boolean[max + 1];
         dp[0] = true;
         int prior = -1;
@@ -251,7 +269,7 @@ public class Practice6 {
         for (int i : rewardValues) {
             if (i == prior) continue;
             prior = i;
-            for (int j = i-1; j >= 0; j--) {
+            for (int j = i - 1; j >= 0; j--) {
                 if (dp[j]) {
                     int next = j + i;
                     if (next < max) dp[next] = true;
