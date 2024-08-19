@@ -140,6 +140,18 @@ public class Practice6 {
 
     }
 
+    public boolean makePalindrome(String s) {
+        int n = s.length();
+        char[] chars = s.toCharArray();
+        int left = 0;
+        int right = n-1;
+        int counter = 0;
+        while (left <= right) {
+            if (chars[left++] != chars[right--]) counter++;
+        }
+        return (counter <= 2);
+    }
+
     public int palindromePartition(String s, int k) {
         char[] chars = s.toCharArray();
         int n = chars.length;
@@ -162,11 +174,10 @@ public class Practice6 {
             int upperBound = n - 1 - i;
             int[] currentCache = new int[n];
             for (int j = upperBound; j >= 0; j--) {
-                 currentCache[j] = Integer.MAX_VALUE;
+                currentCache[j] = Integer.MAX_VALUE;
                 for (int l = j; l <= upperBound; l++) {
                     currentCache[j] = Math.min(currentCache[j], dp[j][l] + cache[l+1]);
                 }
-                currentCache[j] = currentMin;
             }
             cache = currentCache;
         }
