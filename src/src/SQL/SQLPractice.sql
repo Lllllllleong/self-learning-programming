@@ -2,6 +2,16 @@
 -- SQL Practice
 --
 SELECT
+    class
+FROM
+    Courses
+GROUP BY
+    class
+HAVING COUNT(student) >= 5;
+
+
+
+SELECT
     activity_date AS day,
     COUNT(DISTINCT(user_id)) AS active_users
 FROM

@@ -140,6 +140,23 @@ public class Practice6 {
 
     }
 
+    public int garbageCollection(String[] garbage, int[] travel) {
+        int n = garbage.length;
+        //G, P, M
+        int[] cache = new int[3];
+        int output = 0;
+        for (int i = 0; i < n; i++) {
+            char[] chars = garbage[i].toCharArray();
+            for (char c : chars) {
+                int j = (c == 'G') ? 0 : (c == 'P') ? 1 : 2;
+                while (cache[j] < i) output += travel[cache[j]++];
+                output += 1;
+            }
+        }
+        return output;
+    }
+
+
     public boolean makePalindrome(String s) {
         int n = s.length();
         char[] chars = s.toCharArray();
