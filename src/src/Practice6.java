@@ -157,6 +157,7 @@ public class Practice6 {
     }
 
 
+
     public boolean makePalindrome(String s) {
         int n = s.length();
         char[] chars = s.toCharArray();
