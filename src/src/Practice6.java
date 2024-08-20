@@ -140,6 +140,23 @@ public class Practice6 {
 
     }
 
+
+    public long maximumValueSum(int[] nums, int k, int[][] edges) {
+        int n = nums.length;
+        long[][] dp = new long[n + 1][2];
+        //Base case: The last node cannot XOR by itself
+        //Let dp[i][1] mean xor, and dp[i][0] mean not to xor
+        dp[n][0] = 0;
+        dp[n][1] = Long.MIN_VALUE;
+        for (int i = n - 1; i >= 0; i--) {
+            long num = nums[i];
+            long numXOR = num ^ k;
+            dp[i][0] = Math.max(numXOR + dp[i + 1][1], num + dp[i + 1][0]);
+            dp[i][1] = Math.max(numXOR + dp[i + 1][0], num + dp[i + 1][1]);
+        }
+        return dp[0][0];
+    }
+
     public int garbageCollection(String[] garbage, int[] travel) {
         int n = garbage.length;
         //G, P, M
