@@ -140,6 +140,16 @@ public class Practice6 {
 
     }
 
+
+    public int longestString(int x, int y, int z) {
+        int mn = Math.min(x, y);
+        if (x == y) {
+            return (4 * x + 2 * z);
+        } else {
+            return (2 * mn + (mn + 1) * 2 + 2 * z);
+        }
+    }
+
     public long zeroFilledSubarray(int[] nums) {
         long output = 0;
         long counter = 0;
