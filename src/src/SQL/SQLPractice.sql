@@ -2,6 +2,15 @@
 -- SQL Practice
 --
 SELECT
+    *
+FROM
+    cinema
+WHERE
+    mod(id, 2) = 1 AND description != 'boring'
+ORDER BY
+    rating DESC;
+
+SELECT
     a.student_id,
     a.student_name,
     b.subject_name,
