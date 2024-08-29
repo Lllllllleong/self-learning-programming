@@ -2,6 +2,15 @@
 -- SQL Practice
 --
 SELECT
+    project_id,
+    ROUND(AVG(experience_years), 2) as average_years
+FROM
+    Project p LEFT JOIN Employee e ON p.employee_id = e.employee_id
+GROUP BY
+    project_id;
+
+
+SELECT
     p.product_id,
     IFNULL(ROUND(SUM(units*price)/SUM(units),2),0) AS average_price
 FROM
