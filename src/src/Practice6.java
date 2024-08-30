@@ -141,8 +141,26 @@ public class Practice6 {
     }
 
 
+    class Solution {
 
+        public List<Integer> list;
+        public Random rand;
 
+        public Solution(ListNode head) {
+            list = new ArrayList<>();
+            rand = new Random();
+            list.add(head.val);
+            ListNode current = head.next;
+            while (current != null) {
+                list.add(current.val);
+                current = current.next;
+            }
+        }
+
+        public int getRandom() {
+            return list.get(rand.nextInt(list.size()));
+        }
+    }
 
 
 
