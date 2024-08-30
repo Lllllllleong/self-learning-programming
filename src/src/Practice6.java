@@ -139,6 +139,23 @@ public class Practice6 {
         Practice5 practice5 = new Practice5();
 
     }
+
+
+
+
+
+
+
+    public long maxEnergyBoost(int[] energyDrinkA, int[] energyDrinkB) {
+        int n = energyDrinkA.length;
+        long[][] dp = new long[n+2][2];
+        for (int i = n - 1; i >= 0; i--) {
+            dp[i][0] = Math.max(energyDrinkA[i] + dp[i+1][0], energyDrinkA[i] + dp[i+2][1]);
+            dp[i][1] = Math.max(energyDrinkB[i] + dp[i+1][1], energyDrinkB[i] + dp[i+2][0]);
+        }
+        return Math.max(dp[0][0], dp[0][1]);
+    }
+
     public int rob(TreeNode root) {
         int[] result = robTree(root);
         return Math.max(result[0], result[1]);
