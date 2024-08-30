@@ -140,27 +140,57 @@ public class Practice6 {
 
     }
 
-
     class Solution {
-
-        public List<Integer> list;
-        public Random rand;
-
-        public Solution(ListNode head) {
-            list = new ArrayList<>();
-            rand = new Random();
-            list.add(head.val);
-            ListNode current = head.next;
-            while (current != null) {
-                list.add(current.val);
-                current = current.next;
-            }
+        int[] original;
+        int[] current;
+        int n = 0;
+        Random r;
+        public Solution(int[] nums) {
+            n = nums.length;
+            original = nums.clone();
+            current = nums;
+            r = new Random();
         }
 
-        public int getRandom() {
-            return list.get(rand.nextInt(list.size()));
+        public int[] reset() {
+            current = original.clone();
+            return current;
+        }
+
+        public int getRandomFromRange(int start, int end) {
+            return r.nextInt((end - start)) + start;
+        }
+        public int[] shuffle() {
+            for (int i = 0; i < n; i++) {
+                int randomIndex = getRandomFromRange(i, n);
+                int temp = current[i];
+                current[i] = current[randomIndex];
+                current[randomIndex] = temp;
+            }
+            return current;
         }
     }
+
+//    class Solution {
+//
+//        public List<Integer> list;
+//        public Random rand;
+//
+//        public Solution(ListNode head) {
+//            list = new ArrayList<>();
+//            rand = new Random();
+//            list.add(head.val);
+//            ListNode current = head.next;
+//            while (current != null) {
+//                list.add(current.val);
+//                current = current.next;
+//            }
+//        }
+//
+//        public int getRandom() {
+//            return list.get(rand.nextInt(list.size()));
+//        }
+//    }
 
 
 
