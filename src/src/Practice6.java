@@ -141,7 +141,30 @@ public class Practice6 {
     }
 
 
-
+    public int kConcatenationMaxSum(int[] arr, int k) {
+        long M = 1000000007;
+        long arrSum = 0;
+        long firstMax = 0;
+        long firstSum = 0;
+        for (int i : arr) {
+            arrSum += i;
+            firstSum += i;
+            firstMax = Math.max(firstMax, firstSum);
+            firstSum = Math.max(firstSum, 0);
+        }
+        if (k == 1) return (int) (firstMax % M);
+        long secondMax = firstMax;
+        long secondSum = firstSum;
+        for (int i : arr) {
+            secondSum += i;
+            secondMax = Math.max(secondMax, secondSum);
+            secondSum = Math.max(secondSum, 0);
+        }
+        if (secondMax == firstMax) return (int) (firstMax % M);
+        if (arrSum <= 0 || k == 2) return (int) (secondMax % M);
+        long result = ((secondMax % M) + (((k - 2) * arrSum) % M)) % M;
+        return (int) result;
+    }
 
     public int minimumOperations(List<Integer> nums) {
         int n = nums.size();
