@@ -140,6 +140,31 @@ public class Practice6 {
 
     }
 
+    public int numTeams(int[] rating) {
+        TreeMap<Integer, Integer> lowerTM = new TreeMap<>();
+        TreeMap<Integer, Integer> higherTM = new TreeMap<>();
+        int output = 0;
+        for (Integer I : rating) {
+            int numLower = 0;
+            Integer lowerKey = lowerTM.lowerKey(I);
+            while (lowerKey != null) {
+                output += lowerTM.get(lowerKey);
+                numLower++;
+                lowerKey = lowerTM.lowerKey(lowerKey);
+            }
+            lowerTM.put(I, numLower);
+            int numHigher = 0;
+            Integer higherKey = higherTM.higherKey(I);
+            while (higherKey != null) {
+                output += higherTM.get(higherKey);
+                numHigher++;
+                higherKey = higherTM.higherKey(higherKey);
+            }
+            higherTM.put(I, numHigher);
+        }
+        return output;
+    }
+
 
     public int kConcatenationMaxSum(int[] arr, int k) {
         long M = 1000000007;
