@@ -140,6 +140,35 @@ public class Practice6 {
 
     }
 
+
+    public int longestIdealString(String s, int k) {
+        int[] dp = new int[26];
+        char[] sChars = s.toCharArray();
+        int output = 0;
+        for (char c : sChars) {
+            int charIndex = c - 'a';
+            int i = charIndex;
+            int nextDifference = 1;
+            dp[charIndex]++;
+            while (nextDifference <= k && i > 0) {
+                i--;
+                nextDifference++;
+                dp[charIndex] = Math.max(dp[charIndex], dp[i] + 1);
+            }
+            i = charIndex;
+            nextDifference = 1;
+            while (nextDifference <= k && i < 25) {
+                i++;
+                nextDifference++;
+                dp[charIndex] = Math.max(dp[charIndex], dp[i] + 1);
+            }
+            output = Math.max(output, dp[charIndex]);
+        }
+        return output;
+    }
+
+
+
     public int numTeams(int[] rating) {
         TreeMap<Integer, Integer> lowerTM = new TreeMap<>();
         TreeMap<Integer, Integer> higherTM = new TreeMap<>();
