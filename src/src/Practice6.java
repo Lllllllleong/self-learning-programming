@@ -141,6 +141,25 @@ public class Practice6 {
         System.out.println(Arrays.toString(practice6.sortArray(nums)));
     }
 
+    public int hIndex(int[] citations) {
+        int n = citations.length;
+        int[] prefixSum = new int[n + 1];
+        for (int c : citations) {
+            if (c >= n) {
+                prefixSum[n]++;
+            } else {
+                prefixSum[c]++;
+            }
+        }
+        int remainingPapers = 0;
+        for (int h = n; h >= 0; h--) {
+            remainingPapers += prefixSum[h];
+            if (remainingPapers >= h) {
+                return h;
+            }
+        }
+        return 0;
+    }
 
     public int[] sortArray(int[] nums) {
         int n = nums.length;
