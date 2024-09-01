@@ -136,8 +136,46 @@ public class Practice6 {
     }
 
     public static void main(String[] args) {
-        Practice5 practice5 = new Practice5();
+        Practice6 practice6 = new Practice6();
+        int[] nums = new int[]{110, 100, 0};
+        System.out.println(Arrays.toString(practice6.sortArray(nums)));
+    }
 
+
+    public int[] sortArray(int[] nums) {
+        int n = nums.length;
+        Random rand = new Random();
+        randomQuickSort(nums, 0, n-1, rand);
+        return nums;
+    }
+    public void randomQuickSort(int[] nums, int a, int b, Random rand) {
+        if (a < b) {
+            int randomPivot = randomIndex(a, b, rand);
+            //Swap the pivot number with the end;
+            int pivotNumber = nums[randomPivot];
+            nums[randomPivot] = nums[b];
+            nums[b] = pivotNumber;
+            int i = a-1;
+            int j = a-1;
+            while (++j < b) {
+                if (nums[j] <= pivotNumber) {
+                    i++;
+                    int tmp = nums[j];
+                    nums[j] = nums[i];
+                    nums[i] = tmp;
+                }
+            }
+            //Swap back the pivot
+            nums[b] = nums[i + 1];
+            nums[i+1] = pivotNumber;
+            randomQuickSort(nums, a, i, rand);
+            randomQuickSort(nums, i+2, b, rand);
+        }
+    }
+    public int randomIndex(int a, int b, Random rand) {
+        int range = b - a + 1;
+        int output = a + rand.nextInt(range);
+        return output;
     }
 
     public int minCut(String s) {
