@@ -1,3 +1,4 @@
+import java.sql.*;
 import java.util.*;
 
 public class Practice6 {
@@ -139,6 +140,28 @@ public class Practice6 {
         Practice6 practice6 = new Practice6();
         int[] nums = new int[]{1,3,5,3,3,7,1,7,3};
 
+    }
+
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
+        int n = nums.length;
+        HashMap<Integer, Integer> bucketMap = new HashMap<>();
+        int bucketSize = valueDiff + 1;
+        int offset = Integer.MAX_VALUE;
+        for (int i : nums) offset = Math.min(offset, i);
+        for (int i = 0; i < n; i++) {
+            int num = nums[i];
+            int bucketKey = (num - offset) / bucketSize;
+            if (bucketMap.containsKey(bucketKey)) return true;
+            if (bucketMap.containsKey(bucketKey - 1)
+                    && Math.abs(nums[i] - nums[bucketMap.get(bucketKey - 1)]) <= valueDiff) return true;
+            if (bucketMap.containsKey(bucketKey + 1)
+                    && Math.abs(nums[i] - nums[bucketMap.get(bucketKey + 1)]) <= valueDiff) return true;
+            bucketMap.put(bucketKey, i);
+            if (i >= indexDiff) {
+                bucketMap.remove(((nums[i - indexDiff]) - offset) / bucketSize);
+            }
+        }
+        return false;
     }
 
     TreeNode tnOutput = null;
