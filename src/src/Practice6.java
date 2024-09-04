@@ -142,6 +142,17 @@ public class Practice6 {
 
     }
 
+
+    public int minSteps(int n) {
+        int output = 0;
+        for (int i = 2; n > 1; i++) {
+            while (n % i == 0) {
+                output += i;
+                n /= i;
+            }
+        }
+        return output;
+    }
     public boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
         int n = nums.length;
         HashMap<Integer, Integer> bucketMap = new HashMap<>();
