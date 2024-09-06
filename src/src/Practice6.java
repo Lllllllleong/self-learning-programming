@@ -142,6 +142,25 @@ public class Practice6 {
 
     }
 
+    public int validSubarrays(int[] nums) {
+        int n = nums.length;
+        int output = 0;
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            int num = nums[i];
+            while (!dq.isEmpty() && nums[dq.peekLast()] > num) {
+                output += (i - dq.pollLast());
+            }
+            dq.addLast(i);
+        }
+        while (!dq.isEmpty()) {
+            output += (n - dq.pollFirst());
+        }
+        return output;
+    }
+
+
+
     public int bagOfTokensScore(int[] tokens, int power) {
         int n = tokens.length;
         Arrays.sort(tokens);
