@@ -142,6 +142,38 @@ public class Practice6 {
 
     }
 
+    class Solution {
+        public int minimumDeletions(int[] nums) {
+            int n = nums.length;
+            if (n <= 3) {
+                if (n == 1) return 1;
+                else return 2;
+            }
+            int min = Integer.MAX_VALUE;
+            int max = Integer.MIN_VALUE;
+            int minIndex = -1;
+            int maxIndex = -1;
+            for (int i = 0; i < n; i++) {
+                int num = nums[i];
+                if (num < min) {
+                    minIndex = i;
+                    min = num;
+                }
+                if (num > max) {
+                    maxIndex = i;
+                    max = num;
+                }
+            }
+            int lowerIndex = Math.min(minIndex, maxIndex);
+            int upperIndex = Math.max(minIndex, maxIndex);
+            int output = Integer.MAX_VALUE;
+            output = Math.min(output, upperIndex + 1);
+            output = Math.min(output, n-lowerIndex);
+            output = Math.min(output, (lowerIndex + 1 + (n - upperIndex)));
+            return output;
+        }
+
+    }
     public String largestTimeFromDigits(int[] arr) {
         int maxHour = -1;
         int maxMin = -1;
