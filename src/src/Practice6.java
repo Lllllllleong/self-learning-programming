@@ -145,23 +145,16 @@ public class Practice6 {
     class Solution {
 
         public List<List<String>> groupAnagrams(String[] strs) {
-            HashMap<String, List<String>> hm = new HashMap<>();
-            List<List<String>> output = new ArrayList<>();
+            HashMap<List<Integer>, List<String>> hm = new HashMap<>();
             for (String s : strs) {
-                char[] chars = s.toCharArray();
-                int[] charFrequency = new int[26];
-                for (char c : chars)
+                Integer[] charFrequency = new Integer[26];
+                Arrays.fill(charFrequency,0);
+                for (char c : s.toCharArray())
                     charFrequency[c - 'a']++;
-                StringBuilder sb = new StringBuilder();
-                for (int i : charFrequency) {
-                    sb.append(i);
-                    sb.append(',');
-                }
-                hm.computeIfAbsent(sb.toString(), k -> new ArrayList<>()).add(s);
+                List<Integer> key = Arrays.asList(charFrequency);
+                hm.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
             }
-            for (var v : hm.values())
-                output.add(v);
-            return output;
+            return new ArrayList<>(hm.values());
         }
 
         public boolean isAnagram(String s, String t) {
