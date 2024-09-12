@@ -138,128 +138,146 @@ public class Practice6 {
 
     public static void main(String[] args) {
         Practice6 practice6 = new Practice6();
-        int[] nums = new int[]{1,3,5,3,3,7,1,7,3};
+        int[] nums = new int[]{1, 3, 5, 3, 3, 7, 1, 7, 3};
 
+        String a = "catg";
+        String b = "atgcatc";
     }
 
-    class Solution {
-
-
-        public int peopleAwareOfSecret(int n, int delay, int forget) {
-            int MOD = 1_000_000_007;
-            long[] dp = new long[n + 1];
-            dp[1] = 1;
-            long currentSharers = 0;
-            for (int i = 1; i <= n; i++) {
-                currentSharers = (currentSharers + dp[i]) % MOD;
-                if (i + delay <= n) {
-                    dp[i + delay] = (dp[i + delay] + currentSharers) % MOD;
-                }
-                if (i + forget <= n) {
-                    dp[i + forget] = (dp[i + forget] - currentSharers + MOD) % MOD;
-                }
+    public int maximumLength(int[] nums, int k) {
+        int n = nums.length;
+        int[][] dp = new int[n][k];
+        int output = 0;
+        for (int i = 0; i < n; i++) {
+            int a = nums[i];
+            for (int j = i+1; j < n; j++) {
+                int b = nums[j];
+                int mod = (a + b) % k;
+                dp[j][mod] = Math.max(dp[j][mod], dp[i][mod] + 1);
+                output = Math.max(output, dp[j][mod]);
             }
-            long result = 0;
-            for (int i = n - forget + 1; i <= n; i++) {
-                result = (result + dp[i]) % MOD;
-            }
-            return (int) result;
         }
-
-
-        public List<List<String>> groupAnagrams(String[] strs) {
-            HashMap<List<Integer>, List<String>> hm = new HashMap<>();
-            for (String s : strs) {
-                Integer[] charFrequency = new Integer[26];
-                Arrays.fill(charFrequency,0);
-                for (char c : s.toCharArray())
-                    charFrequency[c - 'a']++;
-                List<Integer> key = Arrays.asList(charFrequency);
-                hm.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
-            }
-            return new ArrayList<>(hm.values());
-        }
-
-        public boolean isAnagram(String s, String t) {
-            int[] sCharFrequency = new int[26];
-            int[] tCharFrequency = new int[26];
-            for (char c : s.toCharArray()) {
-                sCharFrequency[c-'a']++;
-            }
-            for (char c : t.toCharArray()) {
-                tCharFrequency[c-'a']++;
-            }
-            for (int i = 0; i < 26; i++) {
-                if (sCharFrequency[i] != tCharFrequency[i]) return false;
-            }
-            return true;
-        }
-
-
-        public List<Integer> majorityElement(int[] nums) {
-            List<Integer> output = new ArrayList<>();
-            int a = Integer.MAX_VALUE;
-            int b = Integer.MAX_VALUE;
-            int aFrequency = 0;
-            int bFrequency = 0;
-            for (int i : nums) {
-                if (i == a) {
-                    aFrequency++;
-                } else if (i == b) {
-                    bFrequency++;
-                } else if (aFrequency == 0) {
-                    aFrequency++;
-                    a = i;
-                } else if (bFrequency == 0) {
-                    bFrequency++;
-                    b = i;
-                } else {
-                    aFrequency--;
-                    bFrequency--;
-                }
-            }
-            aFrequency = 0;
-            bFrequency = 0;
-            for (int i : nums) {
-                if (i == a) aFrequency++;
-                if (i == b) bFrequency++;
-            }
-            if (aFrequency > nums.length/3) output.add(a);
-            if (bFrequency > nums.length/3) output.add(b);
-            return output;
-        }
-
-        public int minimumDeletions(int[] nums) {
-            int n = nums.length;
-            if (n <= 3) {
-                if (n == 1) return 1;
-                else return 2;
-            }
-            int min = Integer.MAX_VALUE;
-            int max = Integer.MIN_VALUE;
-            int minIndex = -1;
-            int maxIndex = -1;
-            for (int i = 0; i < n; i++) {
-                int num = nums[i];
-                if (num < min) {
-                    minIndex = i;
-                    min = num;
-                }
-                if (num > max) {
-                    maxIndex = i;
-                    max = num;
-                }
-            }
-            int lowerIndex = Math.min(minIndex, maxIndex);
-            int upperIndex = Math.max(minIndex, maxIndex);
-            int output = Integer.MAX_VALUE;
-            output = Math.min(output, upperIndex + 1);
-            output = Math.min(output, n-lowerIndex);
-            output = Math.min(output, (lowerIndex + 1 + (n - upperIndex)));
-            return output;
-        }
-
+        return output + 1;
     }
+
+
+
+
+    public int peopleAwareOfSecret(int n, int delay, int forget) {
+        int MOD = 1_000_000_007;
+        long[] dp = new long[n + 1];
+        dp[1] = 1;
+        long currentSharers = 0;
+        for (int i = 1; i <= n; i++) {
+            currentSharers = (currentSharers + dp[i]) % MOD;
+            if (i + delay <= n) {
+                dp[i + delay] = (dp[i + delay] + currentSharers) % MOD;
+            }
+            if (i + forget <= n) {
+                dp[i + forget] = (dp[i + forget] - currentSharers + MOD) % MOD;
+            }
+        }
+        long result = 0;
+        for (int i = n - forget + 1; i <= n; i++) {
+            result = (result + dp[i]) % MOD;
+        }
+        return (int) result;
+    }
+
+
+    public List<List<String>> groupAnagrams(String[] strs) {
+        HashMap<List<Integer>, List<String>> hm = new HashMap<>();
+        for (String s : strs) {
+            Integer[] charFrequency = new Integer[26];
+            Arrays.fill(charFrequency, 0);
+            for (char c : s.toCharArray())
+                charFrequency[c - 'a']++;
+            List<Integer> key = Arrays.asList(charFrequency);
+            hm.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
+        }
+        return new ArrayList<>(hm.values());
+    }
+
+    public boolean isAnagram(String s, String t) {
+        int[] sCharFrequency = new int[26];
+        int[] tCharFrequency = new int[26];
+        for (char c : s.toCharArray()) {
+            sCharFrequency[c - 'a']++;
+        }
+        for (char c : t.toCharArray()) {
+            tCharFrequency[c - 'a']++;
+        }
+        for (int i = 0; i < 26; i++) {
+            if (sCharFrequency[i] != tCharFrequency[i]) return false;
+        }
+        return true;
+    }
+
+
+    public List<Integer> majorityElement(int[] nums) {
+        List<Integer> output = new ArrayList<>();
+        int a = Integer.MAX_VALUE;
+        int b = Integer.MAX_VALUE;
+        int aFrequency = 0;
+        int bFrequency = 0;
+        for (int i : nums) {
+            if (i == a) {
+                aFrequency++;
+            } else if (i == b) {
+                bFrequency++;
+            } else if (aFrequency == 0) {
+                aFrequency++;
+                a = i;
+            } else if (bFrequency == 0) {
+                bFrequency++;
+                b = i;
+            } else {
+                aFrequency--;
+                bFrequency--;
+            }
+        }
+        aFrequency = 0;
+        bFrequency = 0;
+        for (int i : nums) {
+            if (i == a) aFrequency++;
+            if (i == b) bFrequency++;
+        }
+        if (aFrequency > nums.length / 3) output.add(a);
+        if (bFrequency > nums.length / 3) output.add(b);
+        return output;
+    }
+
+    public int minimumDeletions(int[] nums) {
+        int n = nums.length;
+        if (n <= 3) {
+            if (n == 1) return 1;
+            else return 2;
+        }
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        int minIndex = -1;
+        int maxIndex = -1;
+        for (int i = 0; i < n; i++) {
+            int num = nums[i];
+            if (num < min) {
+                minIndex = i;
+                min = num;
+            }
+            if (num > max) {
+                maxIndex = i;
+                max = num;
+            }
+        }
+        int lowerIndex = Math.min(minIndex, maxIndex);
+        int upperIndex = Math.max(minIndex, maxIndex);
+        int output = Integer.MAX_VALUE;
+        output = Math.min(output, upperIndex + 1);
+        output = Math.min(output, n - lowerIndex);
+        output = Math.min(output, (lowerIndex + 1 + (n - upperIndex)));
+        return output;
+    }
+
+
     public String largestTimeFromDigits(int[] arr) {
         int maxHour = -1;
         int maxMin = -1;
@@ -283,6 +301,7 @@ public class Practice6 {
         if (maxHour == -1) return "";
         return String.format("%02d:%02d", maxHour, maxMin);
     }
+
     public int validSubarrays(int[] nums) {
         int n = nums.length;
         int output = 0;
@@ -301,14 +320,13 @@ public class Practice6 {
     }
 
 
-
     public int bagOfTokensScore(int[] tokens, int power) {
         int n = tokens.length;
         Arrays.sort(tokens);
         int maxScore = 0;
         int currentScore = 0;
         int left = 0;
-        int right = n-1;
+        int right = n - 1;
         while (left <= right) {
             if (power >= tokens[left]) {
                 power -= tokens[left];
@@ -336,6 +354,7 @@ public class Practice6 {
         }
         return output;
     }
+
     public boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
         int n = nums.length;
         HashMap<Integer, Integer> bucketMap = new HashMap<>();
@@ -403,9 +422,10 @@ public class Practice6 {
     public int[] sortArray(int[] nums) {
         int n = nums.length;
         Random rand = new Random();
-        randomQuickSort(nums, 0, n-1, rand);
+        randomQuickSort(nums, 0, n - 1, rand);
         return nums;
     }
+
     public void randomQuickSort(int[] nums, int a, int b, Random rand) {
         if (a < b) {
             int randomPivot = randomIndex(a, b, rand);
@@ -413,8 +433,8 @@ public class Practice6 {
             int pivotNumber = nums[randomPivot];
             nums[randomPivot] = nums[b];
             nums[b] = pivotNumber;
-            int i = a-1;
-            int j = a-1;
+            int i = a - 1;
+            int j = a - 1;
             while (++j < b) {
                 if (nums[j] <= pivotNumber) {
                     i++;
@@ -425,11 +445,12 @@ public class Practice6 {
             }
             //Swap back the pivot
             nums[b] = nums[i + 1];
-            nums[i+1] = pivotNumber;
+            nums[i + 1] = pivotNumber;
             randomQuickSort(nums, a, i, rand);
-            randomQuickSort(nums, i+2, b, rand);
+            randomQuickSort(nums, i + 2, b, rand);
         }
     }
+
     public int randomIndex(int a, int b, Random rand) {
         int range = b - a + 1;
         int output = a + rand.nextInt(range);
@@ -494,7 +515,6 @@ public class Practice6 {
         }
         return output;
     }
-
 
 
     public int numTeams(int[] rating) {
@@ -617,13 +637,12 @@ public class Practice6 {
 //    }
 
 
-
     public long maxEnergyBoost(int[] energyDrinkA, int[] energyDrinkB) {
         int n = energyDrinkA.length;
-        long[][] dp = new long[n+2][2];
+        long[][] dp = new long[n + 2][2];
         for (int i = n - 1; i >= 0; i--) {
-            dp[i][0] = Math.max(energyDrinkA[i] + dp[i+1][0], energyDrinkA[i] + dp[i+2][1]);
-            dp[i][1] = Math.max(energyDrinkB[i] + dp[i+1][1], energyDrinkB[i] + dp[i+2][0]);
+            dp[i][0] = Math.max(energyDrinkA[i] + dp[i + 1][0], energyDrinkA[i] + dp[i + 2][1]);
+            dp[i][1] = Math.max(energyDrinkB[i] + dp[i + 1][1], energyDrinkB[i] + dp[i + 2][0]);
         }
         return Math.max(dp[0][0], dp[0][1]);
     }
@@ -670,6 +689,7 @@ public class Practice6 {
 
         return maxLen;
     }
+
     public int returnToBoundaryCount(int[] nums) {
         int output = 0;
         int pos = 0;
@@ -703,6 +723,7 @@ public class Practice6 {
         }
         return output;
     }
+
     public long countSubarrays(int[] nums) {
         int prior = Integer.MIN_VALUE;
         long output = 0;
@@ -749,12 +770,11 @@ public class Practice6 {
     }
 
 
-
     public boolean makePalindrome(String s) {
         int n = s.length();
         char[] chars = s.toCharArray();
         int left = 0;
-        int right = n-1;
+        int right = n - 1;
         int counter = 0;
         while (left <= right) {
             if (chars[left++] != chars[right--]) counter++;
@@ -766,19 +786,19 @@ public class Practice6 {
         char[] chars = s.toCharArray();
         int n = chars.length;
         int[][] dp = new int[n][n];
-        int[] cache = new int[n+1];
+        int[] cache = new int[n + 1];
         for (int i = n - 1; i >= 0; i--) {
             char a = chars[i];
-            for (int j = i+1; j < n; j++) {
+            for (int j = i + 1; j < n; j++) {
                 char b = chars[j];
                 if (a != b) {
                     if (j == (i + 1)) dp[i][j] = 1;
-                    else dp[i][j] = dp[i+1][j-1] + 1;
+                    else dp[i][j] = dp[i + 1][j - 1] + 1;
                 } else {
                     dp[i][j] = dp[i + 1][j - 1];
                 }
             }
-            cache[i] = dp[i][n-1];
+            cache[i] = dp[i][n - 1];
         }
         for (int i = 1; i < k; i++) {
             int upperBound = n - 1 - i;
@@ -786,13 +806,14 @@ public class Practice6 {
             for (int j = upperBound; j >= 0; j--) {
                 currentCache[j] = Integer.MAX_VALUE;
                 for (int l = j; l <= upperBound; l++) {
-                    currentCache[j] = Math.min(currentCache[j], dp[j][l] + cache[l+1]);
+                    currentCache[j] = Math.min(currentCache[j], dp[j][l] + cache[l + 1]);
                 }
             }
             cache = currentCache;
         }
         return cache[0];
     }
+
     public int maximumSum(int[] arr) {
         int n = arr.length;
         if (n == 1) return arr[0];
