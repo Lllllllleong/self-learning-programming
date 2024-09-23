@@ -129,6 +129,42 @@ public class Practice6 {
         String b = "atgcatc";
     }
 
+    public int[] pourWater(int[] heights, int volume, int k) {
+        int n = heights.length;
+        while (volume > 0) {
+            volume--;
+            boolean poured = false;
+            int position = k;
+            for (int i = k - 1; i >= 0; i--) {
+                if (heights[i] < heights[position]) {
+                    position = i;
+                } else if (heights[i] > heights[position]) {
+                    break;
+                }
+            }
+            if (position != k) {
+                heights[position]++;
+                poured = true;
+            } else {
+                for (int i = k + 1; i < n; i++) {
+                    if (heights[i] < heights[position]) {
+                        position = i;
+                    } else if (heights[i] > heights[position]) {
+                        break;
+                    }
+                }
+                if (position != k) {
+                    heights[position]++;
+                    poured = true;
+                }
+            }
+            if (!poured) {
+                heights[k]++;
+            }
+        }
+        return heights;
+    }
+
     public long validSubstringCount(String word1, String word2) {
         int n = word1.length();
         long output = 0;
