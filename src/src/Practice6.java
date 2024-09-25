@@ -127,8 +127,38 @@ public class Practice6 {
 
         String a = "catg";
         String b = "atgcatc";
+
+
+        StringBuilder sb = new StringBuilder();
+        for (int i : nums) sb.append(i);
+        System.out.println(sb.toString());
     }
 
+
+    public int countMatchingSubarrays(int[] nums, int[] pattern) {
+        int n = nums.length;
+        int p = pattern.length;
+        int output = 0;
+        StringBuilder sb = new StringBuilder();
+        for (int i : pattern) sb.append(i + 1);
+        String patternString = sb.toString();
+        sb = new StringBuilder();
+        for (int i = 1; i < n; i++) {
+            int previous = nums[i-1];
+            int current = nums[i];
+            int currentPatternChar = Integer.compare(current, previous) + 1;
+            if (sb.length() >= p) {
+                sb.delete(0,1);
+            }
+            sb.append(currentPatternChar);
+            if (sb.length() == p) {
+                String currentString = sb.toString();
+                System.out.println(currentString);
+                if (patternString.equals(currentString)) output++;
+            }
+        }
+        return output;
+    }
 
     public long maximumSubarraySum(int[] nums, int k) {
         int n = nums.length;
