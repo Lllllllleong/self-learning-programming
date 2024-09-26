@@ -105,17 +105,20 @@ public class Practice6 {
     }
 
     public class ListNode {
+        int key;
         int val;
         ListNode next;
 
         ListNode() {
         }
 
-        ListNode(int val) {
+        ListNode(int key, int val) {
+            this.key = key;
             this.val = val;
         }
 
-        ListNode(int val, ListNode next) {
+        ListNode(int key, int val, ListNode next) {
+            this.key = key;
             this.val = val;
             this.next = next;
         }
@@ -132,6 +135,28 @@ public class Practice6 {
         StringBuilder sb = new StringBuilder();
         for (int i : nums) sb.append(i);
         System.out.println(sb.toString());
+    }
+
+
+
+    class MyCalendar {
+
+        ListNode ln;
+        public MyCalendar() {
+            ln = new ListNode(-2, -1, null);
+        }
+        public boolean book(int start, int end) {
+            ListNode prev = ln;
+            ListNode next = ln.next;
+            while (next != null && next.key < end) {
+                prev = next;
+                next = next.next;
+            }
+            if (prev.val > start) return false;
+            ListNode current = new ListNode(start, end, next);
+            prev.next = current;
+            return true;
+        }
     }
 
 
