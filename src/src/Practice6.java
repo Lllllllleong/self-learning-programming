@@ -137,6 +137,29 @@ public class Practice6 {
         System.out.println(sb.toString());
     }
 
+
+    public int[] frequencySort(int[] nums) {
+        int n = nums.length;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        List<Integer> list = new ArrayList<>();
+        for (int i : nums) {
+            hm.merge(i, 1, Integer::sum);
+            list.add(i);
+        }
+        Collections.sort(list, (a, b) -> {
+            int freqA = hm.get(a);
+            int freqB = hm.get(b);
+            if (freqA == freqB) {
+                return Integer.compare(b, a);
+            }
+            return Integer.compare(freqA, freqB);
+        });
+        for (int i = 0; i < n; i++) {
+            nums[i] = list.get(i);
+        }
+        return nums;
+    }
+
     public int[] arrayRankTransform(int[] arr) {
         int[] arrClone = arr.clone();
         Arrays.sort(arrClone);
