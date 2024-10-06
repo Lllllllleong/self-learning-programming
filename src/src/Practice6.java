@@ -137,6 +137,24 @@ public class Practice6 {
         System.out.println(sb.toString());
     }
 
+    public boolean areSentencesSimilar(String sentence1, String sentence2) {
+        String[] words1 = sentence1.split(" ");
+        String[] words2 = sentence2.split(" ");
+
+        int prefixMatch = 0;
+        while (prefixMatch < words1.length && prefixMatch < words2.length &&
+                words1[prefixMatch].equals(words2[prefixMatch])) {
+            prefixMatch++;
+        }
+        int suffixMatch = 0;
+        while (suffixMatch < words1.length - prefixMatch && suffixMatch < words2.length - prefixMatch &&
+                words1[words1.length - 1 - suffixMatch].equals(words2[words2.length - 1 - suffixMatch])) {
+            suffixMatch++;
+        }
+        return prefixMatch + suffixMatch >= Math.min(words1.length, words2.length);
+    }
+
+
     public boolean evaluateTree(TreeNode root) {
         boolean leafNode = (root.left == null && root.right == null);
         if (leafNode) return (root.val == 1) ? true : false;
