@@ -137,6 +137,30 @@ public class Practice6 {
         System.out.println(sb.toString());
     }
 
+
+    public int minLength(String s) {
+        Deque<Character> dq = new ArrayDeque<>();
+        for (Character c : s.toCharArray()) {
+            switch (c) {
+                case 'B' -> {
+                    if (!dq.isEmpty() && dq.peekLast() == 'A') dq.pollLast();
+                    else dq.addLast(c);
+                }
+                case 'D' -> {
+                    if (!dq.isEmpty() && dq.peekLast() == 'C') dq.pollLast();
+                    else dq.addLast(c);
+                }
+                default -> {
+                    dq.addLast(c);
+                }
+            }
+        }
+        return dq.size();
+    }
+
+
+
+
     public boolean areSentencesSimilar(String sentence1, String sentence2) {
         String[] words1 = sentence1.split(" ");
         String[] words2 = sentence2.split(" ");
