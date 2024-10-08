@@ -137,6 +137,21 @@ public class Practice6 {
         System.out.println(sb.toString());
     }
 
+    public ListNode removeElements(ListNode head, int val) {
+        ListNode start = new ListNode();
+        start.next = head;
+        ListNode current = start;
+        while (current.next != null) {
+            ListNode next = current.next;
+            if (next.val == val) {
+                current.next = next.next;
+            } else {
+                current = current.next;
+            }
+        }
+        return start.next;
+    }
+
 
     public int minLength(String s) {
         Deque<Character> dq = new ArrayDeque<>();
