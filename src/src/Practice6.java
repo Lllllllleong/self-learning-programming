@@ -137,6 +137,27 @@ public class Practice6 {
         System.out.println(sb.toString());
     }
 
+
+    public int minAddToMakeValid(String s) {
+        int count = 0;
+        int output = 0;
+        for (char c : s.toCharArray()) {
+            if (c == '(') {
+                count++;
+            } else {
+                count--;
+                if (count < 0) {
+                    count = 0;
+                    output++;
+                }
+            }
+        }
+        output += count;
+        return output;
+    }
+
+
+
     public int[] toArray(Node node) {
         List<Integer> list = new ArrayList<>();
         while (node.prev != null) node = node.prev;
