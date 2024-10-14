@@ -144,6 +144,19 @@ public class Practice6 {
     ///////////////////////////////////////////////////////////////////////////
 
 
+    public int[] getSneakyNumbers(int[] nums) {
+        int[] output = new int[2];
+        int i = 0;
+        BitSet bs = new BitSet();
+        for (int n : nums) {
+            if (bs.get(n)) {
+                output[i++] = n;
+            } else {
+                bs.set(n);
+            }
+        }
+        return output;
+    }
 
 
     public int countWinningSequences(String s) {
