@@ -144,6 +144,16 @@ public class Practice6 {
     ///////////////////////////////////////////////////////////////////////////
 
 
+    public List<Integer> stableMountains(int[] height, int threshold) {
+        int n = height.length;
+        List<Integer> output = new ArrayList<>();
+        for (int i = 1; i < n; i++) {
+            if (height[i-1] > threshold) output.add(i);
+        }
+        return output;
+    }
+
+
     public int[] getSneakyNumbers(int[] nums) {
         int[] output = new int[2];
         int i = 0;
