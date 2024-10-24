@@ -1,6 +1,19 @@
 --
 -- SQL Practice
 --
+WITH
+    filteredCustomers AS (
+        SELECT * FROM Customers
+        where id NOT IN (SELECT customerID FROM Orders)
+    )
+SELECT
+    name AS Customers
+FROM
+    filteredCustomers;
+
+
+
+
 SELECT
     project_id,
     ROUND(AVG(experience_years), 2) as average_years
