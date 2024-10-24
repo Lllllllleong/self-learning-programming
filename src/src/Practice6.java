@@ -137,11 +137,48 @@ public class Practice6 {
         System.out.println(sb.toString());
 
         practice6.partition("aab");
+
+        int[] p = {0, 5, 7,8,10,16,17,18,16,20,27,29};
+        int[] out = practice6.rodCutting(11, p);
+        System.out.println(Arrays.toString(out));
+
+
     }
 
     ///////////////////////////////////////////////////////////////////////////
     //
     ///////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+    public int[] rodCutting(int n, int[] p) {
+        // If the rod length is <= 1, return the corresponding price directly.
+        // Array to store the maximum values for each length up to n.
+        int[] v = new int[n + 1];
+        v[1] = p[1];
+
+        // Compute v[k] for increasing values of k, from 2 to n.
+        for (int k = 2; k <= n; k++) {
+            int runningMax = p[k]; // Initialize with the value of not making a cut.
+
+            // Try all possible cuts at position y (1 <= y < k).
+            for (int y = 1; y < k; y++) {
+                // Left part has length y, right part has length (k - y - 1).
+                if (k - y - 1 >= 0) {
+                    runningMax = Math.max(runningMax, p[y] + v[k - y - 1]);
+                }
+            }
+
+            // Store the maximum value for the rod length k.
+            v[k] = runningMax;
+        }
+
+        // Return the maximum value for the full rod length n.
+        return v;
+    }
 
     public boolean arrayStringsAreEqual(String[] word1, String[] word2) {
         StringBuilder sb1 = new StringBuilder();
@@ -152,7 +189,7 @@ public class Practice6 {
     }
 
     public int canBeTypedWords(String text, String brokenLetters) {
-        boolean[] charFlags =  new boolean[26];
+        boolean[] charFlags = new boolean[26];
         for (char c : brokenLetters.toCharArray()) {
             charFlags[c - 'a'] = true;
         }
@@ -199,14 +236,11 @@ public class Practice6 {
     }
 
 
-
-
-
     public List<Integer> stableMountains(int[] height, int threshold) {
         int n = height.length;
         List<Integer> output = new ArrayList<>();
         for (int i = 1; i < n; i++) {
-            if (height[i-1] > threshold) output.add(i);
+            if (height[i - 1] > threshold) output.add(i);
         }
         return output;
     }
@@ -234,7 +268,7 @@ public class Practice6 {
         for (int i = 0; i < n; i++) {
             char c = sChar[i];
             if (c == 'E') aSequence[i] = 0;
-            else if (c =='F') aSequence[i] = 1;
+            else if (c == 'F') aSequence[i] = 1;
             else aSequence[i] = 2;
         }
         int aFirstPlay = aSequence[0];
@@ -280,8 +314,8 @@ public class Practice6 {
     }
 
 
-
     List<Integer> treeSizeList;
+
     public int kthLargestPerfectSubtree(TreeNode root, int k) {
         treeSizeList = new ArrayList<>();
         treeDFS(root);
@@ -376,8 +410,6 @@ public class Practice6 {
     }
 
 
-
-
     public List<List<String>> partition(String s) {
         char[] sChar = s.toCharArray();
         int n = s.length();
@@ -385,22 +417,22 @@ public class Practice6 {
         for (int i = n - 1; i >= 0; i--) {
             flagDP[i][i] = true;
             int left = i;
-            int right = i+1;
+            int right = i + 1;
             while (left >= 0 && right < n && sChar[left] == sChar[right]) {
                 flagDP[left][right] = true;
                 left--;
                 right++;
             }
-            left = i-1;
-            right = i+1;
+            left = i - 1;
+            right = i + 1;
             while (left >= 0 && right < n && sChar[left] == sChar[right]) {
                 flagDP[left][right] = true;
                 left--;
                 right++;
             }
         }
-        List<List<String>>[] listDP = new List[n+1];
-        for (int i = 0; i < n+1; i++) {
+        List<List<String>>[] listDP = new List[n + 1];
+        for (int i = 0; i < n + 1; i++) {
             List<List<String>> doubleList = new ArrayList<>();
             listDP[i] = doubleList;
         }
@@ -414,7 +446,7 @@ public class Practice6 {
                 sb.append(sChar[j]);
                 if (flagDP[i][j]) {
                     String currentPString = sb.toString();
-                    List<List<String>> doubleList = listDP[j+1];
+                    List<List<String>> doubleList = listDP[j + 1];
                     for (List<String> stringList : doubleList) {
                         stringList.add(0, currentPString);
                         listDP[i].add(stringList);
@@ -424,10 +456,6 @@ public class Practice6 {
         }
         return listDP[0];
     }
-
-
-
-
 
 
     public int maxGoodNumber(int[] nums) {
@@ -450,10 +478,6 @@ public class Practice6 {
     }
 
 
-
-
-
-
     public int minAddToMakeValid(String s) {
         int count = 0;
         int output = 0;
@@ -471,7 +495,6 @@ public class Practice6 {
         output += count;
         return output;
     }
-
 
 
     public int[] toArray(Node node) {
@@ -522,8 +545,6 @@ public class Practice6 {
     }
 
 
-
-
     public boolean areSentencesSimilar(String sentence1, String sentence2) {
         String[] words1 = sentence1.split(" ");
         String[] words2 = sentence2.split(" ");
@@ -569,6 +590,7 @@ public class Practice6 {
         }
         return output;
     }
+
     public int[] frequencySort(int[] nums) {
         int n = nums.length;
         HashMap<Integer, Integer> hm = new HashMap<>();
@@ -597,7 +619,7 @@ public class Practice6 {
         HashMap<Integer, Integer> hm = new HashMap<>();
         for (int i : arrClone) {
             if (!hm.containsKey(i)) {
-                hm.put(i, hm.size()+1);
+                hm.put(i, hm.size() + 1);
             }
         }
         for (int i = 0; i < arr.length; i++) {
@@ -620,13 +642,14 @@ public class Practice6 {
     }
 
 
-
     class MyCalendar {
 
         ListNode ln;
+
         public MyCalendar() {
             ln = new ListNode(-2, -1, null);
         }
+
         public boolean book(int start, int end) {
             ListNode prev = ln;
             ListNode next = ln.next;
@@ -651,11 +674,11 @@ public class Practice6 {
         String patternString = sb.toString();
         sb = new StringBuilder();
         for (int i = 1; i < n; i++) {
-            int previous = nums[i-1];
+            int previous = nums[i - 1];
             int current = nums[i];
             int currentPatternChar = Integer.compare(current, previous) + 1;
             if (sb.length() >= p) {
-                sb.delete(0,1);
+                sb.delete(0, 1);
             }
             sb.append(currentPatternChar);
             if (sb.length() == p) {
@@ -687,8 +710,8 @@ public class Practice6 {
     }
 
 
-
     int maxSubtree = 0;
+
     public int maximumSubtreeSize(int[][] edges, int[] colors) {
         int n = colors.length;
         maxSubtree = 0;
@@ -733,8 +756,6 @@ public class Practice6 {
             maxSubtree = Math.max(maxSubtree, currentSubtreeSize + 1);
         }
     }
-
-
 
 
     public int[] pourWater(int[] heights, int volume, int k) {
@@ -809,8 +830,6 @@ public class Practice6 {
     }
 
 
-
-
     public int winningPlayerCount(int n, int[][] pick) {
         int[][] cache = new int[n][11];
         for (int[] currentPick : pick) {
@@ -838,7 +857,7 @@ public class Practice6 {
         long[] dp = new long[m + 1];
         for (int i = n - 1; i >= 0; i--) {
             long currentMultiplier = a[i];
-            int mStart = (m-1) - ((n-1) - i);
+            int mStart = (m - 1) - ((n - 1) - i);
             long[] dpNext = new long[m + 1];
             dpNext[mStart + 1] = Long.MIN_VALUE;
             for (int j = mStart; j >= 0; j--) {
@@ -923,14 +942,13 @@ public class Practice6 {
     }
 
 
-
     public int maximumLength(int[] nums, int k) {
         int n = nums.length;
         int[][] dp = new int[n][k];
         int output = 0;
         for (int i = 0; i < n; i++) {
             int a = nums[i];
-            for (int j = i+1; j < n; j++) {
+            for (int j = i + 1; j < n; j++) {
                 int b = nums[j];
                 int mod = (a + b) % k;
                 dp[j][mod] = Math.max(dp[j][mod], dp[i][mod] + 1);
@@ -939,8 +957,6 @@ public class Practice6 {
         }
         return output + 1;
     }
-
-
 
 
     public int peopleAwareOfSecret(int n, int delay, int forget) {
