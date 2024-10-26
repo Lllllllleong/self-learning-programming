@@ -2,6 +2,15 @@
 -- SQL Practice
 --
 
+
+SELECT
+    customer_id
+FROM
+    Customers
+WHERE
+    year = 2021 AND
+    revenue > 0;
+
 WITH
     address2 AS (
         SELECT
