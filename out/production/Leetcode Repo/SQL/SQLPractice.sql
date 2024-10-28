@@ -1,6 +1,293 @@
 --
 -- SQL Practice
 --
+
+
+SELECT
+    customer_id
+FROM
+    Customers
+WHERE
+    year = 2021 AND
+    revenue > 0;
+
+WITH
+    address2 AS (
+        SELECT
+            personId,
+            city,
+            state
+        FROM
+            Address
+    )
+SELECT
+    firstName,
+    lastName,
+    city,
+    state
+FROM
+    Person p LEFT JOIN address2 a ON p.personId = a.personId;
+
+-- Q1
+SELECT
+    COUNT(*) AS r_restricted_usa_movies
+FROM
+    restriction
+WHERE
+    LOWER(description) = 'r'
+    AND LOWER(country) = 'usa';
+
+
+-- Q2
+WITH
+    filtered_people AS (SELECT
+                            id
+                        FROM
+                            person
+                        WHERE
+                            year_born > 1959)
+SELECT
+    COUNT(DISTINCT filtered_people.id) AS num_writers_born_after_1960_inclusive
+FROM
+    filtered_people INNER JOIN writer ON filtered_people.id = writer.id;
+
+
+-- Q3
+SELECT
+    country,
+    COUNT(*) AS num_restriction_categories
+FROM
+    restriction_category
+GROUP BY
+    country
+ORDER BY
+    num_restriction_categories ASC;
+
+
+-- Q4
+WITH
+    action_movies AS (SELECT
+                          title,
+                          production_year
+                      FROM
+                          movie
+                      WHERE
+                          LOWER(major_genre) = 'action')
+SELECT
+    COUNT(id) AS num_directors_without_action_major_genre
+FROM (
+    SELECT
+        id
+    FROM
+        director
+    EXCEPT
+        SELECT
+            id
+        FROM
+            director NATURAL JOIN action_movies) AS sub_query;
+
+
+-- Q5
+WITH
+    aus_action_movies AS (SELECT
+                              COUNT(*) AS num_aus_action_movies
+                          FROM
+                              movie
+                          WHERE
+                              LOWER(country) = 'australia'
+                              AND LOWER(major_genre) = 'action'),
+    aus_movies AS (SELECT
+                       COUNT(*) AS num_aus_movies
+                   FROM
+                       movie
+                   WHERE
+                       LOWER(country) = 'australia')
+SELECT
+    CASE
+        WHEN num_aus_movies = 0 THEN 0
+        ELSE ROUND((num_aus_action_movies * 1.0) / num_aus_movies, 2)
+    END AS proportion_of_action_movies_from_australia
+FROM
+    aus_action_movies,
+    aus_movies;
+
+
+-- Q6
+WITH
+    filtered_movies AS (SELECT
+                            title,
+                            production_year,
+                            COUNT(*) AS num_crew_awards
+                        FROM
+                            crew_award
+                        WHERE
+                            LOWER(result) = 'won'
+                        GROUP BY
+                            title,
+                            production_year)
+SELECT
+    title,
+    production_year
+FROM
+    filtered_movies
+WHERE
+    num_crew_awards = (SELECT
+                           MAX(num_crew_awards)
+                       FROM
+                           filtered_movies);
+
+
+-- Q7
+SELECT
+    COUNT(*) AS num_movies_with_at_least_one_award
+FROM (
+    SELECT
+        title,
+        production_year
+    FROM
+        movie INTERSECT (SELECT
+                             title,
+                             production_year
+                         FROM
+                             movie_award
+                         WHERE
+                             LOWER(result) = 'won'
+                         UNION
+                         SELECT
+                              title,
+                              production_year
+                         FROM
+                              crew_award
+                         WHERE
+                              LOWER(result) = 'won'
+                         UNION
+                         SELECT
+                             title,
+                             production_year
+                         FROM
+                             director_award
+                         WHERE
+                             LOWER(result) = 'won'
+                         UNION
+                         SELECT
+                             title,
+                             production_year
+                         FROM
+                             writer_award
+                         WHERE
+                             LOWER(result) = 'won'
+                         UNION
+                         SELECT
+                             title,
+                             production_year
+                         FROM
+                             actor_award
+                         WHERE
+                             LOWER(result) = 'won')) AS sub_query;
+
+
+-- Q8
+WITH
+    solo_written_movies AS (SELECT
+                                title,
+                                production_year
+                            FROM
+                                writer
+                            GROUP BY
+                                title,
+                                production_year
+                            HAVING COUNT(id) = 1),
+    solo_writers AS (SELECT
+                         id
+                     FROM
+                         writer NATURAL JOIN solo_written_movies),
+    co_writers AS (SELECT
+                       id
+                   FROM
+                       writer
+                   EXCEPT
+                       SELECT
+                           id
+                       FROM
+                           solo_writers)
+SELECT
+    id,
+    first_name,
+    last_name
+FROM
+    co_writers NATURAL JOIN person
+ORDER BY
+    last_name DESC;
+
+
+-- Q9
+WITH
+    filtered_movies AS (SELECT
+                             title,
+                             production_year,
+                             year_of_award
+                         FROM
+                             movie_award
+                         WHERE
+                             LOWER(result) = 'won'
+                         UNION
+                         SELECT
+                              title,
+                              production_year,
+                              year_of_award
+                         FROM
+                              crew_award
+                         WHERE
+                              LOWER(result) = 'won'
+                         UNION
+                         SELECT
+                             title,
+                             production_year,
+                             year_of_award
+                         FROM
+                             director_award
+                         WHERE
+                             LOWER(result) = 'won'
+                         UNION
+                         SELECT
+                             title,
+                             production_year,
+                             year_of_award
+                         FROM
+                             writer_award
+                         WHERE
+                             LOWER(result) = 'won'
+                         UNION
+                         SELECT
+                             title,
+                             production_year,
+                             year_of_award
+                         FROM
+                             actor_award
+                         WHERE
+                             LOWER(result) = 'won')
+SELECT DISTINCT
+    CONCAT(fm1.title, ', ', fm1.production_year) AS a1,
+    CONCAT(fm2.title, ', ', fm2.production_year) AS a2
+FROM
+    filtered_movies fm1 INNER JOIN filtered_movies fm2 ON fm1.year_of_award = fm2.year_of_award
+WHERE
+    (fm1.title, fm1.production_year) < (fm2.title, fm2.production_year);
+
+
+WITH
+    filteredCustomers AS (
+        SELECT * FROM Customers
+        where id NOT IN (SELECT customerID FROM Orders)
+    )
+SELECT
+    name AS Customers
+FROM
+    filteredCustomers;
+
+
+
+
 SELECT
     project_id,
     ROUND(AVG(experience_years), 2) as average_years
