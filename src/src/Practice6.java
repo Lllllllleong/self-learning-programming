@@ -162,6 +162,22 @@ public class Practice6 {
      * ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
      */
 
+    public int superEggDrop(int k, int n) {
+        int[][] dp = new int[n + 1][k + 1];
+        for (int i = 1; i <= k; i++) dp[1][i] = 1;
+        for (int i = 1; i <= n; i++) dp[i][1] = i;
+        for (int j = 2; j <= k; j++) {
+            for (int i = 2; i <= n; i++) {
+                int currentMin = n;
+                for (int l = 1; l <= i; l++) {
+                    int worstCase = 1 + Math.max(dp[l - 1][j - 1], dp[i - l][j]);
+                    currentMin = Math.min(currentMin, worstCase);
+                }
+                dp[i][j] = currentMin;
+            }
+        }
+        return dp[n][k];
+    }
 
     public String clearDigits(String s) {
         int n = s.length();
@@ -1918,6 +1934,30 @@ public class Practice6 {
         }
         return output;
     }
+
+    public int maximumLengthSubstring(String s) {
+        int output = 0;
+        int n = s.length();
+        int[] frequencyCount = new int[26];
+        char[] sChar = s.toCharArray();
+        int left = 0;
+        for (int i = 0; i < n; i++) {
+            char c = sChar[i];
+            frequencyCount[c - 'a']++;
+            while (frequencyCount[c - 'a'] > 2) {
+                frequencyCount[sChar[left] - 'a']--;
+                left++;
+            }
+            output = Math.max(output, i - left + 1);
+        }
+        return output;
+    }
+
+
+
+
+
+
 }
 
 
