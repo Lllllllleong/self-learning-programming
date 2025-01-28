@@ -1953,6 +1953,19 @@ public class Practice6 {
         return output;
     }
 
+    public int finalPositionOfSnake(int n, List<String> commands) {
+        int y = 0;
+        int x = 0;
+        for (String s : commands) {
+            switch (s) {
+                case "LEFT" -> x--;
+                case "RIGHT" -> x++;
+                case "UP" -> y--;
+                default -> y++;
+            }
+        }
+        return (y * n) + x;
+    }
 
 
 
