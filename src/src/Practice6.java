@@ -1981,6 +1981,25 @@ public class Practice6 {
         return minimum;
     }
 
+    public int generateKey(int num1, int num2, int num3) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int i = 0; i < 4; i++) {
+            int currentDigit = Integer.MAX_VALUE;
+            currentDigit = Math.min(currentDigit, (num1 % 10));
+            currentDigit = Math.min(currentDigit, (num2 % 10));
+            currentDigit = Math.min(currentDigit, (num3 % 10));
+            num1 /= 10;
+            num2 /= 10;
+            num3 /= 10;
+            dq.push(currentDigit);
+        }
+        int output = 0;
+        while (!dq.isEmpty()) {
+            output = output * 10 + dq.pollFirst();
+        }
+        return output;
+    }
+
 
 
 }
