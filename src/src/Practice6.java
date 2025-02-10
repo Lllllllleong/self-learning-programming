@@ -2000,6 +2000,21 @@ public class Practice6 {
         return output;
     }
 
+    public List<String> stringSequence(String target) {
+        char[] chars = target.toCharArray();
+        List<String> output = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        for (char c : chars) {
+            sb.append('a');
+            output.add(sb.toString());
+            while (sb.charAt(sb.length() - 1) != c) {
+                sb.setCharAt(sb.length() - 1, (char) (sb.charAt(sb.length() - 1) + 1));
+                output.add(sb.toString());
+            }
+        }
+        return output;
+    }
+
 
 
 }
