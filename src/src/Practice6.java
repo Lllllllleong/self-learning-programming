@@ -2039,6 +2039,23 @@ public class Practice6 {
 
 
 
+    public int[] findingUsersActiveMinutes(int[][] logs, int k) {
+        int n = logs.length;
+        HashMap<Integer, HashSet<Integer>> hm = new HashMap<>();
+        int[] output = new int[k];
+        for (int[] log : logs) {
+            int id = log[0];
+            int time = log[1];
+            if (!hm.containsKey(id)) hm.put(id, new HashSet<>());
+            hm.get(id).add(time);
+        }
+        for (var v : hm.values()) {
+            output[v.size() - 1]++;
+        }
+        return output;
+    }
+
+
 
 
 
