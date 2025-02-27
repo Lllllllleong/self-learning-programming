@@ -2236,6 +2236,31 @@ public class Practice6 {
     }
 
 
+    public int longestCommonPrefix(String s, String t) {
+        int sLength = s.length();
+        int tLength = t.length();
+        char[] sChars = s.toCharArray();
+        char[] tChars = t.toCharArray();
+        int sIndex = 0;
+        int tIndex = 0;
+        boolean flag = false;
+        while (sIndex < sLength && tIndex < tLength) {
+            if (sChars[sIndex] != tChars[tIndex]) {
+                if (flag) break;
+                else {
+                    flag = true;
+                    sIndex++;
+                }
+            } else {
+                sIndex++;
+                tIndex++;
+            }
+        }
+        return tIndex;
+    }
+
+
+
 
 
 
