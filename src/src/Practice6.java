@@ -2260,10 +2260,17 @@ public class Practice6 {
     }
 
 
-
-
-
-
+    public long minCost(int[] arr, int[] brr, long k) {
+        int n = arr.length;
+        long output1 = 0;
+        long output2 = 0;
+        for (int i = 0; i < n; i++) output1 += Math.abs(arr[i] - brr[i]);
+        Arrays.sort(arr);
+        Arrays.sort(brr);
+        for (int i = 0; i < n; i++) output1 += Math.abs(arr[i] - brr[i]);
+        output2 = Math.abs(output2) + k;
+        return Math.min(output1, output2);
+    }
 }
 
 
