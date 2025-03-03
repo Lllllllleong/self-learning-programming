@@ -2271,6 +2271,41 @@ public class Practice6 {
         output2 = Math.abs(output2) + k;
         return Math.min(output1, output2);
     }
+
+
+
+    public int minimumDeletions(String s) {
+        int n = s.length();
+        char[] sChar = s.toCharArray();
+        int a = 0;
+        int b = 0;
+        for (int i = 0; i < n; i++) {
+            char c = sChar[i];
+            switch (c) {
+                case 'a' -> {
+                    b = Math.min(a, b) + 1;
+                }
+                case 'b' -> {
+                    b = Math.min(a, b);
+                    a++;
+                }
+            }
+        }
+        return Math.min(a, b);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
