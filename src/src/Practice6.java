@@ -2335,6 +2335,19 @@ public class Practice6 {
     }
 
 
+    public long minIncrementOperations(int[] nums, int k) {
+        int n = nums.length;
+        long[] dp = new long[n];
+        for (int i = 0; i < n; i++) {
+            dp[i] = (nums[i] < k) ? (k - nums[i]) : 0;
+            if (i >= 3) {
+                dp[i] += Math.min(Math.min(dp[i-1], dp[i-2]), dp[i-3]);
+            }
+        }
+        return Math.min(Math.min(dp[n-1], dp[n-2]), dp[n-3]);
+    }
+
+
 
 
 
