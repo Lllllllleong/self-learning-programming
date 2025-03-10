@@ -2347,6 +2347,39 @@ public class Practice6 {
         return Math.min(Math.min(dp[n-1], dp[n-2]), dp[n-3]);
     }
 
+    public long minCost(int n, int[][] cost) {
+        long[][]  minCost = new long[3][3];
+        for (int i = (n / 2) - 1; i >= 0; i--) {
+            int j = (n - 1) - i;
+            long[][]  currentCosts = new long[3][3];
+            for (int k = 0; k < 3; k++) Arrays.fill(currentCosts[k], Long.MAX_VALUE);
+
+            for (int k = 0; k < 3; k++) {
+                for (int l = 0; l < 3; l++) {
+                    if (l == k) continue;
+                    for (int m = 0; m < 3; m++) {
+                        if (m == k) continue;
+                        for (int o = 0; o < 3; o++) {
+                            if (o == m || o == l) continue;
+                            if (minCost[m][o] != Long.MAX_VALUE) {
+                                long currentCost = cost[i][k] + cost[j][l] + minCost[m][o];
+                                currentCosts[k][l] = Math.min(currentCosts[k][l], currentCost);
+                            }
+                        }
+                    }
+                }
+            }
+            minCost = currentCosts;
+        }
+        long output = Long.MAX_VALUE;
+        for (int k = 0; k < 3; k++) {
+            for (int l = 0; l < 3; l++) {
+                if (k == l) continue;
+                output = Math.min(output, minCost[k][l]);
+            }
+        }
+        return output;
+    }
 
 
 
