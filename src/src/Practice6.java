@@ -2382,6 +2382,37 @@ public class Practice6 {
     }
 
 
+    public int maxSum(int[] nums, int k, int m) {
+        int n = nums.length;
+        long[] dp = new long[n+1];
+        dp[n] = 0;
+        long[] prefixSum = new long[n];
+        prefixSum[0] = nums[0];
+        for (int i = 1; i < n; i++) {
+            prefixSum[i] = prefixSum[i-1] + nums[i];
+        }
+        int counter = 0;
+        while (counter < k) {
+            long[] currentDP = new long[n+1];
+            Arrays.fill(currentDP, Long.MIN_VALUE);
+            int upperBound = n - (counter * m);
+            int lowerBound = ((k - (counter + 1)) * m);
+            for (int i = upperBound - m; i >= lowerBound; i--) {
+                for (int j = i + (m - 1); j < upperBound; j++) {
+                    long currentSum = prefixSum[j];
+                    if (i > 0) currentSum -= prefixSum[i-1];
+                    currentDP[i] = Math.max(currentDP[i], currentSum + dp[j+1]);
+                }
+                currentDP[i] = Math.max(currentDP[i], currentDP[i+1]);
+            }
+            dp = currentDP;
+            counter++;
+
+        }
+        return (int) dp[0];
+    }
+
+
 
 
 
