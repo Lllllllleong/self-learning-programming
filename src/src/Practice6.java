@@ -2445,7 +2445,19 @@ public class Practice6 {
     }
 
 
-
+    public int[] processQueries(int[] queries, int m) {
+        int n = queries.length;
+        int[] output = new int[n];
+        LinkedList<Integer> ll = new LinkedList<>();
+        for (int i = 1; i <= m; i++) ll.addLast(i);
+        for (int i = 0; i < n; i++) {
+            int index = ll.indexOf(queries[i]);
+            output[i] = index;
+            ll.remove(index);
+            ll.addFirst(queries[i]);
+        }
+        return output;
+    }
 
 
 
