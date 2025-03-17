@@ -2461,6 +2461,31 @@ public class Practice6 {
 
 
 
+    public long calculateScore(String s) {
+        int n = s.length();
+        long output = 0;
+        char[] sChars = s.toCharArray();
+        Deque<Integer>[] dqArray = new ArrayDeque[26];
+        for (int i = 0; i < 26; i++) dqArray[i] = new ArrayDeque<Integer>();
+        for (int i = 0; i < n; i++) {
+            char c = sChars[i];
+            int charValue = c - 'a';
+            int mirrorValue = 25 - charValue;
+            Deque<Integer> dq = dqArray[mirrorValue];
+            if (dq.isEmpty()) {
+                dqArray[charValue].addFirst(i);
+            } else {
+                output += (i - dq.pollFirst());
+            }
+        }
+        return output;
+    }
+
+
+
+
+
+
 
 
 }
