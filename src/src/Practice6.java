@@ -2481,7 +2481,38 @@ public class Practice6 {
         return output;
     }
 
-
+    public long[] unmarkedSumArray(int[] nums, int[][] queries) {
+        int n = nums.length;
+        int m = queries.length;
+        long sum = 0;
+        long[] output = new long[m];
+        PriorityQueue<Integer> pq = new PriorityQueue<>(
+                Comparator.comparingInt((Integer i) -> nums[i]) // Primary comparison: values in nums
+                        .thenComparingInt(i -> i)         // Secondary comparison: the indices themselves
+        );
+        for (int i = 0; i < n; i++) {
+            pq.offer(i);
+            sum += nums[i];
+        }
+        for (int i = 0; i < m; i++) {
+            int[] query = queries[i];
+            int a = query[0];
+            int b = query[1];
+            sum -= nums[a];
+            nums[a] = 0;
+            while (!pq.isEmpty() && b > 0) {
+                int currentIndex = pq.poll();
+                if (nums[currentIndex] == 0) continue;
+                else {
+                    b--;
+                    sum -= nums[currentIndex];
+                    nums[currentIndex] = 0;
+                }
+            }
+            output[i] = sum;
+        }
+        return output;
+    }
 
 
 
