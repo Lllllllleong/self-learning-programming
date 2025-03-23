@@ -2595,8 +2595,52 @@ public class Practice6 {
     }
 
 
-
-
+    public int countPaths(int n, int[][] roads) {
+        int MOD = 1_000_000_007;
+        int[][] graph = new int[n][n];
+        int[] graphMask = new int[n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(graph[i], Integer.MAX_VALUE);
+        }
+        for (int[] road : roads) {
+            int a = road[0];
+            int b = road[1];
+            int c = road[2];
+            graphMask[a] |= (1 << b);
+            graphMask[b] |= (1 << a);
+            graph[a][b] = c;
+            graph[b][a] = c;
+        }
+        long[] minTimes = new long[n];
+        Arrays.fill(minTimes, Long.MAX_VALUE);
+        minTimes[0] = 0;
+        long[] ways = new long[n];
+        ways[0] = 1;
+        // int[]{currentNode, currentTime}
+        PriorityQueue<long[]> pq = new PriorityQueue<>(Comparator.comparingLong(a -> a[1]));
+        pq.add(new long[]{0, 0});
+        while (!pq.isEmpty()) {
+            long[] current = pq.poll();
+            int currentNode = (int) current[0];
+            long currentTime = current[1];
+            if (currentTime > minTimes[currentNode]) {
+                continue;
+            }
+            int currentNodeGraphMask = graphMask[currentNode];
+            for (int i = 0; i < n; i++) {
+                if ((currentNodeGraphMask & (1 << i)) == 0 || graph[currentNode][i] == Integer.MAX_VALUE) continue;
+                long arrivalTime = currentTime + (long) graph[currentNode][i];
+                if (arrivalTime < minTimes[i]) {
+                    minTimes[i] = arrivalTime;
+                    ways[i] = ways[currentNode];
+                    pq.offer(new long[]{i, arrivalTime});
+                } else if (arrivalTime == minTimes[i]) {
+                    ways[i] = (ways[i] + ways[currentNode]) % MOD;
+                }
+            }
+        }
+        return (int) ways[n - 1] % MOD;
+    }
 
 }
 
