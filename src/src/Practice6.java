@@ -2642,6 +2642,24 @@ public class Practice6 {
         return (int) ways[n - 1] % MOD;
     }
 
+
+    public int addMinimum(String word) {
+        char[] pattern = new char[]{'a', 'b', 'c'};
+        int output = 0;
+        int patternIndex = 0;
+        for (char c : word.toCharArray()) {
+            while (c != pattern[patternIndex]) {
+                output++;
+                patternIndex = (patternIndex + 1) % 3;
+            }
+            patternIndex = (patternIndex + 1) % 3;
+        }
+        output += (3 - patternIndex) % 3;
+        return output;
+    }
+
+
+
 }
 
 
