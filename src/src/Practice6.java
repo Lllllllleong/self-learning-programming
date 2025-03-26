@@ -2660,6 +2660,22 @@ public class Practice6 {
 
 
 
+
+    //    https://leetcode.com/problems/count-partitions-with-even-sum-difference/submissions/1520960434/
+    public int countPartitions(int[] nums) {
+        int n = nums.length;
+        long sumA = 0;
+        long sumB = Arrays.stream(nums).sum();
+        int output = 0;
+        for (int i = 0; i < n-1; i++) {
+            sumA += nums[i];
+            sumB -= nums[i];
+            if ((sumA - sumB) % 2 == 0) output++;
+
+        }
+        return output;
+    }
+
 }
 
 
