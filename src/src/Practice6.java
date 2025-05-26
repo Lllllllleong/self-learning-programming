@@ -2695,7 +2695,11 @@ public class Practice6 {
         return output;
     }
 
-
+    public int maxContainers(int n, int w, int maxWeight) {
+        int a = maxWeight/w;
+        int b = n * n;
+        return Math.min(a,b);
+    }
 
 
 
