@@ -49,7 +49,6 @@ func fizzBuzz(n int) []string {
     return outputSlice
 }
 
-
 func scoreOfString(s string) int {
     output := 0
     for i := 0; i < len(s) - 1; i++ {
@@ -83,4 +82,15 @@ func min(a, b int) int {
         return b
     }
     return a
+}
+
+func prefixCount(words []string, pref string) int {
+    output := 0
+    prefixLength := len(pref)
+    for _, word := range words {
+        if (len(word) >= prefixLength) && (word[:prefixLength] == pref) {
+            output++
+        }
+    }
+    return output
 }
