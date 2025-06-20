@@ -2,6 +2,8 @@ package main
 
 import (
     "fmt"
+    "math"
+    "sort"
 )
 
 type TreeNode struct {
@@ -113,3 +115,43 @@ func isSymmetric2(root1, root2 *TreeNode) bool {
     return (isSymmetric2(root1.Right, root2.Left)) && (isSymmetric2(root1.Left, root2.Right))
 }
 
+func validPalindrome(s string) bool {
+    left, right := 0, len(s)-1
+    if right == 0 {return true}
+    flag := false
+    for left <= right {
+        if s[left] != s[right] {
+            if flag {return false}
+            flag = true
+        }
+        left++
+        right--
+    }
+    return true
+}
+
+func minimumTime(time []int, totalTrips int) int64 {
+    n := len(time)
+    if n == 1 {return int64(time[0]) * int64(totalTrips)}
+    sort.Ints(time)
+    left, right := int64(time[0]), int64(time[0])*int64(totalTrips);
+    for left < right {
+        mid := left + (right - left)/2
+        if findMaxTrips(mid, time) >= totalTrips {
+            right = mid
+        } else {
+            left = mid + 1
+        }
+    }
+    return right
+}
+
+
+func findMaxTrips(timeLimit int64, tripTimes []int) int {
+    output := 0
+    for i := 0; i < len(tripTimes); i++ {
+        if int64(tripTimes[i]) > timeLimit { break }
+        output += int(timeLimit) / tripTimes[i]
+    }
+    return output
+}
