@@ -167,3 +167,14 @@ func sEG(grandParent, parent int, root *TreeNode) int {
         return sEG(parent, root.Val, root.Left) + sEG(parent, root.Val, root.Right)
     }
 }
+
+func canBeEqual(target []int, arr []int) bool {
+    if len(target) != len(arr) {return false}
+    n := len(target)
+    sort.Ints(target)
+    sort.Ints(arr)
+    for i := 0; i < n; i++ {
+        if target[i] != arr[i] {return false}
+    }
+    return true
+}
