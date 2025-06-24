@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"iter"
-	"math"
 	"sort"
 )
 
@@ -14,7 +12,14 @@ type TreeNode struct {
 }
 
 func main() {
-	fmt.Println("!!")
+
+
+	// Test the full article text function
+	SearchAndFetchWikiArticle("Haskell")
+
+
+
+
 
 }
 
@@ -197,7 +202,7 @@ func canBeEqual(target []int, arr []int) bool {
 func countPartitions(nums []int, k int) int {
 	n := len(nums)
 	const mod = 1_000_000_007
-	dp := make([]int, n + 1)
+	dp := make([]int, n+1)
 	dp[n] = 1
 	for i := n - 1; i >= 0; i-- {
 		currentMax := nums[i]
