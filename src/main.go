@@ -1,8 +1,8 @@
 package main
 
 import (
-
 	"fmt"
+	"math"
 	"sort"
 )
 
@@ -283,4 +283,36 @@ func findCommonResponse(responses [][]string) string {
 		}
 	}
 	return output
+}
+
+
+func removeDuplicateLetters(s string) string {
+    const alphabetSize = 26
+    lastIndex := make([]int, alphabetSize)
+    for i, char := range s {
+        lastIndex[char - 'a'] = i
+    }
+    var stack []int
+    seenSlice := make([]bool, alphabetSize)
+    for i, char := range s {
+        charIndex := int(char - 'a')
+        if seenSlice[charIndex] {
+            continue
+        }
+        for len(stack) > 0 {
+            top := stack[len(stack)-1]
+            if top <= charIndex || lastIndex[top] <= i {
+                break
+            }
+            seenSlice[top] = false
+            stack = stack[:len(stack)-1]
+        }
+        stack = append(stack, charIndex)
+        seenSlice[charIndex] = true
+    }
+    output := make([]byte, len(stack))
+    for i, charIndex := range stack {
+        output[i] = byte('a' + charIndex)
+    }
+    return string(output)
 }
