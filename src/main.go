@@ -430,3 +430,21 @@ func divideArray(nums []int, k int) [][]int {
 	}
 	return output
 }
+
+func orangesRotting(grid [][]int) int {
+    queue := []int{}
+	freshCount := 0
+	yMax, xMax := len(grid), len(grid[0])
+	for y, xArray := range grid {
+		for x, value := range xArray {
+			switch value {
+			case condition:
+				
+			}
+		}
+	}
+
+
+
+
+}
