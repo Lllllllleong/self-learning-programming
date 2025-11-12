@@ -26,7 +26,7 @@ Each solution includes:
 
 ## Progress
 
-- Easy: 1
-- Medium: 0
-- Hard: 0
-- Total: 1
+- Easy: 
+- Medium: 
+- Hard: 
+- Total: 
