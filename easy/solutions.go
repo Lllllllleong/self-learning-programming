@@ -1,38 +1,32 @@
 package easy
 
+import "sort"
+
 /*
 ============================================================
-Problem 1: Two Sum
-Link: https://leetcode.com/problems/two-sum/
+
 ============================================================
-
-Given an array of integers nums and an integer target,
-return indices of the two numbers such that they add up to target.
-
-Example:
-Input: nums = [2,7,11,15], target = 9
-Output: [0,1]
-
-Time Complexity: O(n)
-Space Complexity: O(n)
+Time Complexity: O()
+Space Complexity: O()
 */
 
-func twoSum(nums []int, target int) []int {
-	numMap := make(map[int]int)
-
-	for i, num := range nums {
-		complement := target - num
-		if j, found := numMap[complement]; found {
-			return []int{j, i}
+/*
+============================================================
+3731. Find Missing Elements
+============================================================
+Time Complexity: O(n log n)
+Space Complexity: O(k) where k is the number of missing elements
+*/
+func findMissingElements(nums []int) []int {
+	sort.Ints(nums)
+	output := []int{}
+	counter := nums[0]
+	for _, v := range nums {
+		for counter < v {
+			output = append(output, counter)
+			counter++
 		}
-		numMap[num] = i
+		counter++
 	}
-
-	return []int{}
+	return output
 }
-
-/*
-============================================================
-Add your solutions below following the same format
-============================================================
-*/
