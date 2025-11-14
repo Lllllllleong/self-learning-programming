@@ -1,12 +1,39 @@
 package medium
 
+import "fmt"
+
 /*
 ============================================================
-
+3557. Find Maximum Number of Non Intersecting Substrings
 ============================================================
-Time Complexity: O()
-Space Complexity: O()
+Time Complexity: O(n)
+Space Complexity: O(n)
 */
+func maxSubstrings(word string) int {
+	runes := []rune(word)
+	n := len(runes)
+	numChars := 26
+	charIndices := make([][]int, numChars)
+	dpSlice := make([]int, n+1)
+	for i := n - 1; i >= 0; i-- {
+		currentCharIndices := charIndices[(runes[i] - 'a')]
+		for j := len(currentCharIndices) - 1; j >= 0; j-- {
+			if (currentCharIndices[j] - i) < 3 {
+				continue
+			}
+			currentBest := dpSlice[currentCharIndices[j]+1] + 1
+			if dpSlice[i] < currentBest {
+				dpSlice[i] = currentBest
+			}
+			break
+		}
+		if dpSlice[i] < dpSlice[i+1] {
+			dpSlice[i] = dpSlice[i+1]
+		}
+		charIndices[(runes[i] - 'a')] = append(charIndices[(runes[i]-'a')], i)
+	}
+	return dpSlice[0]
+}
 
 /*
 ============================================================
