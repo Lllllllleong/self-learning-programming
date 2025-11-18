@@ -15,14 +15,6 @@ This repository contains my solutions to LeetCode problems implemented in Go.
 └── README.md
 ```
 
-## Format
-
-Each solution includes:
-- Problem number and name
-- LeetCode link
-- Problem description
-- Time and space complexity
-- Solution implementation
 
 ## Progress
 

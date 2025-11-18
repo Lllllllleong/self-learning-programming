@@ -1,6 +1,36 @@
 package medium
 
-import "fmt"
+import (
+	"fmt"
+	"iter"
+)
+
+/*
+============================================================
+
+============================================================
+Time Complexity: O()
+Space Complexity: O()
+*/
+
+/*
+============================================================
+1529. Minimum Suffix Flips
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+func minFlips(target string) int {
+	currentRune := '0'
+	output := 0
+	for _, rune := range target {
+		if rune != currentRune {
+			output++
+		}
+		currentRune = rune
+	}
+	return output
+}
 
 /*
 ============================================================
