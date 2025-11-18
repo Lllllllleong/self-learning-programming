@@ -27,3 +27,6 @@ vendor/
 # OS specific files
 .DS_Store
 Thumbs.db
+
+# Draft solutions (not tracked)
+draft.go
