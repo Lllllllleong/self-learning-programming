@@ -1,0 +1,580 @@
+
+import Misc.*;
+import com.google.gson.*;
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.*;
+import javax.xml.transform.stream.*;
+import java.io.*;
+import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+/**
+ Intellij Shortcuts
+
+ Change font size
+    Shift + Control + , or .
+
+ Freeform text selection
+    Hold down option and select with cursor
+
+ Find and Replace
+    Cmd + R
+    Fill in search and replace query
+    Highlight text
+    Press replace
+
+ Push
+    Cmd + Shift + K
+
+
+
+
+  output %= 1_000_000_007;
+
+
+
+    Italics method name means that it's static
+ **/
+
+public class References {
+    int n = 1;
+    int MOD = 1_000_000_007;
+    List<Integer>[] graph = new ArrayList[n];
+
+    //Binary search
+    public static int binarySearchExact(int[] arr, int target) {
+        int left = 0;
+        int right = arr.length - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == target) {
+                return mid; //Target found
+            }
+            if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return -1; //Target does not exist
+    }
+
+    // Ceiling search binary search
+    public static int binarySearchCeiling(int[] arr, int target) {
+        int left = 0;
+        int right = arr.length - 1;
+        int result = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] == target) {
+                return arr[mid]; // target found
+            }
+
+            if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                result = arr[mid];
+                right = mid - 1;
+            }
+        }
+
+        return result; // return ceiling or -1 if not found
+    }
+
+    // Floor search binary search
+    public static int binarySearchFloor(int[] arr, int target) {
+        int left = 0;
+        int right = arr.length - 1;
+        int result = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] == target) {
+                return arr[mid]; // target found
+            }
+
+            if (arr[mid] < target) {
+                result = arr[mid];
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return result; // return floor or -1 if not found
+    }
+
+
+    public static void main(String[] args) {
+        // Section 1: Sorting Examples
+        sortExamples();
+
+        // Section 2: Integer and Array Conversions
+        integerAndArrayConversions();
+
+        // Section 3: HashMap Operations
+        hashMapOperations();
+
+        // Section 4: Queue Examples
+        queueExamples();
+
+        // Section 5: Miscellaneous Examples
+        miscellaneousExamples();
+
+        // Section 6: Reading and Writing
+        readWrite();
+
+        bitOperators();
+    }
+
+    // Section 1: Sorting Examples
+    public static void sortExamples() {
+        System.out.println("=== Sorting Examples ===");
+
+        int[][] prices = {{1, 4, 2}, {2, 2, 7}, {2, 1, 3}, {3, 2, 10}, {1, 4, 2}, {4, 1, 3}};
+
+        // Sort by a custom comparator
+        Arrays.sort(prices, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                double first = (double) a[2] / (a[0] * a[1]);
+                double second = (double) b[2] / (b[0] * b[1]);
+                return Double.compare(second, first);
+            }
+        });
+
+        // Sort by first then by second element
+
+        Arrays.sort(prices, (a, b) -> {
+            return (a[0] != b[0]) ? Integer.compare(a[0], b[0]) : Integer.compare(b[1], a[1]);
+        });
+
+
+
+
+
+
+        // Print sorted arrays
+        for (int[] intArr : prices) {
+            System.out.println(Arrays.toString(intArr));
+        }
+    }
+
+    // Section 2: Integer and Array Conversions
+    public static void integerAndArrayConversions() {
+        System.out.println("=== Integer and Array Conversions ===");
+
+        // Char to int
+        String n = "123";
+        int i = 0;
+        int x = n.charAt(i) - '0';
+        System.out.println("Char to int: " + x);
+
+        // Map char to an int (a = 0, b = 1, ..., z = 25)
+        n = "abc";
+        x = n.charAt(0) - 'a';
+        System.out.println("Char to int (a=0): " + x);
+
+        // Int[] to List
+        int[] a = {1, 2, 3};
+        List<Integer> list = new ArrayList<>(Arrays.stream(a).boxed().toList());
+
+        // List to int[]
+        int[] output = list.stream().mapToInt(Integer::intValue).toArray();
+
+        //int to binary string
+        String binaryString = Integer.toBinaryString(i);
+
+    }
+
+    // Section 3: HashMap Operations
+    public static void hashMapOperations() {
+        System.out.println("=== HashMap Operations ===");
+        int key = 3;
+        int value = 10;
+
+        // Increment HashMap value by 1 if it exists, if not, set it to 1
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.merge(3, 1, Integer::sum);
+
+        // HashMap with List values
+        // computeIfAbsent
+        HashMap<Integer, List<Integer>> indexMap = new HashMap<>();
+        indexMap.computeIfAbsent(key, k -> new ArrayList<>()).add(value);
+
+        // Sort HashMap keys based on values
+        List<Integer> keyList = new ArrayList<>(map.keySet());
+        Collections.sort(keyList, (a, b) -> Integer.compare(map.get(b), map.get(a)));
+
+        // Get HashMap key with largest value
+        Integer maxValueInMap = Collections.max(map.values());
+        Integer keyWithMaxValue = Collections.max(map.entrySet(), Map.Entry.comparingByValue()).getKey();
+
+
+    }
+
+    // Section 4: Queue Examples
+    public static void queueExamples() {
+        System.out.println("=== Queue Examples ===");
+        int[] ab = new int[100];
+
+        //int[] to deque
+        Deque<Integer> queue = new ArrayDeque<>(Arrays.stream(ab).boxed().toList());
+
+
+        // PriorityQueue from smallest to biggest
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.add(3);
+        pq.add(1);
+        pq.add(2);
+        System.out.println("PriorityQueue (smallest to biggest): " + pq);
+
+        // PriorityQueue from biggest to smallest
+        PriorityQueue<Integer> pq2 = new PriorityQueue<>(Collections.reverseOrder());
+        pq2.add(3);
+        pq2.add(1);
+        pq2.add(2);
+        System.out.println("PriorityQueue (biggest to smallest): " + pq2);
+
+        // PriorityQueue with custom comparator
+        PriorityQueue<int[]> pq3 = new PriorityQueue<>(Comparator.comparingInt((int[] z) -> z[1]).thenComparingInt(z -> z[0]));
+        pq3.add(new int[]{1, 3});
+        pq3.add(new int[]{2, 2});
+        pq3.add(new int[]{3, 1});
+        while (!pq3.isEmpty()) {
+            System.out.println("PriorityQueue with custom comparator: " + Arrays.toString(pq3.poll()));
+        }
+        PriorityQueue<int[]> minQueue = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        PriorityQueue<int[]> maxQueue = new PriorityQueue<>(Comparator.comparingInt(a -> -a[0]));
+
+
+    }
+
+    // Section 5: Miscellaneous Examples
+    public static void miscellaneousExamples() {
+        System.out.println("=== Miscellaneous Examples ===");
+
+        // Sub array
+        int[] a = {1, 2, 3};
+        int[] subArray = Arrays.copyOfRange(a, 0, 2);
+        System.out.println("Sub array: " + Arrays.toString(subArray));
+
+        // Instantiating List using Arrays.asList()
+        List<Integer> list = Arrays.asList(1, 2, 3);
+
+        // Find middle of a LinkedList (Tortoise and Hare method)
+        LinkedList<Integer> linkedList = new LinkedList<>(List.of(1, 2, 3, 4, 5));
+        findMiddleOfLinkedList(linkedList);
+    }
+
+    public static void findMiddleOfLinkedList(LinkedList<Integer> list) {
+        System.out.println("=== Finding Middle of LinkedList ===");
+
+        ListIterator<Integer> slow = list.listIterator();
+        ListIterator<Integer> fast = list.listIterator();
+
+        while (fast.hasNext()) {
+            fast.next();
+            if (fast.hasNext()) {
+                fast.next();
+                slow.next();
+            }
+        }
+
+    }
+
+
+
+
+    public static void readWrite() {
+        System.out.println("=== ReadWrite ===");
+        System.out.println(System.getProperty("user.dir"));
+        //Reading XML Triples example
+        List<List<String>> readTriple = readTripleXML("/Users/leong/Desktop/Personal Projects/self-learning-programming/src/src/res/triples.xml");
+        //Reading XML readwrite example
+        List<List<String>> readXML = readXML("/Users/leong/Desktop/Personal Projects/self-learning-programming/src/src/res/readwrite.xml");
+        //Writing XML readwrite example
+        List<String> keyNames = Arrays.asList("DOWN", "DOWN", "S", "RESET", "RIGHT", "DOWN", "RESET", "UP");
+        List<String> states = Arrays.asList("LieProneState", "LieProneState", "ShootState", "StandState", "RunState",  "RunState",  "StandState",  "StandState");
+        writeXML("xmlWriteFile.xml", keyNames, states);
+
+        //Read md
+        String mdString = readMD("src/src/res/data.md");
+        //Write md
+        writeMD("writeMD.md", mdString);
+
+
+        //JSON
+        Company company = new Company("TechCorp");
+        company.addEmployee(new Person("Alice", 30, "Engineer"));
+        company.addEmployee(new Person("Bob", 40, "Manager"));
+
+        File writeFile = new File("/Users/leong/Desktop/Personal Projects/self-learning-programming/src/src/res/techcorp.JSON");
+        writeJson(writeFile, company);
+        File readFile = new File("/Users/leong/Desktop/Personal Projects/self-learning-programming/src/src/res/techcorp.JSON");
+        Company techcorp = readJsonCompany(readFile);
+        System.out.println(techcorp.getCompanyName());
+    }
+
+
+    public static List<List<String>>  readTripleXML(String filePath) {
+        try (InputStream fileInputStream = new FileInputStream(filePath)) {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(fileInputStream);
+            document.getDocumentElement().normalize();
+
+            System.out.println("Root element: " + document.getDocumentElement().getNodeName());
+            NodeList nodeList = document.getElementsByTagName("triple");
+            System.out.println("nodelist size");
+            System.out.println(nodeList.getLength());
+
+            List<List<String>> output = new ArrayList<>();
+            List<String> subjectString = new ArrayList<>();
+            List<String> predicateString = new ArrayList<>();
+            List<String> objectString = new ArrayList<>();
+
+            int n = nodeList.getLength();
+            for (int i = 0; i < n; i++) {
+                Node node = nodeList.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                    String s = element.getElementsByTagName("subject").item(0).getTextContent();
+                    String p = element.getElementsByTagName("predicate").item(0).getTextContent();
+                    String o = element.getElementsByTagName("object").item(0).getTextContent();
+                    subjectString.add(s);
+                    predicateString.add(p);
+                    objectString.add(o);
+                }
+            }
+            output.add(subjectString);
+            output.add(predicateString);
+            output.add(objectString);
+            return output;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    static String STATE_ROOT_ELEMENT = "States";
+
+    public static List<List<String>> readXML(String fileName) {
+        File f = new File(fileName);
+        if (!f.exists()) {
+            return Collections.emptyList();
+        }
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db;
+        try {
+            db = dbf.newDocumentBuilder();
+            Document doc = db.parse(f);
+            doc.getDocumentElement().normalize();
+            // ########## YOUR CODE STARTS HERE ##########
+            // HINT: You can use getChildNodes() function in the XML library to obtain a
+            // list of child nodes of the parent tag STATE_ROOT_ELEMENT.
+            List<String> keys = new ArrayList<>();
+            List<String> states = new ArrayList<>();
+
+            NodeList nodeList = doc.getElementsByTagName(STATE_ROOT_ELEMENT);
+            NodeList childList = nodeList.item(0).getChildNodes();
+            for (int i = 0; i < childList.getLength(); i++) {
+                if (childList.item(i) instanceof Element) {
+                    Element e = (Element) childList.item(i);
+                    String tagName = e.getTagName();
+                    String text = e.getTextContent();
+                    keys.add(tagName);
+                    states.add(text);
+                }
+            }
+            List<List<String>> result = new ArrayList<>();
+            result.add(keys);
+            result.add(states);
+            return result;
+            // ########## YOUR CODE ENDS HERE ##########
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
+
+
+    public static void writeXML(String fileName, List<String> keys, List<String> states) {
+        File f = new File(fileName);
+        if (f.exists()) {
+            f.delete();
+        }
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.newDocument();
+            // ########## YOUR CODE STARTS HERE ##########
+            Element rootElement = doc.createElement(STATE_ROOT_ELEMENT);
+            doc.appendChild(rootElement);
+
+            for (int i = 0; i < keys.size(); i++) {
+                Element stateElement = doc.createElement(keys.get(i));
+                stateElement.appendChild(doc.createTextNode(states.get(i)));
+                rootElement.appendChild(stateElement);
+            }
+            // ########## YOUR CODE ENDS HERE ##########
+
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(f);
+            transformer.transform(source, result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    public static String readMD(String filePath)  {
+        try {
+            String content = readMDFile(filePath);
+            return content;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+    public static String readMDFile(String filePath) throws IOException {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+        }
+        return content.toString();
+    }
+
+    public static void writeMD(String fileName, String content) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
+            bw.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Company readJsonCompany(File file) {
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader(file)) {
+            return gson.fromJson(reader, Company.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void writeJson(File file, Object object) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try (FileWriter writer = new FileWriter(file)) {
+            gson.toJson(object, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    public static void bitOperators() {
+        //Position = 0 indexed, counting from right to left
+        //Limits:
+        //Integer: Up to 32 (31st bit is the last)
+        //Long: Up to 64 (63rd bit is the last)
+        int a = 5;  // 0101 in binary
+        int b = 3;  // 0011 in binary
+
+        int AND = a & b;  // 0001 in binary (1 in decimal)
+        int OR = a | b;  // 0111 in binary (7 in decimal)
+        int XOR = a ^ b;  // 0110 in binary (6 in decimal)
+        int NEGATE = ~a;  // 1010 in binary (two's complement representation, -6 in decimal)
+        int LEFTSHIFT = a << 1;  // 1010 in binary (10 in decimal)
+        // 1 << m === 2^m
+        // 3 << m === 3 * 2^m
+        int RIGHTSHIFT = a >> 1;  // 0010 in binary (2 in decimal)
+        // 1 >> m === 1 / (2^m)
+        // Right-shift integer division
+        // num >> 1 === num / 2
+
+
+
+        //Setting a bit to 1
+        int num = 5; // 0101 in binary
+        int pos = 3;
+        //Set the bit at position 3
+        int result = num | (1 << pos); // 1101 in binary (13 in decimal)
+        num |= (1 << pos); //Shorthand
+
+        //If you are starting with mask = 0, and you want to set the bit at pos to 1:
+        int nextMask = 1 << pos;
+
+
+        // Clearing a bit to 0
+        num = 13; // 1101 in binary
+        // Clear the bit at position 3
+        pos = 3;
+        result = num & ~(1 << pos); // 0101 in binary (5 in decimal)
+        num &= ~(1 << pos); //Shorthand
+
+
+        // Flipping a bit
+        num = 5; // 0101 in binary
+        // Flip the bit at position 2
+        result = num ^ (1 << 2); // 0001 in binary (1 in decimal)
+        // Flip the bit at position 0
+        result = num ^ (1 << 0); // 0100 in binary (4 in decimal)
+        num ^= (1 << pos);
+
+
+        // Checking a bit
+        num = 5; // 0101 in binary
+        // Check the bit at position
+        boolean isSet = (num & (1 << 2)) != 0; // true, because the bit at position 2 is 1
+        // Check the bit at position 1
+        isSet = (num & (1 << 1)) != 0; // false, because the bit at position 1 is 0
+
+    }
+
+
+
+    class Seed {
+        int x;
+        int y;
+        static int totalSeedCount = 0;
+        List<Seed> next = new ArrayList<>();
+
+        public Seed(int x, int y) {
+            this.x = x;
+            this.y = y;
+            totalSeedCount++;
+        }
+
+        @Override
+        public String toString() {
+            return "Seed{" +
+                    "x=" + x +
+                    ", y=" + y;
+        }
+    }
+
+    enum Key {
+        RESET, UP, DOWN, RIGHT, LEFT, S, L;
+    }
+
+}
+
+
+

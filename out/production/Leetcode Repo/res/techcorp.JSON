@@ -1,0 +1,16 @@
+{
+  "companyName": "TechCorp",
+  "workForce": 2,
+  "employees": [
+    {
+      "name": "Alice",
+      "age": 30,
+      "position": "Engineer"
+    },
+    {
+      "name": "Bob",
+      "age": 40,
+      "position": "Manager"
+    }
+  ]
+}
