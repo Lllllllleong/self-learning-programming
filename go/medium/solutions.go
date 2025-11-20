@@ -1,6 +1,9 @@
 package medium
 
-import "sort"
+import (
+	"sort"
+	"strings"
+)
 
 type TreeNode struct {
 	Val   int
@@ -15,6 +18,57 @@ type TreeNode struct {
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+1472. Design Browser History
+============================================================
+Time Complexity: O(?)
+Space Complexity: O(?)
+*/
+type Node struct {
+	url  string
+	prev *Node
+	next *Node
+}
+
+type BrowserHistory struct {
+	current *Node
+}
+
+func Constructor(homepage string) BrowserHistory {
+	return BrowserHistory{
+		current: &Node{
+			url: homepage,
+		},
+	}
+}
+
+func (this *BrowserHistory) Visit(url string) {
+	newNode := &Node{
+		url:  url,
+		prev: this.current,
+		next: nil,
+	}
+	this.current.next = newNode
+	this.current = newNode
+}
+
+func (this *BrowserHistory) Back(steps int) string {
+	for this.current.prev != nil && steps > 0 {
+		this.current = this.current.prev
+		steps--
+	}
+	return this.current.url
+}
+
+func (this *BrowserHistory) Forward(steps int) string {
+	for this.current.next != nil && steps > 0 {
+		this.current = this.current.next
+		steps--
+	}
+	return this.current.url
+}
 
 /*
 ============================================================
