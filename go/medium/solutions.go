@@ -21,6 +21,29 @@ Space Complexity: O()
 
 /*
 ============================================================
+2439. Minimize Maximum of Array
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+func minimizeArrayValue(nums []int) int {
+	var sum int64
+	output := 0
+	for i, v := range nums {
+		sum += int64(v)
+		currentMin := sum / int64(i+1)
+		if sum%int64(i+1) != 0 {
+			currentMin++
+		}
+		if output < int(currentMin) {
+			output = int(currentMin)
+		}
+	}
+	return output
+}
+
+/*
+============================================================
 1472. Design Browser History
 ============================================================
 Time Complexity: O(?)
