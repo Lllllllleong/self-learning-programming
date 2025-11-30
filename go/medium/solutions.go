@@ -2,6 +2,7 @@ package medium
 
 import (
 	"container/heap"
+	// "iter"
 	"sort"
 	"strings"
 )
@@ -19,6 +20,46 @@ type TreeNode struct {
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+1717. Maximum Score From Removing Substrings
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+func maximumGain(s string, x int, y int) int {
+	runes := []rune(s)
+	if x > y {
+		return maximumGainSolve(runes, x, y, 'a', 'b')
+	} else {
+		return maximumGainSolve(runes, y, x, 'b', 'a')
+	}
+}
+
+func maximumGainSolve(runes []rune, x, y int, runeFirst, runeSecond rune) int {
+	output := 0
+	stackFirst := []rune{}
+	for _, v := range runes {
+		if v == runeSecond && len(stackFirst) > 0 && stackFirst[len(stackFirst)-1] == runeFirst {
+			output += x
+			stackFirst = stackFirst[:len(stackFirst)-1]
+		} else {
+			stackFirst = append(stackFirst, v)
+		}
+	}
+	stackSecond := []rune{}
+	for _, v := range stackFirst {
+		if v == runeFirst && len(stackSecond) > 0 && stackSecond[len(stackSecond)-1] == runeSecond {
+			output += y
+			stackSecond = stackSecond[:len(stackSecond)-1]
+		} else {
+			stackSecond = append(stackSecond, v)
+		}
+	}
+	return output
+}
+
 /*
 ============================================================
 3494. Find the Minimum Amount of Time to Brew Potions
