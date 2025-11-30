@@ -19,6 +19,46 @@ type TreeNode struct {
 Time Complexity: O()
 Space Complexity: O()
 */
+/*
+============================================================
+3494. Find the Minimum Amount of Time to Brew Potions
+============================================================
+Time Complexity: O(n*m)
+Space Complexity: O(n)
+*/
+func minTime(skill []int, mana []int) int64 {
+	n, m := len(skill), len(mana)
+	skillPrefix := make([]int64, n+1)
+	for i := 0; i < n; i++ {
+		skillPrefix[i+1] = skillPrefix[i] + int64(skill[i])
+	}
+	currentFinishTime := int64(mana[0]) * skillPrefix[n]
+	for j := 1; j < m; j++ {
+		maxGap := int64(0)
+		for i := 0; i < n; i++ {
+			prevLeaves := int64(mana[j-1]) * skillPrefix[i+1]
+			currEnters := int64(mana[j]) * skillPrefix[i]
+			gap := prevLeaves - currEnters
+			if gap > maxGap {
+				maxGap = gap
+			}
+		}
+		currentFinishTime += maxGap
+	}
+	totalGap := int64(0)
+	for j := 0; j < m-1; j++ {
+		gap := int64(0)
+		for i := 0; i < n; i++ {
+			val := int64(mana[j])*skillPrefix[i+1] - int64(mana[j+1])*skillPrefix[i]
+			if val > gap {
+				gap = val
+			}
+		}
+		totalGap += gap
+	}
+	lastPotionTime := int64(mana[m-1]) * skillPrefix[n]
+	return totalGap + lastPotionTime
+}
 
 /*
 ============================================================
@@ -564,7 +604,6 @@ func updateDistanceGraph(query, distances []int, graph [][]int) {
 			queue = append(queue, nextNode)
 		}
 	}
-	return
 }
 
 /*
