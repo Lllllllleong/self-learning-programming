@@ -23,6 +23,51 @@ Space Complexity: O()
 
 /*
 ============================================================
+1530. Number of Good Leaf Nodes Pairs
+============================================================
+Time Complexity: O(N × D²) where N = nodes, D = distance (effectively O(N) since D ≤ 10)
+Space Complexity: O(N × D) for recursion stack and distance arrays (effectively O(N))
+*/
+var pairCount int
+
+func countPairs(root *TreeNode, distance int) int {
+	pairCount = 0
+	countPairs2(root, distance)
+	return pairCount
+}
+
+func countPairs2(root *TreeNode, distance int) []int {
+	if root == nil {
+		return []int{}
+	}
+	if root.Left == nil && root.Right == nil {
+		return []int{1}
+	}
+	left, right := countPairs2(root.Left, distance), countPairs2(root.Right, distance)
+	n, m := len(left), len(right)
+	for i, v := range left {
+		if (i + 1) >= distance {
+			break
+		}
+		for j, w := range right {
+			if (i + j + 2) > distance {
+				break
+			}
+			pairCount += v * w
+		}
+	}
+	output := make([]int, max(n, m)+1)
+	for i, v := range left {
+		output[i+1] += v
+	}
+	for i, v := range right {
+		output[i+1] += v
+	}
+	return output
+}
+
+/*
+============================================================
 3021. Alice and Bob Playing Flower Game
 ============================================================
 Time Complexity: O(1)
