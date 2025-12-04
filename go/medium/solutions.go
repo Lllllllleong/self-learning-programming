@@ -2,6 +2,8 @@ package medium
 
 import (
 	"container/heap"
+	"slices"
+
 	// "iter"
 	"sort"
 	"strings"
@@ -20,6 +22,34 @@ type TreeNode struct {
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+3759. Count Elements With at Least K Greater Values
+============================================================
+Time Complexity: O(n log n) - Build frequency map O(n), sort unique values O(u log u)
+Space Complexity: O(n) - Frequency map and key slice for unique elements
+*/
+func countElements(nums []int, k int) int {
+	output, count := 0, len(nums)
+	frequencyMap := make(map[int]int)
+	for _, V := range nums {
+		frequencyMap[V]++
+	}
+	keySlice := []int{}
+	for K := range frequencyMap {
+		keySlice = append(keySlice, K)
+	}
+	slices.Sort(keySlice)
+	for _, K := range keySlice {
+		count -= frequencyMap[K]
+		if count < k {
+			break
+		}
+		output += frequencyMap[K]
+	}
+	return output
+}
 
 /*
 ============================================================
