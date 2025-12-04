@@ -27,26 +27,23 @@ Space Complexity: O()
 ============================================================
 3759. Count Elements With at Least K Greater Values
 ============================================================
-Time Complexity: O(n log n) - Build frequency map O(n), sort unique values O(u log u)
-Space Complexity: O(n) - Frequency map and key slice for unique elements
+Time Complexity: O(n log n) - Sorting dominates, followed by single-pass grouping
+Space Complexity: O(1) - In-place sorting with constant auxiliary space
 */
 func countElements(nums []int, k int) int {
-	output, count := 0, len(nums)
-	frequencyMap := make(map[int]int)
-	for _, V := range nums {
-		frequencyMap[V]++
-	}
-	keySlice := []int{}
-	for K := range frequencyMap {
-		keySlice = append(keySlice, K)
-	}
-	slices.Sort(keySlice)
-	for _, K := range keySlice {
-		count -= frequencyMap[K]
-		if count < k {
+	output := 0
+	slices.Sort(nums)
+	i := 0
+	for i < len(nums) {
+		j := i + 1
+		for j < len(nums) && nums[i] == nums[j] {
+			j++
+		}
+		if (len(nums) - j) < k {
 			break
 		}
-		output += frequencyMap[K]
+		output += j - i
+		i = j
 	}
 	return output
 }
