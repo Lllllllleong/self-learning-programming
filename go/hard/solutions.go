@@ -1,5 +1,10 @@
 package hard
 
+import (
+	"cmp"
+	"slices"
+)
+
 /*
 ============================================================
 
@@ -10,120 +15,102 @@ Space Complexity: O()
 
 /*
 ============================================================
-Count Ways to Build Good Strings
+3414. Maximum Score of Non-overlapping Intervals
 ============================================================
-Time Complexity: O(?)
-Space Complexity: O(?)
+Time Complexity: O(n log n)
+Space Complexity: O(n)
+
+Solution Approach:
+- Uses sweep line algorithm with dynamic programming to track optimal interval selections
+- Maintains endpoint map to store DP states (max scores and interval chains) for each unique endpoint
+- For each interval, updates DP states for k different chain lengths (k=5) by considering previous states
+- Merges endpoint states as the sweep line progresses through sorted intervals
+- Uses lexicographical comparison to break ties when multiple chains have the same score
+- Returns the optimal chain with maximum score from final DP state
 */
-func assignEdgeWeights(edges [][]int) int {
-	const mod = 1_000_000_007
-	n := len(edges) + 1
-	graph := make([][]int, n)
-	for _, edge := range edges {
-		u, v := edge[0]-1, edge[1]-1
-		graph[u] = append(graph[u], v)
-		graph[v] = append(graph[v], u)
-	}
-	depthSlice := make([]int, n)
-	seenSlice := make([]bool, n)
-	queue := []int{0}
-	seenSlice[0] = true
-	for len(queue) > 0 {
-		node := queue[0]
-		queue = queue[1:]
-		for _, neighbor := range graph[node] {
-			if !seenSlice[neighbor] {
-				seenSlice[neighbor] = true
-				depthSlice[neighbor] = depthSlice[node] + 1
-				queue = append(queue, neighbor)
-			}
-		}
-	}
-	maxDepth := -1
-	for _, depth := range depthSlice {
-		if depth > maxDepth {
-			maxDepth = depth
-		}
-	}
-	output := 1
-	for i := 0; i < maxDepth-1; i++ {
-		output = (output * 2) % mod
-	}
-	return output
+const kSize = 5
+
+type Endpoint struct {
+	maxScores       [kSize]int
+	intervalIndices [kSize][]int
 }
 
-/*
-============================================================
-Find Coins
-============================================================
-Time Complexity: O(?)
-Space Complexity: O(?)
-*/
-func findCoins(numWays []int) []int {
-	n := len(numWays)
-	output := []int{}
-	dp := make([]int, n)
-	for i := 0; i < n; i++ {
-		if dp[i] == numWays[i] {
-			continue
-		}
-		if dp[i] != numWays[i]-1 {
-			return []int{}
-		}
-		dp[i]++
-		coinValue := i + 1
-		output = append(output, coinValue)
-		for j := 0; j < n; j++ {
-			if dp[j] != 0 && (j+coinValue) < n {
-				dp[j+coinValue] += dp[j]
-			}
-		}
+func shouldUpdate(currScore, newScore int, currIndices, newIndices []int) bool {
+	if newScore > currScore {
+		return true
 	}
-	return output
+	return newScore == currScore && slices.Compare(newIndices, currIndices) < 0
 }
 
-/*
-============================================================
-Maximal Square
-============================================================
-Time Complexity: O(?)
-Space Complexity: O(?)
-*/
-func maximalSquare(matrix [][]byte) int {
-	rows := len(matrix)
-	cols := len(matrix[0])
-	intMatrix := make([][]int, rows)
-	for i := range matrix {
-		intMatrix[i] = make([]int, cols)
-		for j := range matrix[i] {
-			intMatrix[i][j] = int(matrix[i][j]) - 48
+func mergeEndpoints(src, dest *Endpoint) {
+	for i := 0; i < kSize; i++ {
+		if shouldUpdate(dest.maxScores[i], src.maxScores[i], dest.intervalIndices[i], src.intervalIndices[i]) {
+			dest.maxScores[i] = src.maxScores[i]
+			dest.intervalIndices[i] = slices.Clone(src.intervalIndices[i])
 		}
 	}
-	output := 0
-	maxf := func(a, b int) int {
-		if a > b {
-			return a
-		}
-		return b
+}
+
+func maximumWeight(intervals [][]int) []int {
+	uniqueEnds := make(map[int]struct{})
+	for i, interval := range intervals {
+		uniqueEnds[interval[1]] = struct{}{}
+		intervals[i] = append(intervals[i], i)
 	}
-	minf := func(a, b int) int {
-		if a < b {
-			return a
-		}
-		return b
+	sortedEnds := []int{}
+	for k := range uniqueEnds {
+		sortedEnds = append(sortedEnds, k)
 	}
-	for y := 0; y < rows; y++ {
-		for x := 0; x < cols; x++ {
-			if intMatrix[y][x] > 0 &&
-				x > 0 &&
-				y > 0 &&
-				intMatrix[y-1][x-1] > 0 &&
-				intMatrix[y-1][x] > 0 &&
-				intMatrix[y][x-1] > 0 {
-				intMatrix[y][x] = minf(intMatrix[y-1][x], minf(intMatrix[y-1][x-1], intMatrix[y][x-1])) + 1
+	slices.Sort(sortedEnds)
+	epMap := make(map[int]*Endpoint, len(sortedEnds))
+	for _, ep := range sortedEnds {
+		epMap[ep] = &Endpoint{}
+	}
+	slices.SortFunc(intervals, func(a, b []int) int {
+		return cmp.Or(
+			cmp.Compare(a[0], b[0]),
+			cmp.Compare(a[1], b[1]),
+			cmp.Compare(a[3], b[3]),
+		)
+	})
+	currentEP := &Endpoint{}
+	epIdx := 0
+	for _, interval := range intervals {
+		start, end, value, index := interval[0], interval[1], interval[2], interval[3]
+		for epIdx < len(sortedEnds) && sortedEnds[epIdx] < start {
+			mergeEndpoints(epMap[sortedEnds[epIdx]], currentEP)
+			epIdx++
+		}
+		targetEP := epMap[end]
+		for k := kSize - 1; k > 0; k-- {
+			prevScore := currentEP.maxScores[k-1]
+			potentialScore := prevScore + value
+			if k > 1 && currentEP.intervalIndices[k-1] == nil && prevScore == 0 {
+				continue
 			}
-			output = maxf(output, intMatrix[y][x])
+			newChain := make([]int, len(currentEP.intervalIndices[k-1])+1)
+			copy(newChain, currentEP.intervalIndices[k-1])
+			newChain[len(newChain)-1] = index
+			slices.Sort(newChain)
+
+			if shouldUpdate(targetEP.maxScores[k], potentialScore, targetEP.intervalIndices[k], newChain) {
+				targetEP.maxScores[k] = potentialScore
+				targetEP.intervalIndices[k] = newChain
+			}
 		}
 	}
-	return output * output
+	for epIdx < len(sortedEnds) {
+		mergeEndpoints(epMap[sortedEnds[epIdx]], currentEP)
+		epIdx++
+	}
+	maxScore := -1
+	var output []int
+	for i, v := range currentEP.maxScores {
+		if shouldUpdate(maxScore, v, output, currentEP.intervalIndices[i]) {
+			maxScore = v
+			output = currentEP.intervalIndices[i]
+		}
+	}
+
+	return output
 }
