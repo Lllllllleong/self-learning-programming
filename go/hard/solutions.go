@@ -19,14 +19,6 @@ Space Complexity: O()
 ============================================================
 Time Complexity: O(n log n)
 Space Complexity: O(n)
-
-Solution Approach:
-- Uses sweep line algorithm with dynamic programming to track optimal interval selections
-- Maintains endpoint map to store DP states (max scores and interval chains) for each unique endpoint
-- For each interval, updates DP states for k different chain lengths (k=5) by considering previous states
-- Merges endpoint states as the sweep line progresses through sorted intervals
-- Uses lexicographical comparison to break ties when multiple chains have the same score
-- Returns the optimal chain with maximum score from final DP state
 */
 const kSize = 5
 
