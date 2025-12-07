@@ -2,6 +2,7 @@ package hard
 
 import (
 	"cmp"
+	// "math"
 	"slices"
 )
 
@@ -12,6 +13,30 @@ import (
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+2366. Minimum Replacements to Sort the Array
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+func minimumReplacement(nums []int) int64 {
+	var output int64 = 0
+	n := len(nums)
+	prior := nums[len(nums)-1]
+	for i := n - 2; i >= 0; i-- {
+		num := nums[i]
+		if num > prior {
+			k := (num + prior - 1) / prior
+			output += int64(k - 1)
+			prior = num / k
+		} else {
+			prior = num
+		}
+	}
+	return output
+}
 
 /*
 ============================================================
