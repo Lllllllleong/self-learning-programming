@@ -4,6 +4,7 @@ import (
 	"cmp"
 	// "math"
 	"slices"
+	"sync"
 )
 
 /*
@@ -13,6 +14,38 @@ import (
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+2449. Minimum Number of Operations to Make Arrays Similar
+============================================================
+Time Complexity: O()
+Space Complexity: O()
+*/
+func makeSimilar(nums []int, target []int) int64 {
+	var output int64
+	cache := make([][]int, 4)
+	for i := range cache {
+		cache[i] = []int{}
+	}
+	for i := range nums {
+		cache[nums[i]%2] = append(cache[nums[i]%2], nums[i])
+		cache[2+target[i]%2] = append(cache[2+target[i]%2], target[i])
+	}
+	for i := range cache {
+		slices.Sort(cache[i])
+	}
+	for i := range 2 {
+		for j := range cache[i] {
+			num, tar := cache[i][j], cache[2+i][j]
+			if tar > num {
+				ops := (tar - num) / 2
+				output += int64(ops)
+			}
+		}
+	}
+	return output
+}
 
 /*
 ============================================================
