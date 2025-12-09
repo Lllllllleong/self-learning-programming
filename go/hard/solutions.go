@@ -2,6 +2,7 @@ package hard
 
 import (
 	"cmp"
+	// "iter"
 	// "math"
 	"slices"
 	// "sync"
@@ -14,6 +15,36 @@ import (
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+992. Subarrays with K Different Integers
+============================================================
+Time Complexity: O(n)
+Space Complexity: O()
+*/
+func subarraysWithKDistinct(nums []int, k int) int {
+	return subarraysWithAtMostKDistinct(nums, k) - subarraysWithAtMostKDistinct(nums, k-1)
+}
+
+func subarraysWithAtMostKDistinct(nums []int, k int) int {
+	count := make(map[int]int)
+	left := 0
+	output := 0
+
+	for right, num := range nums {
+		count[num]++
+		for len(count) > k {
+			count[nums[left]]--
+			if count[nums[left]] == 0 {
+				delete(count, nums[left])
+			}
+			left++
+		}
+		output += right - left + 1
+	}
+	return output
+}
 
 /*
 ============================================================
