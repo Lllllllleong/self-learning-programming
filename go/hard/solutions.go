@@ -3,6 +3,9 @@ package hard
 import (
 	"cmp"
 	// "iter"
+	"math"
+
+	// "iter"
 	// "math"
 	"slices"
 	// "sync"
@@ -18,10 +21,92 @@ Space Complexity: O()
 
 /*
 ============================================================
+1473. Paint House III
+============================================================
+Time Complexity: O(m * target * n^2)
+Space Complexity: O(target * n)
+*/
+func minCost(houses []int, cost [][]int, m int, n int, target int) int {
+	baseState := make([][]int, target+1)
+	baseState[0] = make([]int, n)
+	for i := 1; i < len(baseState); i++ {
+		baseState[i] = make([]int, n)
+		for j := range baseState[i] {
+			baseState[i][j] = math.MaxInt32
+		}
+	}
+	dpState := copy2DSlice(baseState)
+	for h, house := range houses {
+		if house != 0 {
+			currentColour := house - 1
+			currentState := copy2DSlice(baseState)
+			for i := target; i > 0; i-- {
+				for j := 0; j < n; j++ {
+					if j == currentColour {
+						currentState[i][currentColour] = min(currentState[i][currentColour], dpState[i][j])
+						if i == 1 {
+							currentState[i][currentColour] = min(currentState[i][currentColour], dpState[i-1][j])
+						}
+
+					} else {
+						currentState[i][currentColour] = min(currentState[i][currentColour], dpState[i-1][j])
+					}
+				}
+			}
+			dpState = currentState
+		} else {
+			for i := target; i > 0; i-- {
+				for j := 0; j < n; j++ {
+					if dpState[i][j] != math.MaxInt32 {
+						dpState[i][j] += cost[h][j]
+					}
+					for k := 0; k < n; k++ {
+						if j == k {
+							if i == 1 && dpState[i-1][k] != math.MaxInt32 {
+								dpState[i][j] = min(dpState[i][j], dpState[i-1][k]+cost[h][j])
+							}
+							continue
+						}
+
+						if dpState[i-1][k] != math.MaxInt32 {
+							dpState[i][j] = min(dpState[i][j], dpState[i-1][k]+cost[h][j])
+						}
+					}
+				}
+			}
+		}
+		if h == 0 {
+			for i := range dpState[0] {
+				dpState[0][i] = math.MaxInt32
+				baseState[0][i] = math.MaxInt32
+			}
+		}
+	}
+	output := math.MaxInt32
+	for _, v := range dpState[target] {
+		output = min(output, v)
+	}
+	if output == math.MaxInt32 {
+		output = -1
+	}
+	return output
+}
+
+func copy2DSlice(src [][]int) [][]int {
+	dst := make([][]int, len(src))
+	for i := range src {
+		dst[i] = make([]int, len(src[i]))
+		copy(dst[i], src[i])
+	}
+	return dst
+}
+
+/*
+============================================================
 992. Subarrays with K Different Integers
 ============================================================
 Time Complexity: O(n)
-Space Complexity: O()
+Space Complexity: O(n)
 */
 func subarraysWithKDistinct(nums []int, k int) int {
 	return subarraysWithAtMostKDistinct(nums, k) - subarraysWithAtMostKDistinct(nums, k-1)
