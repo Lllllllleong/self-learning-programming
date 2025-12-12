@@ -21,6 +21,29 @@ Space Complexity: O()
 
 /*
 ============================================================
+1955. Count Number of Special Subsequences
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+func countSpecialSubsequences(nums []int) int {
+	const M = 1_000_000_007
+	dpSlice := make([]int, 3)
+	for _, v := range nums {
+		dpSlice[v] = (dpSlice[v] * 2) % M
+		if v > 0 {
+			dpSlice[v] += dpSlice[v-1]
+			dpSlice[v] %= M
+		} else {
+			dpSlice[v]++
+			dpSlice[v] %= M
+		}
+	}
+	return dpSlice[2]
+}
+
+/*
+============================================================
 1473. Paint House III
 ============================================================
 Time Complexity: O(m * target * n^2)
