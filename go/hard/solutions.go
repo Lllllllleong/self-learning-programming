@@ -21,6 +21,61 @@ Space Complexity: O()
 
 /*
 ============================================================
+2045. Second Minimum Time to Reach Destination
+============================================================
+Time Complexity: O(V + E) where V is number of nodes, E is number of edges
+Space Complexity: O(V + E)
+*/
+type pair struct {
+	node, time int
+}
+
+func secondMinimum(n int, edges [][]int, time int, change int) int {
+	adj := make([][]int, n+1)
+	for _, e := range edges {
+		u, v := e[0], e[1]
+		adj[u] = append(adj[u], v)
+		adj[v] = append(adj[v], u)
+	}
+	dist1 := make([]int, n+1)
+	dist2 := make([]int, n+1)
+	for i := range dist1 {
+		dist1[i], dist2[i] = -1, -1
+	}
+	queue := make([]pair, 0, n*2)
+	queue = append(queue, pair{1, 0})
+	dist1[1] = 0
+	head := 0
+	for head < len(queue) {
+		curr := queue[head]
+		head++
+
+		// Traffic light calculation
+		nextTime := curr.time
+		if (nextTime/change)%2 == 1 {
+			nextTime = change*((nextTime/change)+1) + time
+		} else {
+			nextTime += time
+		}
+
+		for _, neighbor := range adj[curr.node] {
+			if dist1[neighbor] == -1 {
+				dist1[neighbor] = nextTime
+				queue = append(queue, pair{neighbor, nextTime})
+			} else if dist2[neighbor] == -1 && dist1[neighbor] < nextTime {
+				if neighbor == n {
+					return nextTime
+				}
+				dist2[neighbor] = nextTime
+				queue = append(queue, pair{neighbor, nextTime})
+			}
+		}
+	}
+	return 0
+}
+
+/*
+============================================================
 1955. Count Number of Special Subsequences
 ============================================================
 Time Complexity: O(n)
