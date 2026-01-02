@@ -25,6 +25,51 @@ Space Complexity: O()
 
 /*
 ============================================================
+3543. Maximum Weighted K-Edge Path
+============================================================
+Time Complexity: O(k * |E| * W) where |E| is edges count, W is max weight values tracked
+Space Complexity: O(k * n * W) for the DP table
+*/
+func maxWeight(n int, edges [][]int, k int, t int) int {
+	// Initialize 3D DP: dp[steps][node][weight] = reachable
+	dp := make([][]map[int]bool, k+1)
+	for step := range dp {
+		dp[step] = make([]map[int]bool, n)
+		for node := range dp[step] {
+			dp[step][node] = make(map[int]bool)
+		}
+	}
+
+	for node := 0; node < n; node++ {
+		dp[0][node][0] = true
+	}
+
+	for step := 0; step < k; step++ {
+		for _, edge := range edges {
+			u, v, w := edge[0], edge[1], edge[2]
+			for prevWeight := range dp[step][u] {
+				newWeight := prevWeight + w
+				if newWeight < t {
+					dp[step+1][v][newWeight] = true
+				}
+			}
+		}
+	}
+
+	output := -1
+	for node := 0; node < n; node++ {
+		for weight := range dp[k][node] {
+			if weight > output {
+				output = weight
+			}
+		}
+	}
+
+	return output
+}
+
+/*
+============================================================
 3759. Count Elements With at Least K Greater Values
 ============================================================
 Time Complexity: O(n log n) - Sorting dominates, followed by single-pass grouping
