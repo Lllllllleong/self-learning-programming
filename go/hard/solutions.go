@@ -21,6 +21,63 @@ Space Complexity: O()
 
 /*
 ============================================================
+1520. Maximum Number of Non-Overlapping Substrings
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+func maxNumOfSubstrings(s string) []string {
+	n := len(s)
+	firstSeen := make([]int, 26)
+	lastSeen := make([]int, 26)
+	for i := range firstSeen {
+		firstSeen[i] = -1
+	}
+	for i := 0; i < n; i++ {
+		charIndex := s[i] - 'a'
+		if firstSeen[charIndex] == -1 {
+			firstSeen[charIndex] = i
+		}
+		lastSeen[charIndex] = i
+	}
+	intervals := [][]int{}
+	for i := 0; i < 26; i++ {
+		if firstSeen[i] == -1 {
+			continue
+		}
+		leftBound, rightBound := firstSeen[i], lastSeen[i]
+		isValid := true
+		for j := leftBound; j <= rightBound; j++ {
+			charIndex := s[j] - 'a'
+			if firstSeen[charIndex] < leftBound {
+				isValid = false
+				break
+			}
+			if lastSeen[charIndex] > rightBound {
+				rightBound = lastSeen[charIndex]
+			}
+		}
+		if isValid {
+			intervals = append(intervals, []int{leftBound, rightBound})
+		}
+	}
+	slices.SortFunc(intervals, func(a, b []int) int {
+		return cmp.Compare(a[1], b[1])
+	})
+	output := []string{}
+	previousEnd := -1
+	for _, interval := range intervals {
+		leftBound, rightBound := interval[0], interval[1]
+		if leftBound > previousEnd {
+			output = append(output, s[leftBound:rightBound+1])
+			previousEnd = rightBound
+		}
+	}
+	return output
+}
+
+/*
+============================================================
 2045. Second Minimum Time to Reach Destination
 ============================================================
 Time Complexity: O(V + E) where V is number of nodes, E is number of edges
