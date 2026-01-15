@@ -21,6 +21,34 @@ Space Complexity: O()
 
 /*
 ============================================================
+84. Largest Rectangle in Histogram
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+func largestRectangleArea(heights []int) int {
+	heights = append(heights, 0)
+	stack := []int{}
+	maxArea := 0
+	for i, h := range heights {
+		for len(stack) > 0 && heights[stack[len(stack)-1]] >= h {
+			height := heights[stack[len(stack)-1]]
+			stack = stack[:len(stack)-1]
+			width := 0
+			if len(stack) == 0 {
+				width = i
+			} else {
+				width = i - stack[len(stack)-1] - 1
+			}
+			maxArea = max(maxArea, height*width)
+		}
+		stack = append(stack, i)
+	}
+	return maxArea
+}
+
+/*
+============================================================
 1520. Maximum Number of Non-Overlapping Substrings
 ============================================================
 Time Complexity: O(n)
