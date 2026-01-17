@@ -21,6 +21,24 @@ Space Complexity: O()
 
 /*
 ============================================================
+1411. Number of Ways to Paint N × 3 Grid
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+func numOfWays(n int) int {
+    const Mod = 1_000_000_007
+    aba, abc := 6, 6
+    for i := 1; i < n; i++ {
+        newAba := (3*aba + 2*abc) % Mod
+        newAbc := (2*aba + 2*abc) % Mod
+        aba, abc = newAba, newAbc
+    }
+    return (aba + abc) % Mod
+}
+
+/*
+============================================================
 84. Largest Rectangle in Histogram
 ============================================================
 Time Complexity: O(n)
