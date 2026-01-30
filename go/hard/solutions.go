@@ -21,20 +21,136 @@ Space Complexity: O()
 
 /*
 ============================================================
+2977. Minimum Cost to Convert String II
+============================================================
+Time Complexity: O(m³ + n×L×s) where m = number of unique strings in original+changed,
+
+	n = len(source), L = number of unique string lengths, s = max string length
+
+Space Complexity: O(m² + n) for cost map and DP array
+*/
+func minimumCost(source string, target string, original []string, changed []string, cost []int) int64 {
+	costMap := make(map[string]map[string]int64)
+	setCost := func(from, to string, c int64) {
+		if costMap[from] == nil {
+			costMap[from] = make(map[string]int64)
+		}
+		if existing, exists := costMap[from][to]; !exists || c < existing {
+			costMap[from][to] = c
+		}
+	}
+	for i := range original {
+		setCost(original[i], changed[i], int64(cost[i]))
+	}
+	allStrings := []string{}
+	stringSet := make(map[string]struct{})
+	for _, s := range original {
+		if _, exists := stringSet[s]; !exists {
+			stringSet[s] = struct{}{}
+			allStrings = append(allStrings, s)
+		}
+	}
+	for _, s := range changed {
+		if _, exists := stringSet[s]; !exists {
+			stringSet[s] = struct{}{}
+			allStrings = append(allStrings, s)
+		}
+	}
+	stringLengthSet := make(map[int]struct{})
+	for _, v := range allStrings {
+		stringLengthSet[len(v)] = struct{}{}
+	}
+	stringLengths := make([]int, 0, len(stringLengthSet))
+	for k := range stringLengthSet {
+		stringLengths = append(stringLengths, k)
+	}
+	slices.Sort(stringLengths)
+	for _, k := range allStrings {
+		for _, i := range allStrings {
+			if i == k || costMap[i] == nil {
+				continue
+			}
+			costIK, hasIK := costMap[i][k]
+			if !hasIK {
+				continue
+			}
+
+			for _, j := range allStrings {
+				if i == j || j == k || costMap[k] == nil {
+					continue
+				}
+				costKJ, hasKJ := costMap[k][j]
+				if !hasKJ {
+					continue
+				}
+
+				newCost := costIK + costKJ
+				existingCost, hasIJ := costMap[i][j]
+				if !hasIJ || newCost < existingCost {
+					setCost(i, j, newCost)
+				}
+			}
+		}
+	}
+	getCost := func(from, to string) int64 {
+		if from == to {
+			return 0
+		}
+		if costMap[from] == nil {
+			return math.MaxInt64
+		}
+		if c, exists := costMap[from][to]; exists {
+			return c
+		}
+		return math.MaxInt64
+	}
+	n := len(source)
+	dp := make([]int64, n+1)
+	for i := range dp {
+		dp[i] = math.MaxInt64
+	}
+	dp[0] = 0
+	for i := 0; i < n; i++ {
+		if dp[i] == math.MaxInt64 || dp[i] >= dp[n] {
+			continue
+		}
+		if source[i] == target[i] {
+			dp[i+1] = min(dp[i+1], dp[i])
+		}
+		for _, length := range stringLengths {
+			if i+length >= n+1 {
+				break
+			}
+			srcSubstr := source[i : i+length]
+			tgtSubstr := target[i : i+length]
+			transformCost := getCost(srcSubstr, tgtSubstr)
+			if transformCost != math.MaxInt64 {
+				dp[i+length] = min(dp[i+length], dp[i]+transformCost)
+			}
+		}
+	}
+	if dp[n] == math.MaxInt64 {
+		return -1
+	}
+	return dp[n]
+}
+
+/*
+============================================================
 1411. Number of Ways to Paint N × 3 Grid
 ============================================================
 Time Complexity: O(n)
 Space Complexity: O(1)
 */
 func numOfWays(n int) int {
-    const Mod = 1_000_000_007
-    aba, abc := 6, 6
-    for i := 1; i < n; i++ {
-        newAba := (3*aba + 2*abc) % Mod
-        newAbc := (2*aba + 2*abc) % Mod
-        aba, abc = newAba, newAbc
-    }
-    return (aba + abc) % Mod
+	const Mod = 1_000_000_007
+	aba, abc := 6, 6
+	for i := 1; i < n; i++ {
+		newAba := (3*aba + 2*abc) % Mod
+		newAbc := (2*aba + 2*abc) % Mod
+		aba, abc = newAba, newAbc
+	}
+	return (aba + abc) % Mod
 }
 
 /*
