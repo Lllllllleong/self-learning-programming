@@ -2,6 +2,7 @@ package medium
 
 import (
 	"container/heap"
+	"fmt"
 	"slices"
 
 	// "iter"
@@ -22,6 +23,37 @@ type TreeNode struct {
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+3719. Longest Balanced Subarray I
+============================================================
+Time Complexity: O(n^2)
+Space Complexity: O(n)
+*/
+func longestBalanced(nums []int) int {
+	n, output := len(nums), 0
+	seenSetDP, parityDP := make([]map[int]struct{}, n), make([]int, n)
+	for i := range seenSetDP {
+		seenSetDP[i] = make(map[int]struct{})
+	}
+	for i := n-1; i >= 0; i-- {
+		num := nums[i]
+		j := i
+		for j < n {
+			parity := 1 - (num&1)*2
+			if _, ok := seenSetDP[j][num]; !ok {
+				parityDP[j] += parity
+				seenSetDP[j][num] = struct{}{}
+			}
+			if parityDP[j] == 0 {
+				output = max(output, (j - i + 1))
+			}
+			j++
+		}
+	}
+	return output
+}
 
 /*
 ============================================================
