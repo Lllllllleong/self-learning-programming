@@ -3,6 +3,7 @@ package medium
 import (
 	"container/heap"
 	"fmt"
+	"math"
 	"slices"
 
 	// "iter"
@@ -15,7 +16,6 @@ type TreeNode struct {
 	Left  *TreeNode
 	Right *TreeNode
 }
-
 /*
 ============================================================
 
@@ -23,6 +23,18 @@ type TreeNode struct {
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+3857. Minimum Cost to Split into Ones
+============================================================
+Time Complexity: O()
+Space Complexity: O()
+*/
+func minCost(n int) int {
+    n--
+    return n * (n+1)/2
+}
 
 /*
 ============================================================
