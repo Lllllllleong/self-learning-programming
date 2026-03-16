@@ -3,7 +3,7 @@ package medium
 import (
 	"container/heap"
 	"fmt"
-	"math"
+	// "math"
 	"slices"
 
 	// "iter"
@@ -23,6 +23,55 @@ type TreeNode struct {
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+3775. Reverse Words With Same Vowel Count
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+func reverseWords(s string) string {
+    var sb strings.Builder
+	words := strings.Fields(s)
+	vowelSet := map[rune]struct{}{
+		'a': struct{}{},
+		'e': struct{}{},
+		'i': struct{}{},
+		'o': struct{}{},
+		'u': struct{}{},
+	}
+	vowelCount := 0
+	for _, rune := range []rune(words[0]) {
+		if _, ok := vowelSet[rune]; ok {
+			vowelCount++
+		}
+	}
+	sb.WriteString(words[0])
+	sb.WriteString(" ")
+	
+	for i := 1; i < len(words); i++ {
+		runes := []rune(words[i])
+		vowelCounter := 0
+		for _, rune := range runes {
+			if _, ok := vowelSet[rune]; ok {
+				vowelCounter++
+			}
+		}
+		if vowelCounter == vowelCount {
+			for i := len(runes)-1; i >= 0; i-- {
+				sb.WriteRune(runes[i])
+			}
+		} else {
+			for i := 0; i < len(runes); i++ {
+				sb.WriteRune(runes[i])
+			}
+		}
+		sb.WriteRune(' ')
+
+	}
+	return strings.Trim(sb.String(), " ")
+}
 
 /*
 ============================================================
