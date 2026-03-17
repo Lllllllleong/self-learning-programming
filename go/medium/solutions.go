@@ -16,6 +16,7 @@ type TreeNode struct {
 	Left  *TreeNode
 	Right *TreeNode
 }
+
 /*
 ============================================================
 
@@ -23,6 +24,24 @@ type TreeNode struct {
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+1846. Maximum Element After Decreasing and Rearranging
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+func maximumElementAfterDecrementingAndRearranging(arr []int) int {
+    slices.Sort(arr)
+	count := 0
+	for _, v := range arr {
+		if v > count {
+			count++
+		}
+	}
+	return count
+}
 
 /*
 ============================================================
