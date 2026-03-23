@@ -2,7 +2,6 @@ package medium
 
 import (
 	"container/heap"
-	"fmt"
 	// "math"
 	"slices"
 
@@ -27,13 +26,32 @@ Space Complexity: O()
 
 /*
 ============================================================
+1887. Reduction Operations to Make the Array Elements Equal
+============================================================
+Time Complexity: O(n log n)
+Space Complexity: O(1)
+*/
+func reductionOperations(nums []int) int {
+	sort.Ints(nums)
+	var output int
+	for i := len(nums) - 2; i >= 0; i-- {
+		if nums[i] == nums[i+1] {
+			continue
+		}
+		output += len(nums) - (i + 1)
+	}
+	return output
+}
+
+/*
+============================================================
 1846. Maximum Element After Decreasing and Rearranging
 ============================================================
 Time Complexity: O(n)
 Space Complexity: O(n)
 */
 func maximumElementAfterDecrementingAndRearranging(arr []int) int {
-    slices.Sort(arr)
+	slices.Sort(arr)
 	count := 0
 	for _, v := range arr {
 		if v > count {
@@ -51,7 +69,7 @@ Time Complexity: O(n)
 Space Complexity: O(n)
 */
 func reverseWords(s string) string {
-    var sb strings.Builder
+	var sb strings.Builder
 	words := strings.Fields(s)
 	vowelSet := map[rune]struct{}{
 		'a': struct{}{},
@@ -68,7 +86,7 @@ func reverseWords(s string) string {
 	}
 	sb.WriteString(words[0])
 	sb.WriteString(" ")
-	
+
 	for i := 1; i < len(words); i++ {
 		runes := []rune(words[i])
 		vowelCounter := 0
@@ -78,7 +96,7 @@ func reverseWords(s string) string {
 			}
 		}
 		if vowelCounter == vowelCount {
-			for i := len(runes)-1; i >= 0; i-- {
+			for i := len(runes) - 1; i >= 0; i-- {
 				sb.WriteRune(runes[i])
 			}
 		} else {
@@ -100,8 +118,8 @@ Time Complexity: O()
 Space Complexity: O()
 */
 func minCost(n int) int {
-    n--
-    return n * (n+1)/2
+	n--
+	return n * (n + 1) / 2
 }
 
 /*
@@ -117,7 +135,7 @@ func longestBalanced(nums []int) int {
 	for i := range seenSetDP {
 		seenSetDP[i] = make(map[int]struct{})
 	}
-	for i := n-1; i >= 0; i-- {
+	for i := n - 1; i >= 0; i-- {
 		num := nums[i]
 		j := i
 		for j < n {
