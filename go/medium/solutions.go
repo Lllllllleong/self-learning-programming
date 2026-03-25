@@ -26,6 +26,52 @@ Space Complexity: O()
 
 /*
 ============================================================
+2316. Count Unreachable Pairs of Nodes in an Undirected Graph
+============================================================
+Time Complexity: O(n + e)
+Space Complexity: O(n + e)
+*/
+func countPairs(n int, edges [][]int) int64 {
+    flagSlice := make([]bool, n)
+	graph := make([][]int, n)
+	ccSlice := []int{}
+	for _, edge := range edges {
+		a, b := edge[0], edge[1]
+		graph[a] = append(graph[a], b)
+		graph[b] = append(graph[b], a)
+	}
+	for i := 0; i < n; i++ {
+		if flagSlice[i] {
+			continue
+		}
+		flagSlice[i] = true
+		queue := []int{i}
+		ccSize := 1
+		for len(queue) > 0 {
+			node := queue[0]
+			queue = queue[1:]
+			for _, nextNode := range graph[node] {
+				if !flagSlice[nextNode] {
+					flagSlice[nextNode] = true
+					queue = append(queue, nextNode)
+					ccSize++
+				}
+			}
+		}
+		ccSlice = append(ccSlice, ccSize)
+	}
+	var output int64
+    remainingNodes := int64(n)
+    for _, size := range ccSlice {
+        size64 := int64(size)
+        remainingNodes -= size64
+        output += size64 * remainingNodes
+    }
+    return output
+}
+
+/*
+============================================================
 1887. Reduction Operations to Make the Array Elements Equal
 ============================================================
 Time Complexity: O(n log n)
@@ -232,7 +278,7 @@ Space Complexity: O(N × D) for recursion stack and distance arrays (effectively
 */
 var pairCount int
 
-func countPairs(root *TreeNode, distance int) int {
+func countPairs1530(root *TreeNode, distance int) int {
 	pairCount = 0
 	countPairs2(root, distance)
 	return pairCount
