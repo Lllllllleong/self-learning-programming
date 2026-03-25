@@ -2,6 +2,7 @@ package medium
 
 import (
 	"container/heap"
+	// "testing/quick"
 	// "math"
 	"slices"
 
@@ -23,6 +24,31 @@ type TreeNode struct {
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+2750. Ways to Split Array Into Good Subarrays
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+func numberOfGoodSubarraySplits(nums []int) int {
+	const mod = 1_000_000_007	
+	output := 0
+	prior := -1
+	for i, v := range nums {
+		if v == 1 {
+			if prior != -1 {
+				output = ((i - prior) * output) % mod
+			} 
+			prior = i
+			output = max(output, 1)
+		}
+
+	}
+	return output
+}
+
 
 /*
 ============================================================
