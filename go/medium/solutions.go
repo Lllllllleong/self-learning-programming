@@ -27,6 +27,46 @@ Space Complexity: O()
 
 /*
 ============================================================
+3361. Shift Distance Between Two Strings
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+func shiftDistance(s string, t string, nextCost []int, previousCost []int) int64 {
+	var minCost [26][26]int64
+	for i := 0; i < 26; i++ {
+		for j := 0; j < 26; j++ {
+			if i == j {
+				minCost[i][j] = 0
+				continue
+			}
+			var forwardCost int64 = 0
+			curr := i
+			for curr != j {
+				forwardCost += int64(nextCost[curr])
+				curr = (curr + 1) % 26
+			}
+			var backwardCost int64 = 0
+			curr = i
+			for curr != j {
+				backwardCost += int64(previousCost[curr])
+				curr = (curr - 1 + 26) % 26 
+			}
+			minCost[i][j] = min(forwardCost,backwardCost)
+
+		}
+	}
+	var totalCost int64 = 0
+	for i := 0; i < len(s); i++ {
+		from := int(s[i] - 'a')
+		to := int(t[i] - 'a')
+		totalCost += minCost[from][to]
+	}
+	return totalCost
+}
+
+/*
+============================================================
 2750. Ways to Split Array Into Good Subarrays
 ============================================================
 Time Complexity: O(n)
