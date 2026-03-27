@@ -2,6 +2,7 @@ package hard
 
 import (
 	"cmp"
+	"strings"
 	// "iter"
 	"math"
 
@@ -80,6 +81,58 @@ func findAllConcatenatedWordsInADict(words []string) []string {
 		}
 	}
 	return output
+}
+
+/*
+============================================================
+1092. Shortest Common Supersequence
+============================================================
+Time Complexity: O(n×m) where n = len(str1), m = len(str2)
+Space Complexity: O(n×m) for DP table
+*/
+func shortestCommonSupersequence(str1 string, str2 string) string {
+	n, m := len(str1), len(str2)
+	dp := make([][]int, n+1)
+	for i := range dp {
+		dp[i] = make([]int, m+1)
+	}
+	for i := 0; i <= n; i++ {
+		dp[i][m] = n - i
+	}
+	for j := 0; j <= m; j++ {
+		dp[n][j] = m - j
+	}
+	for i := n - 1; i >= 0; i-- {
+		for j := m - 1; j >= 0; j-- {
+			if str1[i] == str2[j] {
+				dp[i][j] = dp[i+1][j+1] + 1
+			} else {
+				dp[i][j] = min(dp[i+1][j], dp[i][j+1]) + 1
+			}
+		}
+	}
+	var sb strings.Builder
+	i, j := 0, 0
+	for i < n || j < m {
+		if i >= n {
+			sb.WriteByte(str2[j])
+			j++
+		} else if j >= m {
+			sb.WriteByte(str1[i])
+			i++
+		} else if str1[i] == str2[j] {
+			sb.WriteByte(str1[i])
+			i++
+			j++
+		} else if dp[i+1][j] < dp[i][j+1] {
+			sb.WriteByte(str1[i])
+			i++
+		} else {
+			sb.WriteByte(str2[j])
+			j++
+		}
+	}
+	return sb.String()
 }
 
 /*
