@@ -21,6 +21,69 @@ Space Complexity: O()
 
 /*
 ============================================================
+472. Concatenated Words
+============================================================
+Time Complexity: O(n log n + n * L^2) where n = number of words, L = max word length
+Space Complexity: O(n * L)
+*/
+type TrieNode struct {
+	child [26]*TrieNode
+	eow   bool
+}
+
+func (tn *TrieNode) Insert(runes []rune, i int) {
+	if i == len(runes) {
+		tn.eow = true
+		return
+	}
+	charIndex := runes[i] - 'a'
+	if tn.child[charIndex] == nil {
+		tn.child[charIndex] = &TrieNode{}
+	}
+	tn.child[charIndex].Insert(runes, i+1)
+	return
+}
+
+func (tn *TrieNode) ConcatSearch(runes []rune, i int) bool {
+	return tn.concatSearchHelper(runes, i, tn)
+}
+
+func (tn *TrieNode) concatSearchHelper(runes []rune, i int, root *TrieNode) bool {
+	if i == len(runes) {
+		return tn.eow
+	}
+	charIndex := runes[i] - 'a'
+	var contSearch bool
+	var splitSearch bool
+	if tn.child[charIndex] != nil {
+		contSearch = tn.child[charIndex].concatSearchHelper(runes, i+1, root)
+	}
+	if tn.eow {
+		splitSearch = root.concatSearchHelper(runes, i, root)
+	}
+	return contSearch || splitSearch
+}
+
+func findAllConcatenatedWordsInADict(words []string) []string {
+	slices.SortFunc(words, func(a, b string) int {
+		return cmp.Or(cmp.Compare(len(a), len(b)), cmp.Compare(a, b))
+	})
+	output := []string{}
+	tnRoot := &TrieNode{}
+	for _, word := range words {
+		runes := []rune(word)
+		flag := tnRoot.ConcatSearch(runes, 0)
+		if flag {
+			output = append(output, word)
+		} else {
+			tnRoot.Insert(runes, 0)
+		}
+	}
+	return output
+}
+
+/*
+============================================================
 2977. Minimum Cost to Convert String II
 ============================================================
 Time Complexity: O(m³ + n×L×s) where m = number of unique strings in original+changed,
