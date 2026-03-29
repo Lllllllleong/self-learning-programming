@@ -27,6 +27,38 @@ Space Complexity: O()
 
 /*
 ============================================================
+1927. Sum Game
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+func sumGame(num string) bool {
+	diff := 0
+	balance := 0
+	n := len(num)
+	for i := 0; i < n; i++ {
+		multiplier := 1
+		if i >= n/2 {
+			multiplier = -1
+		}
+		if num[i] == '?' {
+			balance += multiplier
+		} else {
+			digit := int(num[i] - '0')
+			diff += digit * multiplier
+		}
+	}
+	if (balance % 2) != 0 {
+		return true
+	}
+	if 2*diff+balance*9 == 0 {
+		return false
+	}
+	return true
+}
+
+/*
+============================================================
 3361. Shift Distance Between Two Strings
 ============================================================
 Time Complexity: O(n)
