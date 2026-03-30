@@ -22,6 +22,38 @@ Space Complexity: O()
 
 /*
 ============================================================
+2106. Maximum Fruits Harvested After at Most K Steps
+============================================================
+Time Complexity: O()
+Space Complexity: O()
+*/
+func maxTotalFruits(fruits [][]int, startPos int, k int) int {
+	fruitMap := make(map[int]int)
+	for _, fruit := range fruits {
+		fruitMap[fruit[0]] += fruit[1]
+	}
+	output, windowSum, left, right := 0, 0, startPos - k, startPos
+	for i := left; i <= right; i++ {
+		windowSum += fruitMap[i]
+	}
+	output = max(output, windowSum)
+	for right < startPos + k {
+		right++
+		windowSum += fruitMap[right]
+		leftRange, rightRange := startPos - left, right - startPos
+		for min(leftRange*2 + rightRange, leftRange + rightRange*2) > k {
+			windowSum -= fruitMap[left]
+			left++
+			leftRange--
+		}
+		output = max(output, windowSum)
+	}
+	return output
+}
+
+
+/*
+============================================================
 472. Concatenated Words
 ============================================================
 Time Complexity: O(n log n + n * L^2) where n = number of words, L = max word length
