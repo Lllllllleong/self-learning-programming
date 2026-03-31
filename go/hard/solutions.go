@@ -22,10 +22,34 @@ Space Complexity: O()
 
 /*
 ============================================================
+1665. Minimum Initial Energy to Finish Tasks
+============================================================
+Time Complexity: O(n log n)
+Space Complexity: O(1)
+*/
+func minimumEffort(tasks [][]int) int {
+	energyCurrent, energyRequired := 0, 0
+	// Sort by theorethical "wastage"
+	slices.SortFunc(tasks, func(a, b []int) int {
+		return cmp.Compare(b[1] - b[0], a[1] - a[0])
+	})
+	for _, task := range tasks {
+		cost, required := task[0], task[1]
+		if required > energyCurrent {
+			energyRequired += required - energyCurrent
+			energyCurrent = required
+		}
+		energyCurrent -= cost
+	}
+	return energyRequired
+}
+
+/*
+============================================================
 2106. Maximum Fruits Harvested After at Most K Steps
 ============================================================
-Time Complexity: O()
-Space Complexity: O()
+Time Complexity: O(n + k)
+Space Complexity: O(n)
 */
 func maxTotalFruits(fruits [][]int, startPos int, k int) int {
 	fruitMap := make(map[int]int)
