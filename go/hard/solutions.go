@@ -22,6 +22,34 @@ Space Complexity: O()
 
 /*
 ============================================================
+2585. Number of Ways to Earn Points
+============================================================
+Time Complexity: O(n * target * c) where n is len(types), c is average count
+Space Complexity: O(target)
+*/
+func waysToReachTarget(target int, types [][]int) int {
+	const MOD = 1_000_000_007
+	dp := make([]int, target + 1)
+	dp[0] = 1
+	for _, question := range types {
+		count, marks := question[0], question[1]
+		for i := target - marks; i >= 0; i-- {
+			if dp[i] == 0 {
+				continue
+			}
+			for j := 1; j <= count; j++ {
+				if i + (j * marks) > target {
+					break
+				}
+				dp[i + (j * marks)] = (dp[i + (j * marks)] + dp[i]) % MOD
+			}
+		}
+	}
+	return dp[target]
+}
+
+/*
+============================================================
 1665. Minimum Initial Energy to Finish Tasks
 ============================================================
 Time Complexity: O(n log n)
@@ -98,7 +126,6 @@ func (tn *TrieNode) Insert(runes []rune, i int) {
 		tn.child[charIndex] = &TrieNode{}
 	}
 	tn.child[charIndex].Insert(runes, i+1)
-	return
 }
 
 func (tn *TrieNode) ConcatSearch(runes []rune, i int) bool {

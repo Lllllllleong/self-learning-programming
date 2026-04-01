@@ -22,6 +22,10 @@ TIPS:
 - Remember to keep imports at the top if you add packages
 - Comment out or replace code as you test different things
 
+KEYBOARD SHORTCUTS:
+- Navigate cursor backwards/forwards through prior locations:
+  LALT + RALT + A/D (Left arrow/Right arrow)
+
 ============================================================
 */
 
