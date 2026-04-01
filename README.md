@@ -4,9 +4,7 @@ This repository contains my solutions to LeetCode problems implemented in Java a
 
 ## 📊 Statistics
 
-- **Java**: ~700 solutions
-- **Go**: ~34 solutions
-- **SQL**: Database problems for learning
+<img src="https://leetcard.jacoblin.cool/Lllllllleong?theme=catppuccinMocha&font=Karma" height="150" alt="LeetCode Stats"/>
 
 
 ## 🚀 Quick Start
