@@ -27,6 +27,26 @@ Space Complexity: O()
 
 /*
 ============================================================
+1433. Check If a String Can Break Another String
+============================================================
+Time Complexity: O(n log n)
+Space Complexity: O(1)
+*/
+func checkIfCanBreak(s1 string, s2 string) bool {
+	r1, r2 := []rune(s1), []rune(s2)
+	b1, b2 := true, true
+	slices.Sort(r1)
+	slices.Sort(r2)
+	for i := range r1 {
+		x, y := r1[i], r2[i]
+		b1 = b1 && x <= y
+		b2 = b2 && x >= y
+	}
+	return b1 || b2
+}
+
+/*
+============================================================
 1927. Sum Game
 ============================================================
 Time Complexity: O(n)
