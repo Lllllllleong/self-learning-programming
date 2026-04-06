@@ -22,6 +22,32 @@ Space Complexity: O()
 
 /*
 ============================================================
+2551. Put Marbles in Bags
+============================================================
+Time Complexity: O(n log n)
+Space Complexity: O(n)
+*/
+func putMarbles(weights []int, k int) int64 {
+    n := len(weights)
+	endpointSums := []int{}
+	maxScore := weights[0] + weights[n-1]
+	minScore := maxScore
+	for i, v := range weights {
+		if i == 0 {
+			continue
+		}
+		endpointSums = append(endpointSums, v + weights[i-1])
+	}
+	slices.Sort(endpointSums)
+	for i := 0; i < k - 1; i++ {
+		minScore += endpointSums[i]
+		maxScore += endpointSums[len(endpointSums)-1-i]
+	}
+	return int64(maxScore - minScore)
+}
+
+/*
+============================================================
 2585. Number of Ways to Earn Points
 ============================================================
 Time Complexity: O(n * target * c) where n is len(types), c is average count
