@@ -22,6 +22,49 @@ Space Complexity: O()
 
 /*
 ============================================================
+2251. Number of Flowers in Full Bloom
+============================================================
+Time Complexity: O(n log n + m log m) — sorting flowers and people; inner shrink loops are O(n) total
+Space Complexity: O(n + m) — bloom/wilt arrays + sorted people copy + result map
+*/
+func fullBloomFlowers(flowers [][]int, people []int) []int {
+	bloomTimes, wiltTimes := []int{}, []int{}
+	for _, flower := range flowers {
+		bloomTimes = append(bloomTimes, flower[0])
+		wiltTimes = append(wiltTimes, flower[1])
+	}
+	slices.Sort(bloomTimes)
+	slices.Sort(wiltTimes)
+
+	outputMap := make(map[int]int)
+
+	times := make([]int, len(people))
+	copy(times, people)
+	slices.Sort(times)
+
+	for _, time := range times {
+		if _, ok := outputMap[time] ; ok {
+			continue
+		} else {
+			for len(bloomTimes) > 0 && bloomTimes[0] <= time {
+				bloomTimes = bloomTimes[1:]
+			}
+			for len(wiltTimes) > 0 && wiltTimes[0] < time {
+				wiltTimes = wiltTimes[1:]
+			}
+			outputMap[time] = len(wiltTimes) - len(bloomTimes)
+		}
+	}
+
+	for i, p := range people {
+		people[i] = outputMap[p]
+	}
+
+	return people
+}
+
+/*
+============================================================
 2551. Put Marbles in Bags
 ============================================================
 Time Complexity: O(n log n)
