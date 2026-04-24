@@ -22,6 +22,49 @@ Space Complexity: O()
 
 /*
 ============================================================
+546. Remove Boxes
+============================================================
+Time Complexity: O(n^4)
+Space Complexity: O(n^3)
+*/
+func removeBoxes(boxes []int) int {
+	n := len(boxes)
+	if n == 0 {
+		return 0
+	}
+	dp := make([][][]int, n)
+	for i := range dp {
+		dp[i] = make([][]int, n)
+		for j := range dp[i] {
+			dp[i][j] = make([]int, n+1)
+		}
+	}
+	for length := 1; length <= n; length++ {
+		for i := 0; i+length <= n; i++ {
+			j := i + length - 1
+			for k := 0; k < n; k++ {
+				best := (k + 1) * (k + 1)
+				if i+1 <= j {
+					best += dp[i+1][j][0]
+				}
+				for m := i + 1; m <= j; m++ {
+					if boxes[m] == boxes[i] {
+						left := 0
+						if i+1 <= m-1 {
+							left = dp[i+1][m-1][0]
+						}
+						best = max(best, left+dp[m][j][k+1])
+					}
+				}
+				dp[i][j][k] = best
+			}
+		}
+	}
+	return dp[0][n-1][0]
+}
+
+/*
+============================================================
 2251. Number of Flowers in Full Bloom
 ============================================================
 Time Complexity: O(n log n + m log m) — sorting flowers and people; inner shrink loops are O(n) total
