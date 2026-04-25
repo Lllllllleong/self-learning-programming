@@ -22,6 +22,36 @@ Space Complexity: O()
 
 /*
 ============================================================
+780. Reaching Points
+============================================================
+Time Complexity: O()
+Space Complexity: O()
+*/
+func reachingPoints(sx int, sy int, tx int, ty int) bool {
+	for tx >= sx && ty >= sy {
+		if tx == sx && ty == sy {
+			return true
+		}
+		if tx == ty {
+			return false
+		}
+		if tx > ty {
+			if ty == sy {
+				return (tx-sx)%ty == 0
+			}
+			tx %= ty
+		} else {
+			if tx == sx {
+				return (ty-sy)%tx == 0
+			}
+			ty %= tx
+		}
+	}
+	return false
+}
+
+/*
+============================================================
 546. Remove Boxes
 ============================================================
 Time Complexity: O(n^4)
