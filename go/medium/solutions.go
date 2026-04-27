@@ -1,6 +1,7 @@
 package medium
 
 import (
+	"cmp"
 	"container/heap"
 	// "testing/quick"
 	// "math"
@@ -24,6 +25,49 @@ type TreeNode struct {
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+3814. Maximum Capacity Within Budget
+============================================================
+Time Complexity: O(n log n)
+Space Complexity: O(n)
+*/
+func maxCapacity(costs []int, capacity []int, budget int) int {
+	M := len(costs)
+	machines := make([][]int, 0, M)
+	for i := range M {
+		machines = append(machines, []int{costs[i], capacity[i]})
+	}
+    
+	slices.SortFunc(machines, func(a, b []int) int {
+		if a[0] != b[0] {
+			return cmp.Compare(a[0], b[0])
+		}
+		return cmp.Compare(a[1], b[1])
+	})
+    
+	stack := [][]int{}
+	output := 0
+    
+	for _, machine := range machines {
+		currentCost, currentCapacity := machine[0], machine[1]
+		if currentCost < budget {
+			output = max(output, currentCapacity)
+		}
+		for len(stack) > 0 && (stack[len(stack)-1][0]+currentCost) >= budget {
+			stack = stack[:len(stack)-1]
+		}
+		
+		if len(stack) > 0 {
+			output = max(output, currentCapacity+stack[len(stack)-1][1])
+			stack = append(stack, []int{currentCost, max(currentCapacity, stack[len(stack)-1][1])})
+		} else {
+			stack = append(stack, []int{currentCost, currentCapacity})
+		}
+	}
+	return output
+}
 
 /*
 ============================================================
