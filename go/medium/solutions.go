@@ -28,6 +28,56 @@ Space Complexity: O()
 
 /*
 ============================================================
+131. Palindrome Partitioning
+============================================================
+Time Complexity: O(n * 2^n)
+Space Complexity: O(n * 2^n)
+*/
+func partition(s string) [][]string {
+	epMap := make(map[int][]int)
+	n := len(s)
+	
+	for i := range n {
+		left, right := i, i+1
+		for left >= 0 && right < n && s[left] == s[right] {
+			epMap[left] = append(epMap[left], right + 1)
+			left--
+			right++
+		}
+		left, right = i, i
+		for left >= 0 && right < n && s[left] == s[right] {
+			epMap[left] = append(epMap[left], right + 1)
+			left--
+			right++
+		}
+	}
+
+	output := [][]string{}
+	
+	var buildPartitionSlice func(partitions []string, i int)
+	buildPartitionSlice = func(partitions []string, i int) {
+		if i >= n {
+			output = append(output, partitions)
+			return
+		}
+		endPoints := epMap[i]
+		for _, v := range endPoints {
+			partitionsCopy := make([]string, len(partitions))
+			copy(partitionsCopy, partitions)
+			partitionsCopy = append(partitionsCopy, s[i:v])
+			buildPartitionSlice(partitionsCopy, v)
+
+		}
+
+	}
+
+	buildPartitionSlice([]string{}, 0)
+	
+	return output
+}
+
+/*
+============================================================
 3814. Maximum Capacity Within Budget
 ============================================================
 Time Complexity: O(n log n)
