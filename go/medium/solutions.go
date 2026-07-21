@@ -3,6 +3,8 @@ package medium
 import (
 	"cmp"
 	"container/heap"
+	// "fmt"
+// 
 	// "testing/quick"
 	// "math"
 	"slices"
@@ -28,6 +30,46 @@ Space Complexity: O()
 
 /*
 ============================================================
+1901. Find a Peak Element II
+============================================================
+Time Complexity: O(mn)
+Space Complexity: O(mn)
+*/
+func findPeakGrid(mat [][]int) []int {
+	return findPeak(mat, 0, 0)
+}
+
+func findPeak(matrix [][]int, y, x int) []int {
+	output := []int{y, x}
+
+	neighbours := [][]int{
+		[]int{-1, 0},
+		[]int{0, 1},
+		[]int{1, 0},
+		[]int{0, -1}}
+	
+	for _, v := range neighbours {
+		currentNeighbour := getPeakNeighbours(matrix, y + v[0], x + v[1])
+		if matrix[y][x] < currentNeighbour {
+			return findPeak(matrix, y + v[0], x + v[1])
+		}
+	}
+	
+	return output
+}
+
+func getPeakNeighbours(matrix [][]int, y, x int) int {
+	yMax, xMax := len(matrix), len(matrix[0])
+
+	if y < 0 || x < 0 || y >= yMax || x >= xMax {
+		return -1
+	} else {
+		return matrix[y][x]
+	}
+}
+
+/*
+============================================================
 131. Palindrome Partitioning
 ============================================================
 Time Complexity: O(n * 2^n)
@@ -36,24 +78,24 @@ Space Complexity: O(n * 2^n)
 func partition(s string) [][]string {
 	epMap := make(map[int][]int)
 	n := len(s)
-	
+
 	for i := range n {
 		left, right := i, i+1
 		for left >= 0 && right < n && s[left] == s[right] {
-			epMap[left] = append(epMap[left], right + 1)
+			epMap[left] = append(epMap[left], right+1)
 			left--
 			right++
 		}
 		left, right = i, i
 		for left >= 0 && right < n && s[left] == s[right] {
-			epMap[left] = append(epMap[left], right + 1)
+			epMap[left] = append(epMap[left], right+1)
 			left--
 			right++
 		}
 	}
 
 	output := [][]string{}
-	
+
 	var buildPartitionSlice func(partitions []string, i int)
 	buildPartitionSlice = func(partitions []string, i int) {
 		if i >= n {
@@ -72,7 +114,7 @@ func partition(s string) [][]string {
 	}
 
 	buildPartitionSlice([]string{}, 0)
-	
+
 	return output
 }
 
@@ -89,17 +131,17 @@ func maxCapacity(costs []int, capacity []int, budget int) int {
 	for i := range M {
 		machines = append(machines, []int{costs[i], capacity[i]})
 	}
-    
+
 	slices.SortFunc(machines, func(a, b []int) int {
 		if a[0] != b[0] {
 			return cmp.Compare(a[0], b[0])
 		}
 		return cmp.Compare(a[1], b[1])
 	})
-    
+
 	stack := [][]int{}
 	output := 0
-    
+
 	for _, machine := range machines {
 		currentCost, currentCapacity := machine[0], machine[1]
 		if currentCost < budget {
@@ -108,7 +150,7 @@ func maxCapacity(costs []int, capacity []int, budget int) int {
 		for len(stack) > 0 && (stack[len(stack)-1][0]+currentCost) >= budget {
 			stack = stack[:len(stack)-1]
 		}
-		
+
 		if len(stack) > 0 {
 			output = max(output, currentCapacity+stack[len(stack)-1][1])
 			stack = append(stack, []int{currentCost, max(currentCapacity, stack[len(stack)-1][1])})
@@ -196,9 +238,9 @@ func shiftDistance(s string, t string, nextCost []int, previousCost []int) int64
 			curr = i
 			for curr != j {
 				backwardCost += int64(previousCost[curr])
-				curr = (curr - 1 + 26) % 26 
+				curr = (curr - 1 + 26) % 26
 			}
-			minCost[i][j] = min(forwardCost,backwardCost)
+			minCost[i][j] = min(forwardCost, backwardCost)
 
 		}
 	}
@@ -219,14 +261,14 @@ Time Complexity: O(n)
 Space Complexity: O(1)
 */
 func numberOfGoodSubarraySplits(nums []int) int {
-	const mod = 1_000_000_007	
+	const mod = 1_000_000_007
 	output := 0
 	prior := -1
 	for i, v := range nums {
 		if v == 1 {
 			if prior != -1 {
 				output = ((i - prior) * output) % mod
-			} 
+			}
 			prior = i
 			output = max(output, 1)
 		}
@@ -234,7 +276,6 @@ func numberOfGoodSubarraySplits(nums []int) int {
 	}
 	return output
 }
-
 
 /*
 ============================================================
@@ -244,7 +285,7 @@ Time Complexity: O(n + e)
 Space Complexity: O(n + e)
 */
 func countPairs(n int, edges [][]int) int64 {
-    flagSlice := make([]bool, n)
+	flagSlice := make([]bool, n)
 	graph := make([][]int, n)
 	ccSlice := []int{}
 	for _, edge := range edges {
@@ -273,13 +314,13 @@ func countPairs(n int, edges [][]int) int64 {
 		ccSlice = append(ccSlice, ccSize)
 	}
 	var output int64
-    remainingNodes := int64(n)
-    for _, size := range ccSlice {
-        size64 := int64(size)
-        remainingNodes -= size64
-        output += size64 * remainingNodes
-    }
-    return output
+	remainingNodes := int64(n)
+	for _, size := range ccSlice {
+		size64 := int64(size)
+		remainingNodes -= size64
+		output += size64 * remainingNodes
+	}
+	return output
 }
 
 /*
