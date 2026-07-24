@@ -30,6 +30,31 @@ Space Complexity: O()
 
 /*
 ============================================================
+1276. Number of Burgers with No Waste of Ingredients
+============================================================
+Time Complexity: O()
+Space Complexity: O()
+*/
+func numOfBurgers(tomatoSlices int, cheeseSlices int) []int {
+	// Small bogir (2 tomat, 1 chee)
+	// Jumbo bogir (4 tomat, 1 chee)
+	low, high := 0, cheeseSlices
+	for low <= high {
+		mid := low + (high-low)/2
+		need := 4*mid + 2*(cheeseSlices-mid)
+		if need == tomatoSlices {
+			return []int{mid, cheeseSlices - mid}
+		} else if need > tomatoSlices {
+			high = mid - 1
+		} else {
+			low = mid + 1
+		}
+	}
+	return []int{}
+}
+
+/*
+============================================================
 1901. Find a Peak Element II
 ============================================================
 Time Complexity: O(mn)
