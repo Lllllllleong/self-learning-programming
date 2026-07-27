@@ -22,6 +22,49 @@ Space Complexity: O()
 
 /*
 ============================================================
+517. Super Washing Machines
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+func findMinMoves(machines []int) int {
+	M, n := 0, len(machines)
+	for _, m := range machines {
+		M += m
+	}
+	if M%n != 0 {
+		return -1
+	}
+
+	output, target, currentSum := 0, M/n, 0
+
+	for i := n - 1; i >= 0; i-- {
+		counter := n - i
+		currentNeed := counter * target
+		currentSum += machines[i]
+		currentRequired := currentNeed - currentSum
+
+		if abs(currentRequired) > output {
+			output = abs(currentRequired)
+		}
+
+		if machines[i]-target > output {
+			output = machines[i] - target
+		}
+	}
+
+	return output
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
+/*
+============================================================
 780. Reaching Points
 ============================================================
 Time Complexity: O()
