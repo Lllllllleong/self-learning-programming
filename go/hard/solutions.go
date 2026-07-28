@@ -22,6 +22,37 @@ Space Complexity: O()
 
 /*
 ============================================================
+960. Delete Columns to Make Sorted III
+============================================================
+Time Complexity: O(mn^2)
+Space Complexity: O(n)
+*/
+func minDeletionSize(strs []string) int {
+	n := len(strs[0])
+	dp := make([]int, n)
+	output := n
+
+	for j := n - 1; j >= 0; j-- {
+		dp[j] = n - 1 - j
+		for i := j + 1; i < n; i++ {
+			ok := true
+			for _, s := range strs {
+				if s[j] > s[i] {
+					ok = false
+					break
+				}
+			}
+			if ok {
+				dp[j] = min(dp[j], dp[i]+i-j-1)
+			}
+		}
+		output = min(output, j+dp[j])
+	}
+	return output
+}
+
+/*
+============================================================
 517. Super Washing Machines
 ============================================================
 Time Complexity: O(n)
