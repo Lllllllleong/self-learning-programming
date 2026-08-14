@@ -23,6 +23,37 @@ Space Complexity: O()
 
 /*
 ============================================================
+1713. Minimum Operations to Make a Subsequence
+============================================================
+Time Complexity: O(n + k log k)
+Space Complexity: O(n + k)
+*/
+func minOperations(target []int, arr []int) int {
+	n := len(target)
+	m := make(map[int]int, n)
+	for i, v := range target {
+		m[v] = i + 1
+	}
+
+	lisSlice := []int{}
+	for _, v := range arr {
+		position := m[v]
+		if position == 0 {
+			continue
+		}
+		i, _ := slices.BinarySearch(lisSlice, position)
+		if i == len(lisSlice) {
+			lisSlice = append(lisSlice, position)
+		} else {
+			lisSlice[i] = position
+		}
+	}
+
+	return n - len(lisSlice)
+}
+
+/*
+============================================================
 960. Delete Columns to Make Sorted III
 ============================================================
 Time Complexity: O(mn^2)
