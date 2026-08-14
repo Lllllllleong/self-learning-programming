@@ -3,8 +3,9 @@ package medium
 import (
 	"cmp"
 	"container/heap"
+
 	// "fmt"
-// 
+	//
 	// "testing/quick"
 	// "math"
 	"slices"
@@ -27,6 +28,45 @@ type TreeNode struct {
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+1170. Compare Strings by Frequency of the Smallest Character
+============================================================
+Time Complexity: O((N+M) * L log L), where N = len(words), M = len(queries), L = max string length (sorting each string dominates)
+Space Complexity: O(M + L), for the output slice and the temporary rune slice sorted per string
+*/
+func numSmallerByFrequency(queries []string, words []string) []int {
+	countSlice, output := make([]int, 12), []int{}
+
+	for _, word := range words {
+		smallestCount := countSmallestFrequency(word)
+		countSlice[smallestCount]++
+	}
+
+	for i := 10; i >= 0; i-- {
+		countSlice[i] = countSlice[i] + countSlice[i+1]
+	}
+
+	for _, query := range queries {
+		currentCount := countSmallestFrequency(query)
+		output = append(output, countSlice[currentCount+1])
+	}
+
+	return output
+}
+
+func countSmallestFrequency(s string) int {
+	runes := []rune(s)
+	slices.Sort(runes)
+	counter := 1
+
+	for i := 1; i < len(runes) && runes[i] == runes[i-1]; i++ {
+		counter++
+	}
+
+	return counter
+}
 
 /*
 ============================================================
@@ -72,14 +112,14 @@ func findPeak(matrix [][]int, y, x int) []int {
 		[]int{0, 1},
 		[]int{1, 0},
 		[]int{0, -1}}
-	
+
 	for _, v := range neighbours {
-		currentNeighbour := getPeakNeighbours(matrix, y + v[0], x + v[1])
+		currentNeighbour := getPeakNeighbours(matrix, y+v[0], x+v[1])
 		if matrix[y][x] < currentNeighbour {
-			return findPeak(matrix, y + v[0], x + v[1])
+			return findPeak(matrix, y+v[0], x+v[1])
 		}
 	}
-	
+
 	return output
 }
 

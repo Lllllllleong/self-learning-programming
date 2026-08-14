@@ -3,6 +3,7 @@ package hard
 import (
 	"cmp"
 	"strings"
+
 	// "iter"
 	"math"
 
@@ -190,7 +191,7 @@ func fullBloomFlowers(flowers [][]int, people []int) []int {
 	slices.Sort(times)
 
 	for _, time := range times {
-		if _, ok := outputMap[time] ; ok {
+		if _, ok := outputMap[time]; ok {
 			continue
 		} else {
 			for len(bloomTimes) > 0 && bloomTimes[0] <= time {
@@ -218,7 +219,7 @@ Time Complexity: O(n log n)
 Space Complexity: O(n)
 */
 func putMarbles(weights []int, k int) int64 {
-    n := len(weights)
+	n := len(weights)
 	endpointSums := []int{}
 	maxScore := weights[0] + weights[n-1]
 	minScore := maxScore
@@ -226,10 +227,10 @@ func putMarbles(weights []int, k int) int64 {
 		if i == 0 {
 			continue
 		}
-		endpointSums = append(endpointSums, v + weights[i-1])
+		endpointSums = append(endpointSums, v+weights[i-1])
 	}
 	slices.Sort(endpointSums)
-	for i := 0; i < k - 1; i++ {
+	for i := 0; i < k-1; i++ {
 		minScore += endpointSums[i]
 		maxScore += endpointSums[len(endpointSums)-1-i]
 	}
@@ -245,7 +246,7 @@ Space Complexity: O(target)
 */
 func waysToReachTarget(target int, types [][]int) int {
 	const MOD = 1_000_000_007
-	dp := make([]int, target + 1)
+	dp := make([]int, target+1)
 	dp[0] = 1
 	for _, question := range types {
 		count, marks := question[0], question[1]
@@ -254,10 +255,10 @@ func waysToReachTarget(target int, types [][]int) int {
 				continue
 			}
 			for j := 1; j <= count; j++ {
-				if i + (j * marks) > target {
+				if i+(j*marks) > target {
 					break
 				}
-				dp[i + (j * marks)] = (dp[i + (j * marks)] + dp[i]) % MOD
+				dp[i+(j*marks)] = (dp[i+(j*marks)] + dp[i]) % MOD
 			}
 		}
 	}
@@ -275,7 +276,7 @@ func minimumEffort(tasks [][]int) int {
 	energyCurrent, energyRequired := 0, 0
 	// Sort by theorethical "wastage"
 	slices.SortFunc(tasks, func(a, b []int) int {
-		return cmp.Compare(b[1] - b[0], a[1] - a[0])
+		return cmp.Compare(b[1]-b[0], a[1]-a[0])
 	})
 	for _, task := range tasks {
 		cost, required := task[0], task[1]
@@ -300,16 +301,16 @@ func maxTotalFruits(fruits [][]int, startPos int, k int) int {
 	for _, fruit := range fruits {
 		fruitMap[fruit[0]] += fruit[1]
 	}
-	output, windowSum, left, right := 0, 0, startPos - k, startPos
+	output, windowSum, left, right := 0, 0, startPos-k, startPos
 	for i := left; i <= right; i++ {
 		windowSum += fruitMap[i]
 	}
 	output = max(output, windowSum)
-	for right < startPos + k {
+	for right < startPos+k {
 		right++
 		windowSum += fruitMap[right]
-		leftRange, rightRange := startPos - left, right - startPos
-		for min(leftRange*2 + rightRange, leftRange + rightRange*2) > k {
+		leftRange, rightRange := startPos-left, right-startPos
+		for min(leftRange*2+rightRange, leftRange+rightRange*2) > k {
 			windowSum -= fruitMap[left]
 			left++
 			leftRange--
@@ -318,7 +319,6 @@ func maxTotalFruits(fruits [][]int, startPos int, k int) int {
 	}
 	return output
 }
-
 
 /*
 ============================================================
