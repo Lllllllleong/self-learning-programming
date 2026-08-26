@@ -4,7 +4,7 @@ import (
 	"cmp"
 	"container/heap"
 
-	// "fmt"
+	"fmt"
 	//
 	// "testing/quick"
 	// "math"
@@ -28,6 +28,37 @@ type TreeNode struct {
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+1042. Flower Planting With No Adjacent
+============================================================
+Time Complexity: O(n + E)
+Space Complexity: O(n + E)
+*/
+func gardenNoAdj(n int, paths [][]int) []int {
+	adj := make([][]int, n)
+	for _, p := range paths {
+		a, b := p[0]-1, p[1]-1
+		adj[a] = append(adj[a], b)
+		adj[b] = append(adj[b], a)
+	}
+
+	output := make([]int, n)
+	for i := 0; i < n; i++ {
+		var used int
+		for _, v := range adj[i] {
+			used |= 1 << output[v]
+		}
+		for f := 1; f <= 4; f++ {
+			if used&(1<<f) == 0 {
+				output[i] = f
+				break
+			}
+		}
+	}
+	return output
+}
 
 /*
 ============================================================
