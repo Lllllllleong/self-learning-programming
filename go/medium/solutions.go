@@ -4,7 +4,6 @@ import (
 	"cmp"
 	"container/heap"
 
-	"fmt"
 	//
 	// "testing/quick"
 	// "math"
@@ -28,6 +27,33 @@ type TreeNode struct {
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+2958. Length of Longest Subarray With at Most K Frequency
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+func maxSubarrayLength(nums []int, k int) int {
+	n, maxLength := len(nums), 0
+	left, right := 0, 0
+	freqMap := make(map[int]int)
+	for right < n {
+		num := nums[right]
+		freqMap[num]++
+
+		for freqMap[num] > k {
+			freqMap[nums[left]]--
+			left++
+		}
+
+		maxLength = max(maxLength, right - left + 1)
+		right++
+	}
+	return maxLength
+}
+
 
 /*
 ============================================================
