@@ -30,6 +30,49 @@ Space Complexity: O()
 
 /*
 ============================================================
+2343. Query Kth Smallest Trimmed Number
+============================================================
+Time Complexity: O(m^2 * n log n + q), where n = len(nums), m = len(nums[i]), q = len(queries)
+Space Complexity: O(m * n)
+*/
+func smallestTrimmedNumbers(nums []string, queries [][]int) []int {
+	maxDigits := len(nums[0])
+	n := len(nums)
+	output := []int{}
+
+	dp := make([][]int, maxDigits)
+	indexSlice := make([]int, n)
+	for i := range indexSlice {
+		indexSlice[i] = i
+	}
+
+	trimmedStrings := make([]string, n)
+	for i := range maxDigits {
+		for j, str := range nums {
+			last := str[len(str)-1:]
+			trimmedStrings[j] = last + trimmedStrings[j]
+			nums[j] = str[:len(str)-1]
+		}
+		
+		iSlice := slices.Clone(indexSlice)
+		slices.SortStableFunc(iSlice, func(i, j int) int {
+			return cmp.Compare(trimmedStrings[i], trimmedStrings[j])
+		})
+
+		dp[i] = iSlice
+	}
+
+	for _, query := range queries {
+		k, trim := query[0], query[1]
+		output = append(output, dp[trim-1][k-1])
+	}
+
+	return output
+}
+
+
+/*
+============================================================
 2958. Length of Longest Subarray With at Most K Frequency
 ============================================================
 Time Complexity: O(n)
