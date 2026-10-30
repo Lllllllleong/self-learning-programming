@@ -30,6 +30,61 @@ Space Complexity: O()
 
 /*
 ============================================================
+1003. Check If Word Is Valid After Substitutions
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+func isValid(s string) bool {
+	runes := []rune(s)
+
+	i := 0
+	for i >= 0 && i < len(runes) {
+		i = aCheck(runes, i)
+	}
+	return i == len(runes)
+}
+
+
+func aCheck(runes []rune, i int) int {
+	if i < 0 || i == len(runes) {
+		return i
+	}
+	if runes[i] != 'a' {
+		return -1
+	}
+	return bCheck(runes, i+1)
+}
+
+func bCheck(runes []rune, i int) int {
+	if i < 0 || i >= len(runes) {
+		return -1
+	}
+	if runes[i] == 'a' {
+		return bCheck(runes, aCheck(runes, i))
+	}
+	if runes[i] == 'c' {
+		return -1
+	}
+	return cCheck(runes, i+1)
+}
+
+func cCheck(runes []rune, i int) int {
+	if i < 0 || i >= len(runes) {
+		return -1
+	}
+	if runes[i] == 'a' {
+		return cCheck(runes, aCheck(runes, i))
+	}
+	if runes[i] == 'b' {
+		return -1
+	}
+	return i+1
+}
+
+
+/*
+============================================================
 2343. Query Kth Smallest Trimmed Number
 ============================================================
 Time Complexity: O(m^2 * n log n + q), where n = len(nums), m = len(nums[i]), q = len(queries)
