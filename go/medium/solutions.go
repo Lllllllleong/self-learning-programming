@@ -30,6 +30,47 @@ Space Complexity: O()
 
 /*
 ============================================================
+2981. Find Longest Special Substring That Occurs Thrice I
+2982. Find Longest Special Substring That Occurs Thrice II
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+func maximumLength(s string) int {
+	runes := []rune(s)
+	// dp[c][l] = occurrences of the special substring made of c with length l
+	dp := make([][]int, 26)
+	for i := range dp {
+		dp[i] = make([]int, len(runes)+1)
+	}
+
+	for i := 0; i < len(runes); i++ {
+		currentRune := runes[i]
+		currentCount := 1
+		for i < len(runes)-1 && runes[i+1] == currentRune {
+			currentCount++
+			i++
+		}
+		// A run of length L contains L-l+1 substrings of length l
+		for l := 1; l <= currentCount; l++ {
+			dp[currentRune-'a'][l] += currentCount - l + 1
+		}
+	}
+
+	currentMax := -1
+	for c := range dp {
+		for l := 1; l < len(dp[c]); l++ {
+			if dp[c][l] >= 3 {
+				currentMax = max(currentMax, l)
+			}
+		}
+	}
+
+	return currentMax
+}
+
+/*
+============================================================
 1003. Check If Word Is Valid After Substitutions
 ============================================================
 Time Complexity: O(n)
