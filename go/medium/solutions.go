@@ -3,10 +3,10 @@ package medium
 import (
 	"cmp"
 	"container/heap"
+	"math"
 
 	//
 	// "testing/quick"
-	// "math"
 	"slices"
 
 	// "iter"
@@ -27,6 +27,46 @@ type TreeNode struct {
 Time Complexity: O()
 Space Complexity: O()
 */
+
+/*
+============================================================
+1007. Minimum Domino Rotations For Equal Row
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+func minDominoRotations(tops []int, bottoms []int) int {
+	n := len(tops)
+	// freqMap[v] = number of dominoes containing v on either face
+	freqMap, topFreqMap, botFreqMap := make(map[int]int), make(map[int]int), make(map[int]int)
+	for i, t := range tops {
+		b := bottoms[i]
+		freqMap[t]++
+		// A double only counts once, otherwise it would be counted twice for the same domino
+		if t != b {
+			freqMap[b]++
+		}
+		topFreqMap[t]++
+		botFreqMap[b]++
+	}
+	eligibleSlice := []int{}
+	for k, v := range freqMap {
+		if v == n {
+			eligibleSlice = append(eligibleSlice, k)
+		}
+	}
+	if len(eligibleSlice) == 0 {
+		return -1
+	}
+	output := math.MaxInt32
+	for _, v := range eligibleSlice {
+		// Rotate every domino whose top (or bottom) is not already v
+		allTop := n - topFreqMap[v]
+		allBot := n - botFreqMap[v]
+		output = min(output, min(allTop, allBot))
+	}
+	return output
+}
 
 /*
 ============================================================
