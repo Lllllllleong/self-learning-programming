@@ -30,6 +30,33 @@ Space Complexity: O()
 
 /*
 ============================================================
+2924. Find Champion II
+============================================================
+Time Complexity: O(n + m), where m = len(edges)
+Space Complexity: O(n)
+*/
+func findChampion(n int, edges [][]int) int {
+	inSlice := make([]int, n)
+	for _, edge := range edges {
+		inSlice[edge[1]]++
+	}
+
+	counter, output := 0, -1
+	for i, v := range inSlice {
+		if v == 0 {
+			counter++
+			output = i
+		}
+	}
+
+	if counter == 1 {
+		return output
+	}
+	return -1
+}
+
+/*
+============================================================
 1007. Minimum Domino Rotations For Equal Row
 ============================================================
 Time Complexity: O(n)
