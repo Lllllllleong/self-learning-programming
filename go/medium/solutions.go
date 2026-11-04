@@ -30,6 +30,38 @@ Space Complexity: O()
 
 /*
 ============================================================
+3951. Minimum Energy to Maintain Brightness
+============================================================
+Time Complexity: O(m log m), where m = len(intervals)
+Space Complexity: O(log m)
+*/
+func minEnergy(n int, brightness int, intervals [][]int) int64 {
+	minBulbs := brightness / 3
+	if (brightness % 3) != 0 {
+		minBulbs++
+	}
+
+	slices.SortFunc(intervals, func(a, b []int) int {
+		return cmp.Compare(a[0], b[0])
+	})
+
+	var totalTime int64
+	start, end := intervals[0][0], intervals[0][1]
+	for _, interval := range intervals[1:] {
+		if interval[0] <= end {
+			end = max(end, interval[1])
+		} else {
+			totalTime += int64(end - start + 1)
+			start, end = interval[0], interval[1]
+		}
+	}
+	totalTime += int64(end - start + 1)
+
+	return totalTime * int64(minBulbs)
+}
+
+/*
+============================================================
 2924. Find Champion II
 ============================================================
 Time Complexity: O(n + m), where m = len(edges)
