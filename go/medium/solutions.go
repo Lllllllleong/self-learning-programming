@@ -30,6 +30,37 @@ Space Complexity: O()
 
 /*
 ============================================================
+739. Daily Temperatures
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+func dailyTemperatures(temperatures []int) []int {
+	n := len(temperatures)
+	stack := []int{}
+	output := make([]int, n)
+
+	for i := n-1; i >= 0; i-- {
+		temp := temperatures[i]
+
+		for len(stack) > 0 && temperatures[stack[len(stack)-1]] <= temp {
+			stack = stack[:len(stack)-1]
+		}
+
+		if len(stack) == 0 {
+			output[i] = 0
+		} else {
+			output[i] = stack[len(stack)-1] - i
+		}
+
+		stack = append(stack, i)
+	}
+
+	return output
+}
+
+/*
+============================================================
 3951. Minimum Energy to Maintain Brightness
 ============================================================
 Time Complexity: O(m log m), where m = len(intervals)
