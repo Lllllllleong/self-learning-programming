@@ -49,3 +49,18 @@ fun nextGreaterElement(nums1: IntArray, nums2: IntArray): IntArray {
 }
 
 
+/*
+============================================================
+283. Move Zeroes
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+fun moveZeroes(nums: IntArray) {
+    var j = 0
+    for (num in nums) {
+        if (num != 0) nums[j++] = num
+    }
+    nums.fill(0, fromIndex = j)
+}
+
