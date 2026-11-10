@@ -85,3 +85,18 @@ fun subtractProductAndSum(n: Int): Int {
     return product - sum
 }
 
+/*
+============================================================
+1491. Average Salary Excluding the Minimum and Maximum Salary
+============================================================
+Time Complexity: O(n log n)
+Space Complexity: O(log n)
+*/
+fun average(salary: IntArray): Double {
+    salary.sort()
+    var sum = salary.sum()
+    sum -= salary[0]
+    sum -= salary[salary.size - 1]
+    return sum.toDouble() / (salary.size - 2)
+}
+
