@@ -64,3 +64,24 @@ fun moveZeroes(nums: IntArray) {
     nums.fill(0, fromIndex = j)
 }
 
+/*
+============================================================
+1281. Subtract the Product and Sum of Digits of an Integer
+============================================================
+Time Complexity: O(log n)
+Space Complexity: O(1)
+*/
+fun subtractProductAndSum(n: Int): Int {
+    var num = n
+    var product = 1
+    var sum = 0
+    while (num > 0) {
+        val digit = num % 10
+        product *= digit
+        sum += digit
+        num /= 10
+    }
+
+    return product - sum
+}
+
