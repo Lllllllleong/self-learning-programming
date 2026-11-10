@@ -100,3 +100,19 @@ fun average(salary: IntArray): Double {
     return sum.toDouble() / (salary.size - 2)
 }
 
+/*
+============================================================
+1523. Count Odd Numbers in an Interval Range
+============================================================
+Time Complexity: O(n), where n = high - low
+Space Complexity: O(1)
+*/
+fun countOdds(low: Int, high: Int): Int {
+    var output = 0
+    for (i in low..high) {
+        if (i % 2 != 0) {
+            output++
+        }
+    }
+    return output
+}
