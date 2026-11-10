@@ -17,6 +17,14 @@ This document outlines the conventions and organizational rules for this LeetCod
 - **Draft File**: Use `draft.go` in the root for work-in-progress solutions (gitignored)
 - **Reference File**: Use `go/golangReference.go` for quick testing and Go syntax experiments
 
+### Kotlin
+- **By Difficulty**: Same layout as Go
+  - `kotlin/easy/Solutions.kt` (`package easy`)
+  - `kotlin/medium/Solutions.kt` (`package medium`)
+  - `kotlin/hard/Solutions.kt` (`package hard`)
+- **Draft File**: Use `draft.kt` in the root for work-in-progress solutions (gitignored)
+- Run a draft: `kotlinc draft.kt -include-runtime -d out.jar; java -jar out.jar`
+
 ### SQL
 - All SQL problems in `sql/SQLPractice.sql`
 
@@ -54,10 +62,24 @@ func functionName(parameters) returnType {
 }
 ```
 
+**Kotlin:**
+```kotlin
+/*
+============================================================
+Problem Name
+============================================================
+Time Complexity: O(?)
+Space Complexity: O(?)
+*/
+fun functionName(parameters): ReturnType {
+    // solution code
+}
+```
+
 ### Guidelines
 - **Problem Name**: Use the full problem title (no problem number needed)
 - **Complexity**: Leave as `O(?)` if not analyzed yet
-- **Function Names**: Use descriptive names based on the problem (camelCase for Go/Java)
+- **Function Names**: Use descriptive names based on the problem (camelCase for Go/Java/Kotlin)
 
 ## 🔄 Workflow
 
@@ -66,10 +88,12 @@ func functionName(parameters) returnType {
 1. **Work in Progress**
    - Java: Add to the current Practice file or start testing in `References.java`
    - Go: Use `draft.go` for experimental solutions
+   - Kotlin: Use `draft.kt` for experimental solutions
 
 2. **Completed Solutions**
    - Java: Keep in the current Practice file
    - Go: Move from `draft.go` to the appropriate difficulty file (`easy/`, `medium/`, `hard/`)
+   - Kotlin: Move from `draft.kt` to the appropriate difficulty file (drop the `main()`)
    - Add proper comment block with problem name
 
 3. **Helper Functions**
@@ -113,5 +137,6 @@ func functionName(parameters) returnType {
 
 - **Java**: IntelliJ IDEA configuration in `java/.idea/`
 - **Go**: Go modules configured (`go.mod`)
+- **Kotlin**: Standalone `kotlinc` (no build tool); VS Code Kotlin extension for editing
 - **Git**: `.gitignore` handles common files
 - Performance: Create new Practice file at ~4,000 lines to maintain IDE performance

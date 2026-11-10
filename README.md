@@ -1,6 +1,6 @@
 # LeetCode Solutions
 
-This repository contains my solutions to LeetCode problems implemented in Java and Go, plus SQL practice problems.
+This repository contains my solutions to LeetCode problems implemented in Java, Go and Kotlin, plus SQL practice problems.
 
 ## 📊 Statistics
 
@@ -14,10 +14,12 @@ This repository contains my solutions to LeetCode problems implemented in Java a
   - Use Ctrl+F to search for problem names or keywords
   - Check `References.java` for common algorithms and utilities
 - **Go**: Solutions organized by difficulty in `go/easy/`, `go/medium/`, `go/hard/`
+- **Kotlin**: Solutions organized by difficulty in `kotlin/easy/`, `kotlin/medium/`, `kotlin/hard/`
 - **SQL**: All SQL problems in `sql/SQLPractice.sql`
 
 ### Working on New Solutions
 - **Go**: Use `draft.go` in the root directory (gitignored for work-in-progress)
+- **Kotlin**: Use `draft.kt` in the root directory (gitignored for work-in-progress)
 - **Java**: Add to the most recent Practice file or start Practice7.java when IDE slows down
 
 ## 📁 Structure
@@ -40,6 +42,13 @@ This repository contains my solutions to LeetCode problems implemented in Java a
 │   │   └── solutions.go
 │   └── hard/
 │       └── solutions.go
+├── kotlin/
+│   ├── easy/
+│   │   └── Solutions.kt
+│   ├── medium/
+│   │   └── Solutions.kt
+│   └── hard/
+│       └── Solutions.kt
 ├── sql/
 │   └── SQLPractice.sql         # SQL LeetCode problems
 └── resources/
