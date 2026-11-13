@@ -30,6 +30,40 @@ Space Complexity: O()
 
 /*
 ============================================================
+3751. Total Waviness of Numbers in Range I
+============================================================
+Time Complexity: O(num2)
+Space Complexity: O(num2)
+*/
+func totalWaviness(num1 int, num2 int) int {
+	dpMap := make([]int, num2 + 1)
+	sum := 0
+	
+	for i := 100; i <= num2; i++ {
+		tmp := i
+		c := tmp % 10
+		tmp /= 10
+		prior := tmp
+		b := tmp % 10
+		tmp /= 10
+		a := tmp % 10
+
+		if a < b && b > c || a > b && b < c {
+			dpMap[i] = dpMap[prior] + 1
+		} else {
+			dpMap[i] = dpMap[prior]
+		}
+
+		if i >= num1 {
+			sum += dpMap[i]
+		}
+	}
+
+	return sum
+}
+
+/*
+============================================================
 739. Daily Temperatures
 ============================================================
 Time Complexity: O(n)
