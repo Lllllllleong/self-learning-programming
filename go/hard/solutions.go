@@ -23,6 +23,42 @@ Space Complexity: O()
 
 /*
 ============================================================
+2945. Find Maximum Non-decreasing Array Length
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+func findMaximumLength(nums []int) int {
+	n := len(nums)
+	prefix := make([]int, n+1)
+	for i, num := range nums {
+		prefix[i+1] = prefix[i] + num
+	}
+	dp := make([]int, n+1)
+	last := make([]int, n+1)
+	key := func(j int) int { return prefix[j] + last[j] }
+	queue := []int{0}
+
+	for i := 1; i <= n; i++ {
+		for len(queue) > 1 && key(queue[1]) <= prefix[i] {
+			queue = queue[1:]
+		}
+
+		j := queue[0]
+		dp[i] = dp[j] + 1
+		last[i] = prefix[i] - prefix[j]
+
+		for len(queue) > 0 && key(queue[len(queue)-1]) >= key(i) {
+			queue = queue[:len(queue)-1]
+		}
+
+		queue = append(queue, i)
+	}
+	return dp[n]
+}
+
+/*
+============================================================
 1713. Minimum Operations to Make a Subsequence
 ============================================================
 Time Complexity: O(n + k log k)
