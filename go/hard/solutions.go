@@ -23,6 +23,39 @@ Space Complexity: O()
 
 /*
 ============================================================
+1425. Constrained Subsequence Sum
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+func constrainedSubsetSum(nums []int, k int) int {
+	dp := make([]int, len(nums))
+	dq := []int{}
+	output := math.MinInt
+
+	for i, v := range nums {
+		if len(dq) > 0 && dq[0] < i-k {
+			dq = dq[1:]
+		}
+
+		best := 0
+		if len(dq) > 0 {
+			best = max(0, dp[dq[0]])
+		}
+		dp[i] = v + best
+		output = max(output, dp[i])
+
+		for len(dq) > 0 && dp[dq[len(dq)-1]] <= dp[i] {
+			dq = dq[:len(dq)-1]
+		}
+		dq = append(dq, i)
+	}
+
+	return output
+}
+
+/*
+============================================================
 2945. Find Maximum Non-decreasing Array Length
 ============================================================
 Time Complexity: O(n)
