@@ -30,6 +30,38 @@ Space Complexity: O()
 
 /*
 ============================================================
+2944. Minimum Number of Coins for Fruits
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+func minimumCoins(prices []int) int {
+	n := len(prices)
+	dq, dp := []int{n}, make([]int, n+1)
+
+	for i := n-1; i >= 0; i-- {
+		upperEligible := i + (i + 2)
+
+		// Remove ineligible
+		for len(dq) > 0 && dq[0] > upperEligible {
+			dq = dq[1:]
+		}
+
+		// Record best
+		dp[i] = prices[i] + dp[dq[0]]
+		// Remove eligible which are worse than the current best
+		for len(dq) > 0 && dp[dq[len(dq)-1]] > dp[i] {
+			dq = dq[:len(dq)-1]
+		}
+		// Add the current best to eligible queue
+		dq = append(dq, i)
+	}
+
+	return dp[0]
+}
+
+/*
+============================================================
 3751. Total Waviness of Numbers in Range I
 ============================================================
 Time Complexity: O(num2)
