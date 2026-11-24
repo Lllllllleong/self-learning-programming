@@ -30,6 +30,41 @@ Space Complexity: O()
 
 /*
 ============================================================
+2762. Continuous Subarrays
+============================================================
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+func continuousSubarrays(nums []int) int64 {
+	var minDQ, maxDQ []int
+	var output int64
+	i := 0
+	for j, v := range nums {
+		for len(minDQ) > 0 && nums[minDQ[len(minDQ)-1]] >= v {
+			minDQ = minDQ[:len(minDQ)-1]
+		}
+		for len(maxDQ) > 0 && nums[maxDQ[len(maxDQ)-1]] <= v {
+			maxDQ = maxDQ[:len(maxDQ)-1]
+		}
+		minDQ = append(minDQ, j)
+		maxDQ = append(maxDQ, j)
+
+		for nums[maxDQ[0]]-nums[minDQ[0]] > 2 {
+			i++
+			if minDQ[0] < i {
+				minDQ = minDQ[1:]
+			}
+			if maxDQ[0] < i {
+				maxDQ = maxDQ[1:]
+			}
+		}
+		output += int64(j - i + 1)
+	}
+	return output
+}
+
+/*
+============================================================
 2944. Minimum Number of Coins for Fruits
 ============================================================
 Time Complexity: O(n)
